@@ -10,7 +10,7 @@ Thank you for your interest in improving Copia CLI.
 
 ## Quick Start
 
-The devcontainer provides a fully configured environment with Go 1.23+, gh CLI, goreleaser, and golangci-lint pre-installed. No local Go installation needed.
+The devcontainer provides a fully configured environment with Go 1.26+, gh CLI, and golangci-lint pre-installed. No local Go installation needed.
 
 **VS Code / Cursor:**
 
