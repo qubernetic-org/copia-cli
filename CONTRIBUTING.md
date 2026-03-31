@@ -4,32 +4,36 @@ Thank you for your interest in improving Copia CLI.
 
 ## Prerequisites
 
-- **Go** (1.23+)
-- **Git** (2.20+)
-- **Make**
+- **Docker** — required for devcontainer
+- **VS Code / Cursor** — or the [devcontainer CLI](https://github.com/devcontainers/cli)
 - **GitHub CLI (`gh`)** — recommended for issue/PR management
-- **Docker** — optional, for devcontainer-based development
 
 ## Quick Start
 
+The devcontainer provides a fully configured environment with Go 1.23+, gh CLI, goreleaser, and golangci-lint pre-installed. No local Go installation needed.
+
+**VS Code / Cursor:**
+
+1. Clone the repo and open it in your editor
+2. "Reopen in Container" when prompted
+3. All tools are pre-installed — start coding
+
+**CLI (without VS Code):**
+
 ```bash
-# Clone and build
 git clone https://github.com/qubernetic-org/copia-cli.git
 cd copia-cli
-make build
 
-# Run tests
-make test
+# Build and start the devcontainer
+npx @devcontainers/cli up --workspace-folder .
 
-# Run with version info
-./bin/copia --version
+# Run commands inside the container
+npx @devcontainers/cli exec --workspace-folder . make build
+npx @devcontainers/cli exec --workspace-folder . make test
+npx @devcontainers/cli exec --workspace-folder . ./bin/copia --version
 ```
 
-Or use the devcontainer (VS Code / Cursor):
-
-1. Open the repo in your editor
-2. "Reopen in Container" when prompted
-3. All tools are pre-installed
+> **Note:** `npx` runs the devcontainer CLI without global installation. Install globally with `npm install -g @devcontainers/cli` to use `devcontainer` directly.
 
 ## Development Workflow
 
