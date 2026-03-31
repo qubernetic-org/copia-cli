@@ -9,7 +9,6 @@ linters:
     - gosimple
     - ineffassign
     - misspell
-    - gofmt
   settings:
     misspell:
       locale: US
