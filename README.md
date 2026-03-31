@@ -9,7 +9,7 @@
 
 [Copia](https://copia.io) on the command line. Built for automation engineers and CI pipelines.
 
-[Installation](#installation) · [Usage](#usage) · [Commands](#commands) · [Configuration](#configuration) · [Contributing](CONTRIBUTING.md)
+[Installation](#installation) · [Usage](#usage) · [Commands](#commands) · [Configuration](#configuration) · [Roadmap](#roadmap)
 
 </div>
 
@@ -237,13 +237,15 @@ See [`docs/api-reference.md`](docs/api-reference.md) for the full endpoint mappi
 - `codespace`/`copilot`/`project`/`cache` — GitHub-specific, no Gitea equivalent
 - GUI — this is a CLI tool
 
+## Development
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the development workflow, prerequisites, and project structure.
+
+A [devcontainer](.devcontainer/) configuration is included for VS Code / Cursor — open the repo and select "Reopen in Container" to get a fully configured environment.
+
 ## Related
 
 - **[Copia](https://copia.io)** — Source control platform for industrial automation
 - **[Copia Desktop](https://copia.io/product/copia-desktop/)** — Official desktop app (clone/open only)
 - **[GitHub CLI](https://cli.github.com/)** — The reference implementation this tool mirrors
 - **[Gitea API Docs](https://docs.gitea.com/api/)** — Upstream API reference
-
-## License
-
-MIT — See [LICENSE](LICENSE) for details.

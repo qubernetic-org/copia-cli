@@ -1,0 +1,26 @@
+{
+  "name": "Copia CLI",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/go:1": {
+      "version": "1.23",
+      "golangciLintVersion": "latest"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.go",
+        "streetsidesoftware.code-spell-checker"
+      ],
+      "settings": {
+        "go.toolsManagement.autoUpdate": true,
+        "go.testOnSave": true,
+        "go.lintTool": "golangci-lint",
+        "editor.formatOnSave": true
+      }
+    }
+  },
+  "postCreateCommand": "[ -f go.sum ] && go mod download || true"
+}
