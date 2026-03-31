@@ -66,6 +66,6 @@ func logoutRun(opts *LogoutOptions) error {
 		return err
 	}
 
-	fmt.Fprintf(opts.IO.Out, "Logged out of %s\n", opts.Host)
+	_, _ = fmt.Fprintf(opts.IO.Out, "Logged out of %s\n", opts.Host)
 	return nil
 }

@@ -48,7 +48,7 @@ func NewCmdLogin(f *cmdutil.Factory) *cobra.Command {
 			}
 
 			if opts.Token == "" && opts.IO.IsStdinTTY() {
-				fmt.Fprintf(opts.IO.ErrOut, "Enter token for %s: ", opts.Host)
+				_, _ = fmt.Fprintf(opts.IO.ErrOut, "Enter token for %s: ", opts.Host)
 				tokenBytes, err := io.ReadAll(io.LimitReader(opts.IO.In, 256))
 				if err != nil {
 					return err
@@ -88,7 +88,7 @@ func loginRun(opts *LoginOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("authentication failed for %s (HTTP %d)", opts.Host, resp.StatusCode)
@@ -118,6 +118,6 @@ func loginRun(opts *LoginOptions) error {
 		return err
 	}
 
-	fmt.Fprintf(opts.IO.Out, "Logged in as %s on %s\n", user.Login, opts.Host)
+	_, _ = fmt.Fprintf(opts.IO.Out, "Logged in as %s on %s\n", user.Login, opts.Host)
 	return nil
 }
