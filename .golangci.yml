@@ -10,13 +10,9 @@ linters:
     - ineffassign
     - misspell
     - gofmt
-
-linters-settings:
-  misspell:
-    locale: US
-
-issues:
-  exclude-use-default: true
+  settings:
+    misspell:
+      locale: US
 
 run:
   timeout: 5m
