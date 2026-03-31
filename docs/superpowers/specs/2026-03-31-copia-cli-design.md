@@ -22,7 +22,7 @@ Copia CLI is a command-line interface for [Copia](https://copia.io) — the sour
 
 | Component | Choice | Rationale |
 |-----------|--------|-----------|
-| Language | Go 1.23+ | `gh` is Go, single binary, cross-compile, Gitea ecosystem |
+| Language | Go 1.26+ | `gh` is Go, single binary, cross-compile, Gitea ecosystem |
 | CLI framework | Cobra | Industry standard (`gh`, `kubectl`, `docker` all use it) |
 | API client | Gitea Go SDK (`code.gitea.io/sdk/gitea`) | Typed structs, pagination, auth — standard Gitea endpoints fully covered |
 | Config format | YAML (`gopkg.in/yaml.v3`) | `gh` convention, human-readable |

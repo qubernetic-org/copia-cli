@@ -2,7 +2,7 @@
 
 # Copia CLI
 
-[![Go](https://img.shields.io/badge/Go-1.23+-00ADD8.svg?logo=go&logoColor=white)](https://go.dev/)
+[![Go](https://img.shields.io/badge/Go-1.26+-00ADD8.svg?logo=go&logoColor=white)](https://go.dev/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-lightgrey.svg)]()
 [![Gitea API](https://img.shields.io/badge/API-Gitea%20REST%20v1-609926.svg?logo=gitea&logoColor=white)](https://docs.gitea.com/api/)
@@ -53,7 +53,7 @@ Expand-Archive copia.zip -DestinationPath "$env:LOCALAPPDATA\Programs\copia"
 
 ### Build from Source
 
-Requires [Go 1.23+](https://go.dev/dl/).
+Requires [Go 1.26+](https://go.dev/dl/).
 
 ```bash
 go install github.com/qubernetic-org/copia-cli/cmd/copia@latest
