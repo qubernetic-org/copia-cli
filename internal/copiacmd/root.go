@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/qubernetic-org/copia-cli/internal/build"
 	"github.com/qubernetic-org/copia-cli/internal/config"
+	authCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/auth"
 	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
 	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
 )
@@ -27,10 +28,7 @@ func NewRootCmd(f *cmdutil.Factory) *cobra.Command {
 	cmd.PersistentFlags().StringVar(&f.Host, "host", "", "Target Copia host")
 	cmd.PersistentFlags().StringVar(&f.Token, "token", "", "Authentication token")
 
-	// Subcommands will be registered here as they are built:
-	// cmd.AddCommand(authCmd.NewCmdAuth(f))
-	// cmd.AddCommand(repoCmd.NewCmdRepo(f))
-	// etc.
+	cmd.AddCommand(authCmd.NewCmdAuth(f))
 
 	return cmd
 }
