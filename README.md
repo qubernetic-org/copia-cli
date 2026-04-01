@@ -26,7 +26,7 @@ The official Copia Desktop app handles `clone` and `open`. That's it. There is n
 
 ## Status
 
-**Early development.** Not yet functional. See the [Roadmap](#roadmap) for what's planned.
+**Beta.** Phase 1 (MVP) and Phase 2 (Workflow) complete. Pre-release binaries available. See the [Roadmap](#roadmap) for progress.
 
 ## Installation
 
@@ -86,6 +86,9 @@ copia auth status
 copia repo list --org my-org
 copia repo view
 copia repo clone my-org/my-plc-project
+copia repo create my-new-repo --private
+copia repo delete my-org/old-repo --yes
+copia repo fork upstream-org/project --org my-org
 ```
 
 ### Issues
@@ -95,6 +98,8 @@ copia issue list
 copia issue create --title "Fix sensor mapping" --label bug
 copia issue view 42
 copia issue close 42 --comment "Fixed in PR #7"
+copia issue comment 42 --body "Investigating now."
+copia issue edit 42 --add-label urgent --assignee john --milestone 1
 ```
 
 ### Pull Requests
@@ -104,6 +109,18 @@ copia pr create --title "feat: add cylinder wrapper" --base develop
 copia pr list --state open
 copia pr view 7
 copia pr merge 7 --merge --delete-branch
+copia pr review 7 --approve
+copia pr diff 7
+copia pr checkout 7
+```
+
+### Releases
+
+```bash
+copia release list
+copia release create v1.0.0 --title "Release 1.0.0" --notes "Changelog here"
+copia release upload v1.0.0 binary.tar.gz
+copia release delete v1.0.0
 ```
 
 ### Labels
@@ -127,10 +144,11 @@ copia pr view 7 --json title,mergeable,reviewers
 | Command | Subcommands | Description |
 |---------|-------------|-------------|
 | `copia auth` | `login`, `logout`, `status` | Authenticate with a Copia instance |
-| `copia repo` | `list`, `view`, `clone` | Manage repositories |
-| `copia issue` | `list`, `create`, `view`, `close`, `comment` | Manage issues |
-| `copia pr` | `list`, `create`, `view`, `merge`, `close` | Manage pull requests |
+| `copia repo` | `list`, `view`, `clone`, `create`, `delete`, `fork` | Manage repositories |
+| `copia issue` | `list`, `create`, `view`, `close`, `comment`, `edit` | Manage issues |
+| `copia pr` | `list`, `create`, `view`, `merge`, `close`, `review`, `diff`, `checkout` | Manage pull requests |
 | `copia label` | `list`, `create` | Manage labels |
+| `copia release` | `list`, `create`, `delete`, `upload` | Manage releases |
 
 > Run `copia <command> --help` for detailed usage of any command.
 
@@ -183,10 +201,11 @@ copia-cli/
 ├── pkg/
 │   ├── cmd/                  # Command packages (one per command group)
 │   │   ├── auth/             #   login, logout, status
-│   │   ├── repo/             #   list, view, clone
-│   │   ├── issue/            #   list, create, view, close, comment
-│   │   ├── pr/               #   list, create, view, merge, close
-│   │   └── label/            #   list, create
+│   │   ├── repo/             #   list, view, clone, create, delete, fork
+│   │   ├── issue/            #   list, create, view, close, comment, edit
+│   │   ├── pr/               #   list, create, view, merge, close, review, diff, checkout
+│   │   ├── label/            #   list, create
+│   │   └── release/          #   list, create, delete, upload
 │   ├── cmdutil/              # Shared CLI helpers (factory, flags, JSON)
 │   ├── iostreams/            # TTY-aware I/O abstraction
 │   ├── api/                  # Gitea SDK wrapper
@@ -213,21 +232,21 @@ See [`docs/api-reference.md`](docs/api-reference.md) for the full endpoint mappi
 
 ### Phase 1 — Core (MVP)
 
-- [ ] `copia auth` — login, logout, status
-- [ ] `copia repo` — list, view, clone
-- [ ] `copia issue` — list, create, view, close, comment
-- [ ] `copia pr` — list, create, view, merge, close
-- [ ] `copia label` — list, create
-- [ ] `--json` output on all list/view commands
+- [x] `copia auth` — login, logout, status
+- [x] `copia repo` — list, view, clone
+- [x] `copia issue` — list, create, view, close, comment
+- [x] `copia pr` — list, create, view, merge, close
+- [x] `copia label` — list, create
+- [x] `--json` output on all list/view commands
 
 ### Phase 2 — Workflow
 
-- [ ] `copia release` — list, create, delete, upload
-- [ ] `copia repo` — create, delete, fork
-- [ ] `copia pr` — review, diff, checkout
-- [ ] `copia issue edit` — labels, assignees, milestones
-- [ ] Homebrew tap, winget package
-- [ ] OS keyring integration for token storage
+- [x] `copia release` — list, create, delete, upload
+- [x] `copia repo` — create, delete, fork
+- [x] `copia pr` — review, diff, checkout
+- [x] `copia issue edit` — labels, assignees, milestones
+- [x] Homebrew tap
+- [ ] winget package (deferred to Phase 4)
 
 ### Phase 3 — Power Features
 
