@@ -106,10 +106,17 @@ make integration
 cmd/copia/          Entrypoint
 internal/           Private packages (config, build, root command)
 pkg/cmd/            Command packages (one per command group)
+  auth/             login, logout, status
+  repo/             list, view, clone, create, delete, fork
+  issue/            list, create, view, close, comment, edit
+  pr/               list, create, view, merge, close, review, diff, checkout
+  label/            list, create
+  release/          list, create, delete, upload
 pkg/cmdutil/        Shared CLI helpers (factory, flags, JSON)
 pkg/iostreams/      TTY-aware I/O abstraction
 pkg/api/            Gitea SDK wrapper
 pkg/httpmock/       HTTP mock for testing
+test/integration/   Integration tests against live Copia API
 ```
 
 ## Guidelines
