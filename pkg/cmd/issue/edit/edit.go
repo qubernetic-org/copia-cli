@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"strconv"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 type EditOptions struct {
@@ -54,7 +55,7 @@ func NewCmdEdit(f *cmdutil.Factory) *cobra.Command {
 			opts.Token = token
 
 			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Use --repo flag")
+				return fmt.Errorf("could not determine repository. Run from inside a git repository")
 			}
 			owner, repo, err := f.BaseRepo()
 			if err != nil {
@@ -144,8 +145,14 @@ func updateIssue(opts *EditOptions) error {
 }
 
 func addLabels(opts *EditOptions) error {
+	// Gitea API expects label IDs, not names. Look up IDs first.
+	labelIDs, err := resolveLabelIDs(opts)
+	if err != nil {
+		return err
+	}
+
 	payload := map[string]interface{}{
-		"labels": opts.AddLabels,
+		"labels": labelIDs,
 	}
 
 	body, err := json.Marshal(payload)
@@ -174,4 +181,52 @@ func addLabels(opts *EditOptions) error {
 	}
 
 	return nil
+}
+
+type labelEntry struct {
+	ID   int64  `json:"id"`
+	Name string `json:"name"`
+}
+
+func resolveLabelIDs(opts *EditOptions) ([]int64, error) {
+	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/labels",
+		opts.Host, opts.Owner, opts.Repo)
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Authorization", "token "+opts.Token)
+
+	resp, err := opts.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	_ = resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var allLabels []labelEntry
+	if err := json.Unmarshal(body, &allLabels); err != nil {
+		return nil, err
+	}
+
+	nameToID := map[string]int64{}
+	for _, l := range allLabels {
+		nameToID[l.Name] = l.ID
+	}
+
+	var ids []int64
+	for _, name := range opts.AddLabels {
+		id, ok := nameToID[name]
+		if !ok {
+			return nil, fmt.Errorf("label %q not found in repository", name)
+		}
+		ids = append(ids, id)
+	}
+
+	return ids, nil
 }

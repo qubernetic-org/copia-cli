@@ -2,9 +2,9 @@ package label
 
 import (
 	"github.com/spf13/cobra"
-	createCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/label/create"
-	listCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/label/list"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	createCmd "github.com/qubernetic/copia-cli/pkg/cmd/label/create"
+	listCmd "github.com/qubernetic/copia-cli/pkg/cmd/label/list"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 )
 
 // NewCmdLabel creates the `copia label` command group.

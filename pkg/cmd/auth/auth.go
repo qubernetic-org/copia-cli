@@ -2,10 +2,10 @@ package auth
 
 import (
 	"github.com/spf13/cobra"
-	loginCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/auth/login"
-	logoutCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/auth/logout"
-	statusCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/auth/status"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	loginCmd "github.com/qubernetic/copia-cli/pkg/cmd/auth/login"
+	logoutCmd "github.com/qubernetic/copia-cli/pkg/cmd/auth/logout"
+	statusCmd "github.com/qubernetic/copia-cli/pkg/cmd/auth/status"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 )
 
 // NewCmdAuth creates the `copia auth` command group.

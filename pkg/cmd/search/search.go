@@ -2,9 +2,9 @@ package search
 
 import (
 	"github.com/spf13/cobra"
-	issuesCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/search/issues"
-	reposCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/search/repos"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	issuesCmd "github.com/qubernetic/copia-cli/pkg/cmd/search/issues"
+	reposCmd "github.com/qubernetic/copia-cli/pkg/cmd/search/repos"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 )
 
 func NewCmdSearch(f *cmdutil.Factory) *cobra.Command {

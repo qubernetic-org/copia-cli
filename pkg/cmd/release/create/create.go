@@ -8,8 +8,8 @@ import (
 	"net/http"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 type CreateOptions struct {
@@ -62,7 +62,7 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 			opts.Token = token
 
 			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Use --repo flag")
+				return fmt.Errorf("could not determine repository. Run from inside a git repository")
 			}
 			owner, repo, err := f.BaseRepo()
 			if err != nil {
@@ -113,7 +113,7 @@ func createRun(opts *CreateOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	defer func() { _ = resp.Body.Close() }()
+	_ = resp.Body.Close()
 
 	if resp.StatusCode != http.StatusCreated {
 		respBody, _ := io.ReadAll(resp.Body)

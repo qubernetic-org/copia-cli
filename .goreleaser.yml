@@ -1,10 +1,10 @@
 version: 2
-project_name: copia
+project_name: copia-cli
 
 builds:
-  - id: copia
-    main: ./cmd/copia
-    binary: copia
+  - id: copia-cli
+    main: ./cmd/copia-cli
+    binary: copia-cli
     goos:
       - linux
       - darwin
@@ -14,8 +14,8 @@ builds:
       - arm64
     ldflags:
       - -s -w
-      - -X github.com/qubernetic-org/copia-cli/internal/build.Version={{.Version}}
-      - -X github.com/qubernetic-org/copia-cli/internal/build.Date={{time "2006-01-02"}}
+      - -X github.com/qubernetic/copia-cli/internal/build.Version={{.Version}}
+      - -X github.com/qubernetic/copia-cli/internal/build.Date={{time "2006-01-02"}}
     env:
       - CGO_ENABLED=0
 
@@ -31,7 +31,7 @@ archives:
 
 release:
   github:
-    owner: qubernetic-org
+    owner: qubernetic
     name: copia-cli
   draft: true
   prerelease: auto
@@ -41,16 +41,16 @@ checksum:
 
 brews:
   - repository:
-      owner: qubernetic-org
+      owner: qubernetic
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
-    homepage: "https://github.com/qubernetic-org/copia-cli"
+    homepage: "https://github.com/qubernetic/copia-cli"
     description: "CLI for Copia — source control for industrial automation"
     license: "MIT"
     install: |
-      bin.install "copia"
+      bin.install "copia-cli"
     test: |
-      system "#{bin}/copia", "--version"
+      system "#{bin}/copia-cli", "--version"
 
 changelog:
   use: github-native

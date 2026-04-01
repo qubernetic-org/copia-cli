@@ -1,15 +1,17 @@
 package login
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/internal/config"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/internal/config"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 // LoginOptions holds all inputs for the login command.
@@ -49,11 +51,13 @@ func NewCmdLogin(f *cmdutil.Factory) *cobra.Command {
 
 			if opts.Token == "" && opts.IO.IsStdinTTY() {
 				_, _ = fmt.Fprintf(opts.IO.ErrOut, "Enter token for %s: ", opts.Host)
-				tokenBytes, err := io.ReadAll(io.LimitReader(opts.IO.In, 256))
-				if err != nil {
+				scanner := bufio.NewScanner(opts.IO.In)
+				if scanner.Scan() {
+					opts.Token = strings.TrimSpace(scanner.Text())
+				}
+				if err := scanner.Err(); err != nil {
 					return err
 				}
-				opts.Token = string(tokenBytes)
 			}
 
 			if opts.Token == "" {
@@ -88,7 +92,7 @@ func loginRun(opts *LoginOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	defer func() { _ = resp.Body.Close() }()
+	_ = resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("authentication failed for %s (HTTP %d)", opts.Host, resp.StatusCode)

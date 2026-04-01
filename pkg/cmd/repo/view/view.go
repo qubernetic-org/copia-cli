@@ -5,14 +5,13 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
-var validJSONFields = []string{"fullName", "description", "private", "defaultBranch", "stars", "forks", "openIssues"}
+var validJSONFields = []string{"full_name", "description", "private", "default_branch", "stars", "forks", "open_issues_count"}
 
 // ViewOptions holds all inputs for the repo view command.
 type ViewOptions struct {
@@ -57,11 +56,11 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 			opts.Token = token
 
 			if len(args) > 0 {
-				parts := splitOwnerRepo(args[0])
-				if parts == nil {
-					return fmt.Errorf("expected owner/repo format")
+				owner, repo, err := cmdutil.SplitOwnerRepo(args[0])
+				if err != nil {
+					return err
 				}
-				opts.Owner, opts.Repo = parts[0], parts[1]
+				opts.Owner, opts.Repo = owner, repo
 			} else if f.BaseRepo != nil {
 				owner, repo, err := f.BaseRepo()
 				if err != nil {
@@ -94,7 +93,7 @@ func viewRun(opts *ViewOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	defer func() { _ = resp.Body.Close() }()
+	_ = resp.Body.Close()
 
 	if resp.StatusCode == http.StatusNotFound {
 		return fmt.Errorf("repository %s/%s not found", opts.Owner, opts.Repo)
@@ -133,10 +132,3 @@ func viewRun(opts *ViewOptions) error {
 	return nil
 }
 
-func splitOwnerRepo(nwo string) []string {
-	i := strings.IndexByte(nwo, '/')
-	if i > 0 && i < len(nwo)-1 {
-		return []string{nwo[:i], nwo[i+1:]}
-	}
-	return nil
-}

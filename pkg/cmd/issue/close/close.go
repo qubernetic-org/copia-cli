@@ -8,8 +8,8 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 // CloseOptions holds all inputs for the issue close command.
@@ -50,7 +50,7 @@ func NewCmdClose(f *cmdutil.Factory) *cobra.Command {
 			opts.Token = token
 
 			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Use --repo flag")
+				return fmt.Errorf("could not determine repository. Run from inside a git repository")
 			}
 			owner, repo, err := f.BaseRepo()
 			if err != nil {

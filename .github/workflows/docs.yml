@@ -32,15 +32,15 @@ jobs:
         run: go run script/gen-docs.go
 
       - name: Setup mdBook
-        uses: peaceiris/actions-mdbook@v2
+        uses: jontze/action-mdbook@v4
         with:
-          mdbook-version: "latest"
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build manual
         run: mdbook build docs/manual
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: site
 
@@ -53,4 +53,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

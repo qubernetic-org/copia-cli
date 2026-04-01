@@ -8,11 +8,11 @@ import (
 	"text/tabwriter"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
-var validJSONFields = []string{"number", "title", "state", "labels", "updatedAt"}
+var validJSONFields = []string{"number", "title", "state", "labels", "updated_at"}
 
 // ListOptions holds all inputs for the issue list command.
 type ListOptions struct {
@@ -60,7 +60,7 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 			opts.Token = token
 
 			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Use --repo flag")
+				return fmt.Errorf("could not determine repository. Run from inside a git repository")
 			}
 			owner, repo, err := f.BaseRepo()
 			if err != nil {
@@ -94,7 +94,7 @@ func listRun(opts *ListOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	defer func() { _ = resp.Body.Close() }()
+	_ = resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("API error (HTTP %d)", resp.StatusCode)

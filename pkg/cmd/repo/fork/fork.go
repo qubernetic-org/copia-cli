@@ -6,11 +6,10 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 type ForkOptions struct {
@@ -52,11 +51,11 @@ func NewCmdFork(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			parts := splitOwnerRepo(args[0])
-			if parts == nil {
-				return fmt.Errorf("expected owner/repo format")
+			owner, repo, err := cmdutil.SplitOwnerRepo(args[0])
+			if err != nil {
+				return err
 			}
-			opts.Owner, opts.Repo = parts[0], parts[1]
+			opts.Owner, opts.Repo = owner, repo
 			opts.HTTPClient = &http.Client{}
 			return forkRun(opts)
 		},
@@ -86,7 +85,7 @@ func forkRun(opts *ForkOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	defer func() { _ = resp.Body.Close() }()
+	_ = resp.Body.Close()
 
 	if resp.StatusCode != http.StatusAccepted && resp.StatusCode != http.StatusCreated {
 		respBody, _ := io.ReadAll(resp.Body)
@@ -107,10 +106,3 @@ func forkRun(opts *ForkOptions) error {
 	return nil
 }
 
-func splitOwnerRepo(nwo string) []string {
-	i := strings.IndexByte(nwo, '/')
-	if i > 0 && i < len(nwo)-1 {
-		return []string{nwo[:i], nwo[i+1:]}
-	}
-	return nil
-}

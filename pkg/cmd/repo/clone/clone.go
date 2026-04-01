@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 // CloneOptions holds all inputs for the repo clone command.
@@ -54,7 +54,7 @@ func NewCmdClone(f *cmdutil.Factory) *cobra.Command {
 func cloneRun(opts *CloneOptions) error {
 	cloneURL := buildCloneURL(opts.Host, opts.Repo)
 
-	args := []string{"clone", cloneURL}
+	args := []string{"clone", "--", cloneURL}
 	if opts.Dir != "" {
 		args = append(args, opts.Dir)
 	}

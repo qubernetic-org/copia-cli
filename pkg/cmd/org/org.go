@@ -2,9 +2,9 @@ package org
 
 import (
 	"github.com/spf13/cobra"
-	listCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/org/list"
-	viewCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/org/view"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	listCmd "github.com/qubernetic/copia-cli/pkg/cmd/org/list"
+	viewCmd "github.com/qubernetic/copia-cli/pkg/cmd/org/view"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 )
 
 func NewCmdOrg(f *cmdutil.Factory) *cobra.Command {

@@ -104,7 +104,7 @@ copia-cli/
 Run:
 ```bash
 cd /home/cbiro/Git/copia-cli
-go mod init github.com/qubernetic-org/copia-cli
+go mod init github.com/qubernetic/copia-cli
 ```
 
 Expected: `go.mod` created with module path.
@@ -142,7 +142,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/qubernetic-org/copia-cli/internal/build"
+	"github.com/qubernetic/copia-cli/internal/build"
 )
 
 func main() {
@@ -163,8 +163,8 @@ BIN := copia
 VERSION ?= DEV
 DATE := $(shell date -u +%Y-%m-%d)
 LDFLAGS := -s -w \
-	-X github.com/qubernetic-org/copia-cli/internal/build.Version=$(VERSION) \
-	-X github.com/qubernetic-org/copia-cli/internal/build.Date=$(DATE)
+	-X github.com/qubernetic/copia-cli/internal/build.Version=$(VERSION) \
+	-X github.com/qubernetic/copia-cli/internal/build.Date=$(DATE)
 
 .PHONY: build test integration acceptance clean
 
@@ -714,9 +714,9 @@ import (
 	"fmt"
 
 	"code.gitea.io/sdk/gitea"
-	"github.com/qubernetic-org/copia-cli/internal/config"
-	"github.com/qubernetic-org/copia-cli/pkg/api"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/internal/config"
+	"github.com/qubernetic/copia-cli/pkg/api"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 // Factory provides shared dependencies to all commands.
@@ -861,10 +861,10 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/internal/build"
-	"github.com/qubernetic-org/copia-cli/internal/config"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/internal/build"
+	"github.com/qubernetic/copia-cli/internal/config"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 // NewRootCmd creates the root `copia` command with all subcommands.
@@ -929,7 +929,7 @@ package main
 import (
 	"os"
 
-	"github.com/qubernetic-org/copia-cli/internal/copiacmd"
+	"github.com/qubernetic/copia-cli/internal/copiacmd"
 )
 
 func main() {
@@ -973,10 +973,10 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/internal/config"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/httpmock"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/internal/config"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/httpmock"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -1056,9 +1056,9 @@ import (
 	"net/http"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/internal/config"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/internal/config"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 type LoginOptions struct {
@@ -1181,8 +1181,8 @@ package auth
 
 import (
 	"github.com/spf13/cobra"
-	loginCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/auth/login"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	loginCmd "github.com/qubernetic/copia-cli/pkg/cmd/auth/login"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 )
 
 func NewCmdAuth(f *cmdutil.Factory) *cobra.Command {
@@ -1211,7 +1211,7 @@ In `internal/copiacmd/root.go`, add import and registration:
 ```go
 import (
 	// ... existing imports
-	authCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/auth"
+	authCmd "github.com/qubernetic/copia-cli/pkg/cmd/auth"
 )
 
 // Inside NewRootCmd, after global flags:
@@ -1251,8 +1251,8 @@ package logout
 import (
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/internal/config"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/internal/config"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -1320,9 +1320,9 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/internal/config"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/internal/config"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 type LogoutOptions struct {
@@ -1396,8 +1396,8 @@ In `pkg/cmd/auth/auth.go`, add:
 
 ```go
 import (
-	loginCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/auth/login"
-	logoutCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/auth/logout"
+	loginCmd "github.com/qubernetic/copia-cli/pkg/cmd/auth/login"
+	logoutCmd "github.com/qubernetic/copia-cli/pkg/cmd/auth/logout"
 )
 
 // Inside NewCmdAuth:
@@ -1429,9 +1429,9 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/internal/config"
-	"github.com/qubernetic-org/copia-cli/pkg/httpmock"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/internal/config"
+	"github.com/qubernetic/copia-cli/pkg/httpmock"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -1504,9 +1504,9 @@ import (
 	"net/http"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/internal/config"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/internal/config"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 type StatusOptions struct {
@@ -1583,7 +1583,7 @@ In `pkg/cmd/auth/auth.go`, add:
 ```go
 import (
 	// ... existing imports
-	statusCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/auth/status"
+	statusCmd "github.com/qubernetic/copia-cli/pkg/cmd/auth/status"
 )
 
 // Inside NewCmdAuth:
@@ -1621,9 +1621,9 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/httpmock"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/httpmock"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -1731,8 +1731,8 @@ import (
 	"text/tabwriter"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 var validJSONFields = []string{"fullName", "description", "private", "updatedAt", "htmlUrl"}
@@ -1855,8 +1855,8 @@ package repo
 
 import (
 	"github.com/spf13/cobra"
-	listCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/repo/list"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	listCmd "github.com/qubernetic/copia-cli/pkg/cmd/repo/list"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 )
 
 func NewCmdRepo(f *cmdutil.Factory) *cobra.Command {
@@ -1880,7 +1880,7 @@ In `internal/copiacmd/root.go`, add:
 ```go
 import (
 	// ... existing
-	repoCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/repo"
+	repoCmd "github.com/qubernetic/copia-cli/pkg/cmd/repo"
 )
 
 // Inside NewRootCmd:
@@ -1917,8 +1917,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/pkg/httpmock"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/httpmock"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -1978,8 +1978,8 @@ import (
 	"net/http"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 var validJSONFields = []string{"fullName", "description", "private", "defaultBranch", "stars", "forks", "openIssues"}
@@ -2132,8 +2132,8 @@ In `pkg/cmd/repo/repo.go`, add:
 
 ```go
 import (
-	listCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/repo/list"
-	viewCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/repo/view"
+	listCmd "github.com/qubernetic/copia-cli/pkg/cmd/repo/list"
+	viewCmd "github.com/qubernetic/copia-cli/pkg/cmd/repo/view"
 )
 
 // Inside NewCmdRepo:
@@ -2208,8 +2208,8 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 type CloneOptions struct {
@@ -2286,7 +2286,7 @@ In `pkg/cmd/repo/repo.go`, add:
 ```go
 import (
 	// ... existing
-	cloneCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/repo/clone"
+	cloneCmd "github.com/qubernetic/copia-cli/pkg/cmd/repo/clone"
 )
 
 // Inside NewCmdRepo:
@@ -2322,9 +2322,9 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/httpmock"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/httpmock"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -2407,8 +2407,8 @@ import (
 	"text/tabwriter"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 var validJSONFields = []string{"name", "color", "description"}
@@ -2548,8 +2548,8 @@ package label
 
 import (
 	"github.com/spf13/cobra"
-	listCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/label/list"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	listCmd "github.com/qubernetic/copia-cli/pkg/cmd/label/list"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 )
 
 func NewCmdLabel(f *cmdutil.Factory) *cobra.Command {
@@ -2572,7 +2572,7 @@ In `internal/copiacmd/root.go`, add:
 ```go
 import (
 	// ... existing
-	labelCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/label"
+	labelCmd "github.com/qubernetic/copia-cli/pkg/cmd/label"
 )
 
 // Inside NewRootCmd:
@@ -2607,8 +2607,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/pkg/httpmock"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/httpmock"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -2675,8 +2675,8 @@ import (
 	"net/http"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 type CreateOptions struct {
@@ -2791,8 +2791,8 @@ In `pkg/cmd/label/label.go`, add:
 
 ```go
 import (
-	listCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/label/list"
-	createCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/label/create"
+	listCmd "github.com/qubernetic/copia-cli/pkg/cmd/label/list"
+	createCmd "github.com/qubernetic/copia-cli/pkg/cmd/label/create"
 )
 
 // Inside NewCmdLabel:
@@ -2828,9 +2828,9 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/httpmock"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/httpmock"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -2946,8 +2946,8 @@ import (
 	"text/tabwriter"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 var validJSONFields = []string{"number", "title", "state", "labels", "updatedAt"}
@@ -3102,8 +3102,8 @@ package issue
 
 import (
 	"github.com/spf13/cobra"
-	listCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/issue/list"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	listCmd "github.com/qubernetic/copia-cli/pkg/cmd/issue/list"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 )
 
 func NewCmdIssue(f *cmdutil.Factory) *cobra.Command {
@@ -3126,7 +3126,7 @@ In `internal/copiacmd/root.go`, add:
 ```go
 import (
 	// ... existing
-	issueCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/issue"
+	issueCmd "github.com/qubernetic/copia-cli/pkg/cmd/issue"
 )
 
 // Inside NewRootCmd:
@@ -3161,8 +3161,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/pkg/httpmock"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/httpmock"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -3229,8 +3229,8 @@ import (
 	"net/http"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 type CreateOptions struct {
@@ -3374,8 +3374,8 @@ In `pkg/cmd/issue/issue.go`, add:
 
 ```go
 import (
-	listCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/issue/list"
-	createCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/issue/create"
+	listCmd "github.com/qubernetic/copia-cli/pkg/cmd/issue/list"
+	createCmd "github.com/qubernetic/copia-cli/pkg/cmd/issue/create"
 )
 
 // Inside NewCmdIssue:
@@ -3410,9 +3410,9 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/httpmock"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/httpmock"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -3506,8 +3506,8 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 var validJSONFields = []string{"number", "title", "body", "state", "author", "labels", "createdAt", "comments"}
@@ -3699,8 +3699,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/pkg/httpmock"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/httpmock"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -3782,8 +3782,8 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 type CloseOptions struct {
@@ -3940,8 +3940,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/pkg/httpmock"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/httpmock"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -4006,8 +4006,8 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 type CommentOptions struct {
@@ -4150,9 +4150,9 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/httpmock"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/httpmock"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -4238,8 +4238,8 @@ import (
 	"text/tabwriter"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 var validJSONFields = []string{"number", "title", "state", "author", "base", "head", "updatedAt"}
@@ -4389,8 +4389,8 @@ package pr
 
 import (
 	"github.com/spf13/cobra"
-	listCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/pr/list"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	listCmd "github.com/qubernetic/copia-cli/pkg/cmd/pr/list"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 )
 
 func NewCmdPR(f *cmdutil.Factory) *cobra.Command {
@@ -4411,7 +4411,7 @@ In `internal/copiacmd/root.go`, add:
 ```go
 import (
 	// ... existing
-	prCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/pr"
+	prCmd "github.com/qubernetic/copia-cli/pkg/cmd/pr"
 )
 
 // Inside NewRootCmd:
@@ -4448,8 +4448,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/pkg/httpmock"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/httpmock"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -4517,8 +4517,8 @@ import (
 	"net/http"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 type CreateOptions struct {
@@ -4768,8 +4768,8 @@ builds:
       - arm64
     ldflags:
       - -s -w
-      - -X github.com/qubernetic-org/copia-cli/internal/build.Version={{.Version}}
-      - -X github.com/qubernetic-org/copia-cli/internal/build.Date={{time "2006-01-02"}}
+      - -X github.com/qubernetic/copia-cli/internal/build.Version={{.Version}}
+      - -X github.com/qubernetic/copia-cli/internal/build.Date={{time "2006-01-02"}}
     env:
       - CGO_ENABLED=0
 
@@ -4785,7 +4785,7 @@ archives:
 
 release:
   github:
-    owner: qubernetic-org
+    owner: qubernetic
     name: copia-cli
   draft: true
   prerelease: auto

@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0-rc.1] - 2026-04-02
+
+### Changed
+
+- Binary renamed from `copia` to `copia-cli` (avoids conflict with Copia Desktop)
+- Organization renamed from `qubernetic-org` to `qubernetic`
+- Go module path: `github.com/qubernetic/copia-cli`
+
+### Fixed
+
+- Auth precedence: flag > env var > config (env vars were silently ignored)
+- BaseRepo detection from git remote origin (repo-scoped commands now work)
+- Errors printed to stderr (were silently swallowed)
+- Clone git flag injection (added `--` separator)
+- Interactive login token input (bufio.Scanner + trim)
+- Error messages no longer reference non-existent `--repo` flag
+- Search issues uses correct per-repo endpoint
+- Issue edit `--add-label` resolves label IDs by name
+- JSON field names aligned to snake_case
+- `splitOwnerRepo` deduplicated to `cmdutil.SplitOwnerRepo`
+- `ApiOptions` renamed to `APIOptions` (Go convention)
+
 ## [0.3.0-beta.1] - 2026-04-01
 
 ### Added
@@ -36,7 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `copia pr diff` — view PR diff output
 - `copia pr checkout` — check out PR branch locally
 - `copia issue edit` — edit title, body, labels, assignees, milestone
-- Homebrew tap distribution (`brew install qubernetic-org/tap/copia`)
+- Homebrew tap distribution (`brew install qubernetic/tap/copia`)
 - Go vulnerability check (govulncheck) in CI pipeline and weekly SARIF scan
 - Go mod tidy check in CI
 - Go version auto-bump workflow

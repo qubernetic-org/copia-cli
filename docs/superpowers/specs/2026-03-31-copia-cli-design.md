@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-31
 **Status:** Approved
-**Module path:** `github.com/qubernetic-org/copia-cli`
+**Module path:** `github.com/qubernetic/copia-cli`
 
 ---
 
@@ -28,7 +28,7 @@ Copia CLI is a command-line interface for [Copia](https://copia.io) — the sour
 | Config format | YAML (`gopkg.in/yaml.v3`) | `gh` convention, human-readable |
 | Assertions | `testify/assert` | `gh` convention |
 | Build/release | GoReleaser + Makefile | Multi-platform binary, GitHub Releases |
-| Module path | `github.com/qubernetic-org/copia-cli` | GitHub repo path, Go convention |
+| Module path | `github.com/qubernetic/copia-cli` | GitHub repo path, Go convention |
 
 ---
 
@@ -269,7 +269,7 @@ make acceptance    # go test -tags=acceptance ./acceptance
 
 ### Phase 2
 
-- **Homebrew tap** (`qubernetic-org/tap/copia`)
+- **Homebrew tap** (`qubernetic/tap/copia`)
 - **winget** (manifest PR to `microsoft/winget-pkgs`, automated via GoReleaser)
 
 ### Versioning

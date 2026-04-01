@@ -2,13 +2,13 @@ package issue
 
 import (
 	"github.com/spf13/cobra"
-	closeCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/issue/close"
-	commentCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/issue/comment"
-	createCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/issue/create"
-	editCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/issue/edit"
-	listCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/issue/list"
-	viewCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/issue/view"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	closeCmd "github.com/qubernetic/copia-cli/pkg/cmd/issue/close"
+	commentCmd "github.com/qubernetic/copia-cli/pkg/cmd/issue/comment"
+	createCmd "github.com/qubernetic/copia-cli/pkg/cmd/issue/create"
+	editCmd "github.com/qubernetic/copia-cli/pkg/cmd/issue/edit"
+	listCmd "github.com/qubernetic/copia-cli/pkg/cmd/issue/list"
+	viewCmd "github.com/qubernetic/copia-cli/pkg/cmd/issue/view"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 )
 
 // NewCmdIssue creates the `copia issue` command group.

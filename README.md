@@ -33,26 +33,26 @@ The official Copia Desktop app handles `clone` and `open`. That's it. There is n
 ### Homebrew (macOS/Linux)
 
 ```bash
-brew install qubernetic-org/tap/copia
+brew install qubernetic/tap/copia-cli
 ```
 
 ### Precompiled Binaries
 
-Download the latest release for your platform from [GitHub Releases](https://github.com/qubernetic-org/copia-cli/releases/latest).
+Download the latest release for your platform from [GitHub Releases](https://github.com/qubernetic/copia-cli/releases/latest).
 
 ```bash
 # Linux (amd64)
-curl -sL https://github.com/qubernetic-org/copia-cli/releases/latest/download/copia_linux_amd64.tar.gz | tar xz
+curl -sL https://github.com/qubernetic/copia-cli/releases/latest/download/copia_linux_amd64.tar.gz | tar xz
 sudo mv copia /usr/local/bin/
 
 # macOS (Apple Silicon)
-curl -sL https://github.com/qubernetic-org/copia-cli/releases/latest/download/copia_darwin_arm64.tar.gz | tar xz
+curl -sL https://github.com/qubernetic/copia-cli/releases/latest/download/copia_darwin_arm64.tar.gz | tar xz
 sudo mv copia /usr/local/bin/
 ```
 
 ```powershell
 # Windows (PowerShell)
-Invoke-WebRequest -Uri https://github.com/qubernetic-org/copia-cli/releases/latest/download/copia_windows_amd64.zip -OutFile copia.zip
+Invoke-WebRequest -Uri https://github.com/qubernetic/copia-cli/releases/latest/download/copia_windows_amd64.zip -OutFile copia.zip
 Expand-Archive copia.zip -DestinationPath "$env:LOCALAPPDATA\Programs\copia"
 # Add to PATH manually or via System Settings
 ```
@@ -62,7 +62,7 @@ Expand-Archive copia.zip -DestinationPath "$env:LOCALAPPDATA\Programs\copia"
 Requires [Go 1.26+](https://go.dev/dl/).
 
 ```bash
-go install github.com/qubernetic-org/copia-cli/cmd/copia@latest
+go install github.com/qubernetic/copia-cli/cmd/copia@latest
 ```
 
 ## Usage
@@ -71,63 +71,63 @@ go install github.com/qubernetic-org/copia-cli/cmd/copia@latest
 
 ```bash
 # Interactive login (prompts for host and token)
-copia auth login
+copia-cli auth login
 
 # Non-interactive (CI/agent-friendly)
-copia auth login --host app.copia.io --token YOUR_TOKEN
+copia-cli auth login --host app.copia.io --token YOUR_TOKEN
 
 # Check auth status
-copia auth status
+copia-cli auth status
 ```
 
 ### Repositories
 
 ```bash
-copia repo list --org my-org
-copia repo view
-copia repo clone my-org/my-plc-project
-copia repo create my-new-repo --private
-copia repo delete my-org/old-repo --yes
-copia repo fork upstream-org/project --org my-org
+copia-cli repo list --org my-org
+copia-cli repo view
+copia-cli repo clone my-org/my-plc-project
+copia-cli repo create my-new-repo --private
+copia-cli repo delete my-org/old-repo --yes
+copia-cli repo fork upstream-org/project --org my-org
 ```
 
 ### Issues
 
 ```bash
-copia issue list
-copia issue create --title "Fix sensor mapping" --label bug
-copia issue view 42
-copia issue close 42 --comment "Fixed in PR #7"
-copia issue comment 42 --body "Investigating now."
-copia issue edit 42 --add-label urgent --assignee john --milestone 1
+copia-cli issue list
+copia-cli issue create --title "Fix sensor mapping" --label bug
+copia-cli issue view 42
+copia-cli issue close 42 --comment "Fixed in PR #7"
+copia-cli issue comment 42 --body "Investigating now."
+copia-cli issue edit 42 --add-label urgent --assignee john --milestone 1
 ```
 
 ### Pull Requests
 
 ```bash
-copia pr create --title "feat: add cylinder wrapper" --base develop
-copia pr list --state open
-copia pr view 7
-copia pr merge 7 --merge --delete-branch
-copia pr review 7 --approve
-copia pr diff 7
-copia pr checkout 7
+copia-cli pr create --title "feat: add cylinder wrapper" --base develop
+copia-cli pr list --state open
+copia-cli pr view 7
+copia-cli pr merge 7 --merge --delete-branch
+copia-cli pr review 7 --approve
+copia-cli pr diff 7
+copia-cli pr checkout 7
 ```
 
 ### Releases
 
 ```bash
-copia release list
-copia release create v1.0.0 --title "Release 1.0.0" --notes "Changelog here"
-copia release upload v1.0.0 binary.tar.gz
-copia release delete v1.0.0
+copia-cli release list
+copia-cli release create v1.0.0 --title "Release 1.0.0" --notes "Changelog here"
+copia-cli release upload v1.0.0 binary.tar.gz
+copia-cli release delete v1.0.0
 ```
 
 ### Labels
 
 ```bash
-copia label list
-copia label create --name "critical" --color "#e11d48"
+copia-cli label list
+copia-cli label create --name "critical" --color "#e11d48"
 ```
 
 ### JSON Output
@@ -135,22 +135,22 @@ copia label create --name "critical" --color "#e11d48"
 Every list and view command supports `--json` for scripting and agent integration:
 
 ```bash
-copia issue list --json number,title,state
-copia pr view 7 --json title,mergeable,reviewers
+copia-cli issue list --json number,title,state
+copia-cli pr view 7 --json title,mergeable,reviewers
 ```
 
 ## Commands
 
 | Command | Subcommands | Description |
 |---------|-------------|-------------|
-| `copia auth` | `login`, `logout`, `status` | Authenticate with a Copia instance |
-| `copia repo` | `list`, `view`, `clone`, `create`, `delete`, `fork` | Manage repositories |
-| `copia issue` | `list`, `create`, `view`, `close`, `comment`, `edit` | Manage issues |
-| `copia pr` | `list`, `create`, `view`, `merge`, `close`, `review`, `diff`, `checkout` | Manage pull requests |
-| `copia label` | `list`, `create` | Manage labels |
-| `copia release` | `list`, `create`, `delete`, `upload` | Manage releases |
+| `copia-cli auth` | `login`, `logout`, `status` | Authenticate with a Copia instance |
+| `copia-cli repo` | `list`, `view`, `clone`, `create`, `delete`, `fork` | Manage repositories |
+| `copia-cli issue` | `list`, `create`, `view`, `close`, `comment`, `edit` | Manage issues |
+| `copia-cli pr` | `list`, `create`, `view`, `merge`, `close`, `review`, `diff`, `checkout` | Manage pull requests |
+| `copia-cli label` | `list`, `create` | Manage labels |
+| `copia-cli release` | `list`, `create`, `delete`, `upload` | Manage releases |
 
-> Run `copia <command> --help` for detailed usage of any command.
+> Run `copia-cli <command> --help` for detailed usage of any command.
 
 ## Configuration
 
@@ -232,28 +232,28 @@ See [`docs/api-reference.md`](docs/api-reference.md) for the full endpoint mappi
 
 ### Phase 1 — Core (MVP)
 
-- [x] `copia auth` — login, logout, status
-- [x] `copia repo` — list, view, clone
-- [x] `copia issue` — list, create, view, close, comment
-- [x] `copia pr` — list, create, view, merge, close
-- [x] `copia label` — list, create
+- [x] `copia-cli auth` — login, logout, status
+- [x] `copia-cli repo` — list, view, clone
+- [x] `copia-cli issue` — list, create, view, close, comment
+- [x] `copia-cli pr` — list, create, view, merge, close
+- [x] `copia-cli label` — list, create
 - [x] `--json` output on all list/view commands
 
 ### Phase 2 — Workflow
 
-- [x] `copia release` — list, create, delete, upload
-- [x] `copia repo` — create, delete, fork
-- [x] `copia pr` — review, diff, checkout
-- [x] `copia issue edit` — labels, assignees, milestones
+- [x] `copia-cli release` — list, create, delete, upload
+- [x] `copia-cli repo` — create, delete, fork
+- [x] `copia-cli pr` — review, diff, checkout
+- [x] `copia-cli issue edit` — labels, assignees, milestones
 - [x] Homebrew tap
 - [ ] winget package (deferred to Phase 4)
 
 ### Phase 3 — Power Features
 
-- [ ] `copia api` — generic REST escape hatch
-- [ ] `copia search` — repos, issues
-- [ ] `copia org` — list, view
-- [ ] `copia notification` — list, read
+- [ ] `copia-cli api` — generic REST escape hatch
+- [ ] `copia-cli search` — repos, issues
+- [ ] `copia-cli org` — list, view
+- [ ] `copia-cli notification` — list, read
 - [ ] Tab completion (bash/zsh/powershell)
 
 ### Out of Scope
