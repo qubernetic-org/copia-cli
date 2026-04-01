@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Release variants: .deb, .rpm packages via nfpms
+- macOS universal binary (amd64+arm64 fat binary)
+- linux/386, linux/arm (v6), windows/386 build targets
+
 ## [0.4.0-rc.1] - 2026-04-02
 
 ### Changed
