@@ -21,7 +21,7 @@ func TestApiRun_GET(t *testing.T) {
 
 	ios, _, stdout, _ := iostreams.Test()
 
-	opts := &ApiOptions{
+	opts := &APIOptions{
 		IO:         ios,
 		HTTPClient: &http.Client{Transport: reg},
 		Host:       "app.copia.io",
@@ -46,7 +46,7 @@ func TestApiRun_POST_WithFields(t *testing.T) {
 
 	ios, _, stdout, _ := iostreams.Test()
 
-	opts := &ApiOptions{
+	opts := &APIOptions{
 		IO:         ios,
 		HTTPClient: &http.Client{Transport: reg},
 		Host:       "app.copia.io",
@@ -72,7 +72,7 @@ func TestApiRun_DELETE(t *testing.T) {
 
 	ios, _, _, _ := iostreams.Test()
 
-	opts := &ApiOptions{
+	opts := &APIOptions{
 		IO:         ios,
 		HTTPClient: &http.Client{Transport: reg},
 		Host:       "app.copia.io",
@@ -96,7 +96,7 @@ func TestApiRun_DefaultMethodGET(t *testing.T) {
 
 	ios, _, stdout, _ := iostreams.Test()
 
-	opts := &ApiOptions{
+	opts := &APIOptions{
 		IO:         ios,
 		HTTPClient: &http.Client{Transport: reg},
 		Host:       "app.copia.io",
@@ -112,7 +112,7 @@ func TestApiRun_DefaultMethodGET(t *testing.T) {
 func TestApiRun_MissingPath(t *testing.T) {
 	ios, _, _, _ := iostreams.Test()
 
-	opts := &ApiOptions{IO: ios, Path: ""}
+	opts := &APIOptions{IO: ios, Path: ""}
 
 	err := apiRun(opts)
 	assert.Error(t, err)

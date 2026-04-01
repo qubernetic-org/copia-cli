@@ -12,7 +12,7 @@ import (
 	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
 )
 
-var validJSONFields = []string{"tagName", "name", "draft", "prerelease", "publishedAt"}
+var validJSONFields = []string{"tag_name", "name", "draft", "prerelease", "published_at"}
 
 type ListOptions struct {
 	IO         *iostreams.IOStreams
@@ -86,7 +86,7 @@ func listRun(opts *ListOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	defer func() { _ = resp.Body.Close() }()
+	_ = resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("API error (HTTP %d)", resp.StatusCode)

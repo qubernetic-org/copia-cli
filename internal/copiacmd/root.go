@@ -45,7 +45,7 @@ func NewRootCmd(f *cmdutil.Factory) *cobra.Command {
 	cmd.AddCommand(labelCmd.NewCmdLabel(f))
 	cmd.AddCommand(prCmd.NewCmdPR(f))
 	cmd.AddCommand(releaseCmd.NewCmdRelease(f))
-	cmd.AddCommand(apiCmd.NewCmdApi(f))
+	cmd.AddCommand(apiCmd.NewCmdAPI(f))
 	cmd.AddCommand(searchCmd.NewCmdSearch(f))
 	cmd.AddCommand(orgCmd.NewCmdOrg(f))
 	cmd.AddCommand(notificationCmd.NewCmdNotification(f))

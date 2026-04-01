@@ -49,7 +49,7 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 		},
 	}
 
-	cmdutil.AddJSONFlags(cmd, &opts.JSON, []string{"username", "fullName", "description", "website"})
+	cmdutil.AddJSONFlags(cmd, &opts.JSON, []string{"username", "full_name", "description", "website"})
 	return cmd
 }
 
@@ -65,7 +65,7 @@ func viewRun(opts *ViewOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	defer func() { _ = resp.Body.Close() }()
+	_ = resp.Body.Close()
 
 	if resp.StatusCode == http.StatusNotFound {
 		return fmt.Errorf("organization %s not found", opts.Name)

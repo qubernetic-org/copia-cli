@@ -202,7 +202,7 @@ func resolveLabelIDs(opts *EditOptions) ([]int64, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer func() { _ = resp.Body.Close() }()
+	_ = resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
