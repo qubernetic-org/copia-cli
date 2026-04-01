@@ -1,0 +1,43 @@
+version: 2
+project_name: copia
+
+builds:
+  - id: copia
+    main: ./cmd/copia
+    binary: copia
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X github.com/qubernetic-org/copia-cli/internal/build.Version={{.Version}}
+      - -X github.com/qubernetic-org/copia-cli/internal/build.Date={{time "2006-01-02"}}
+    env:
+      - CGO_ENABLED=0
+
+archives:
+  - format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
+
+release:
+  github:
+    owner: qubernetic-org
+    name: copia-cli
+  draft: true
+  prerelease: auto
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  use: github-native
