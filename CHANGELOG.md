@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0-beta.1] - 2026-04-01
+
+### Added
+
+- `copia api` — generic REST escape hatch with --field, --header, --method
+- `copia search repos` — search repositories across the instance
+- `copia search issues` — search issues with --state filter
+- `copia org list` — list user's organizations
+- `copia org view` — view organization details
+- `copia notification list` — list unread notifications
+- `copia notification read` — mark notifications as read (single or --all)
+- `copia completion` — shell completion for bash, zsh, fish, powershell
+- User manual website (mdBook) with auto-generated command reference
+- GitHub Pages deployment workflow for manual
+- `make docs` target for command reference generation
+
 ## [0.2.0-beta.1] - 2026-04-01
 
 ### Added
