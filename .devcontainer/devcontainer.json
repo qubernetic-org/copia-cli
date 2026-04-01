@@ -6,7 +6,10 @@
       "version": "1.26",
       "golangciLintVersion": "latest"
     },
-    "ghcr.io/devcontainers/features/github-cli:1": {}
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    }
   },
   "customizations": {
     "vscode": {
@@ -22,5 +25,5 @@
       }
     }
   },
-  "postCreateCommand": "[ -f go.sum ] && go mod download || true"
+  "postCreateCommand": "npm install -g @anthropic-ai/claude-code && ([ -f go.sum ] && go mod download || true)"
 }
