@@ -12,12 +12,30 @@ builds:
     goarch:
       - amd64
       - arm64
+      - "386"
+      - arm
+    goarm:
+      - "6"
+    ignore:
+      - goos: darwin
+        goarch: "386"
+      - goos: darwin
+        goarch: arm
+      - goos: windows
+        goarch: arm
     ldflags:
       - -s -w
       - -X github.com/qubernetic/copia-cli/internal/build.Version={{.Version}}
       - -X github.com/qubernetic/copia-cli/internal/build.Date={{time "2006-01-02"}}
     env:
       - CGO_ENABLED=0
+
+universal_binaries:
+  - id: copia-cli-macos
+    ids:
+      - copia-cli
+    replace: true
+    name_template: "copia-cli"
 
 archives:
   - format: tar.gz
@@ -51,6 +69,22 @@ brews:
       bin.install "copia-cli"
     test: |
       system "#{bin}/copia-cli", "--version"
+
+nfpms:
+  - id: copia-cli
+    package_name: copia-cli
+    vendor: Qubernetic
+    homepage: "https://github.com/qubernetic/copia-cli"
+    maintainer: "Qubernetic <hello@qubernetic.io>"
+    description: "CLI for Copia — source control for industrial automation"
+    license: MIT
+    formats:
+      - deb
+      - rpm
+    bindir: /usr/bin
+    contents:
+      - src: LICENSE
+        dst: /usr/share/doc/copia-cli/LICENSE
 
 changelog:
   use: github-native
