@@ -10,6 +10,7 @@ import (
 	issueCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/issue"
 	labelCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/label"
 	prCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/pr"
+	releaseCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/release"
 	repoCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/repo"
 	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
 	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
@@ -37,6 +38,7 @@ func NewRootCmd(f *cmdutil.Factory) *cobra.Command {
 	cmd.AddCommand(issueCmd.NewCmdIssue(f))
 	cmd.AddCommand(labelCmd.NewCmdLabel(f))
 	cmd.AddCommand(prCmd.NewCmdPR(f))
+	cmd.AddCommand(releaseCmd.NewCmdRelease(f))
 
 	return cmd
 }
