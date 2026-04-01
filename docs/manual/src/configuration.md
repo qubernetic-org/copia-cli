@@ -16,7 +16,7 @@ hosts:
 
 On Windows: `%USERPROFILE%\.config\copia\config.yml`
 
-The config file is created automatically by `copia auth login`.
+The config file is created automatically by `copia-cli auth login`.
 
 ## Authentication Precedence
 
@@ -45,8 +45,8 @@ When inside a git repository, `copia` automatically detects the owner and repo n
 
 ```bash
 cd ~/projects/my-plc-project
-copia issue list          # automatically uses the repo from git remote
-copia pr list             # same
+copia-cli issue list          # automatically uses the repo from git remote
+copia-cli pr list             # same
 ```
 
 Override with `--repo owner/repo` if needed.

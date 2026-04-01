@@ -22,10 +22,10 @@ import (
 	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
-// NewRootCmd creates the root `copia` command with all subcommands.
+// NewRootCmd creates the root `copia-cli` command with all subcommands.
 func NewRootCmd(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:           "copia <command> <subcommand> [flags]",
+		Use:           "copia-cli <command> <subcommand> [flags]",
 		Short:         "Copia CLI — source control for industrial automation",
 		Long:          "Work with Copia repositories, issues, pull requests, and more from the command line.",
 		Version:       build.Version,
@@ -33,7 +33,7 @@ func NewRootCmd(f *cmdutil.Factory) *cobra.Command {
 		SilenceUsage:  true,
 	}
 
-	cmd.SetVersionTemplate("copia version {{.Version}}\n")
+	cmd.SetVersionTemplate("copia-cli version {{.Version}}\n")
 
 	// Global flags — bound to factory fields, resolved in ResolveAuth()
 	cmd.PersistentFlags().StringVar(&f.Host, "host", "", "Target Copia host")

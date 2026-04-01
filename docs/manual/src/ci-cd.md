@@ -22,7 +22,7 @@ export COPIA_HOST="app.copia.io"
 Or pass directly:
 
 ```bash
-copia --token "$COPIA_TOKEN" --host "$COPIA_HOST" issue list
+copia-cli --token "$COPIA_TOKEN" --host "$COPIA_HOST" issue list
 ```
 
 ## GitHub Actions Example
@@ -44,14 +44,14 @@ jobs:
         env:
           COPIA_TOKEN: ${{ secrets.COPIA_TOKEN }}
           COPIA_HOST: app.copia.io
-        run: copia issue list --json number,title,state
+        run: copia-cli issue list --json number,title,state
 
       - name: Create release
         env:
           COPIA_TOKEN: ${{ secrets.COPIA_TOKEN }}
           COPIA_HOST: app.copia.io
         run: |
-          copia release create "v${{ github.ref_name }}" \
+          copia-cli release create "v${{ github.ref_name }}" \
             --title "Release ${{ github.ref_name }}" \
             --notes "Automated release"
 ```
@@ -61,13 +61,13 @@ jobs:
 ### Comment on Issue After Deploy
 
 ```bash
-copia issue comment 42 --body "Deployed to staging at $(date)"
+copia-cli issue comment 42 --body "Deployed to staging at $(date)"
 ```
 
 ### Create Issue on Failure
 
 ```bash
-copia issue create \
+copia-cli issue create \
   --title "CI failure: $CI_JOB_NAME" \
   --body "Pipeline failed at $(date). See logs: $CI_JOB_URL" \
   --label bug
@@ -78,7 +78,7 @@ copia issue create \
 ```bash
 # Parse commit messages for "Fixes #N" and close them
 git log --oneline HEAD~5..HEAD | grep -oP 'Fixes #\K\d+' | while read num; do
-  copia issue close "$num" --comment "Closed by CI deploy"
+  copia-cli issue close "$num" --comment "Closed by CI deploy"
 done
 ```
 
@@ -86,7 +86,7 @@ done
 
 ```bash
 # Get PR mergeable status
-MERGEABLE=$(copia pr view 7 --json mergeable | jq -r '.mergeable')
+MERGEABLE=$(copia-cli pr view 7 --json mergeable | jq -r '.mergeable')
 if [ "$MERGEABLE" != "true" ]; then
   echo "PR is not mergeable"
   exit 1
@@ -97,5 +97,5 @@ fi
 
 - Always use `--json` in scripts — text output may change between versions
 - Set `COPIA_TOKEN` and `COPIA_HOST` as repository/project secrets
-- Use `copia api` for endpoints not covered by dedicated commands
+- Use `copia-cli api` for endpoints not covered by dedicated commands
 - All commands exit with code `0` on success, `1` on error
