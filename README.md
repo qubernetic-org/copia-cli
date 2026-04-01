@@ -30,6 +30,12 @@ The official Copia Desktop app handles `clone` and `open`. That's it. There is n
 
 ## Installation
 
+### Homebrew (macOS/Linux)
+
+```bash
+brew install qubernetic-org/tap/copia
+```
+
 ### Precompiled Binaries
 
 Download the latest release for your platform from [GitHub Releases](https://github.com/qubernetic-org/copia-cli/releases/latest).
