@@ -7,10 +7,10 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra/doc"
-	"github.com/qubernetic-org/copia-cli/internal/config"
-	"github.com/qubernetic-org/copia-cli/internal/copiacmd"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/internal/config"
+	"github.com/qubernetic/copia-cli/internal/copiacmd"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 func main() {

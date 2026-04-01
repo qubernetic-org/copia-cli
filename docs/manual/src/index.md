@@ -39,4 +39,4 @@ copia pr merge 7 --merge --delete-branch
 
 - Run `copia --help` for a list of commands
 - Run `copia <command> --help` for command-specific help
-- [GitHub Issues](https://github.com/qubernetic-org/copia-cli/issues) for bug reports and feature requests
+- [GitHub Issues](https://github.com/qubernetic/copia-cli/issues) for bug reports and feature requests

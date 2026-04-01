@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/pkg/httpmock"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/httpmock"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

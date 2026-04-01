@@ -21,7 +21,7 @@ The devcontainer provides a fully configured environment with Go 1.26+, gh CLI, 
 **CLI (without VS Code):**
 
 ```bash
-git clone https://github.com/qubernetic-org/copia-cli.git
+git clone https://github.com/qubernetic/copia-cli.git
 cd copia-cli
 
 # Build and start the devcontainer

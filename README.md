@@ -33,26 +33,26 @@ The official Copia Desktop app handles `clone` and `open`. That's it. There is n
 ### Homebrew (macOS/Linux)
 
 ```bash
-brew install qubernetic-org/tap/copia
+brew install qubernetic/tap/copia
 ```
 
 ### Precompiled Binaries
 
-Download the latest release for your platform from [GitHub Releases](https://github.com/qubernetic-org/copia-cli/releases/latest).
+Download the latest release for your platform from [GitHub Releases](https://github.com/qubernetic/copia-cli/releases/latest).
 
 ```bash
 # Linux (amd64)
-curl -sL https://github.com/qubernetic-org/copia-cli/releases/latest/download/copia_linux_amd64.tar.gz | tar xz
+curl -sL https://github.com/qubernetic/copia-cli/releases/latest/download/copia_linux_amd64.tar.gz | tar xz
 sudo mv copia /usr/local/bin/
 
 # macOS (Apple Silicon)
-curl -sL https://github.com/qubernetic-org/copia-cli/releases/latest/download/copia_darwin_arm64.tar.gz | tar xz
+curl -sL https://github.com/qubernetic/copia-cli/releases/latest/download/copia_darwin_arm64.tar.gz | tar xz
 sudo mv copia /usr/local/bin/
 ```
 
 ```powershell
 # Windows (PowerShell)
-Invoke-WebRequest -Uri https://github.com/qubernetic-org/copia-cli/releases/latest/download/copia_windows_amd64.zip -OutFile copia.zip
+Invoke-WebRequest -Uri https://github.com/qubernetic/copia-cli/releases/latest/download/copia_windows_amd64.zip -OutFile copia.zip
 Expand-Archive copia.zip -DestinationPath "$env:LOCALAPPDATA\Programs\copia"
 # Add to PATH manually or via System Settings
 ```
@@ -62,7 +62,7 @@ Expand-Archive copia.zip -DestinationPath "$env:LOCALAPPDATA\Programs\copia"
 Requires [Go 1.26+](https://go.dev/dl/).
 
 ```bash
-go install github.com/qubernetic-org/copia-cli/cmd/copia@latest
+go install github.com/qubernetic/copia-cli/cmd/copia@latest
 ```
 
 ## Usage

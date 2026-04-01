@@ -2,13 +2,13 @@ package repo
 
 import (
 	"github.com/spf13/cobra"
-	cloneCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/repo/clone"
-	createCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/repo/create"
-	deleteCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/repo/delete"
-	forkCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/repo/fork"
-	listCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/repo/list"
-	viewCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/repo/view"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	cloneCmd "github.com/qubernetic/copia-cli/pkg/cmd/repo/clone"
+	createCmd "github.com/qubernetic/copia-cli/pkg/cmd/repo/create"
+	deleteCmd "github.com/qubernetic/copia-cli/pkg/cmd/repo/delete"
+	forkCmd "github.com/qubernetic/copia-cli/pkg/cmd/repo/fork"
+	listCmd "github.com/qubernetic/copia-cli/pkg/cmd/repo/list"
+	viewCmd "github.com/qubernetic/copia-cli/pkg/cmd/repo/view"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 )
 
 // NewCmdRepo creates the `copia repo` command group.

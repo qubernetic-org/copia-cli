@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/qubernetic-org/copia-cli/internal/copiacmd"
+	"github.com/qubernetic/copia-cli/internal/copiacmd"
 )
 
 func main() {

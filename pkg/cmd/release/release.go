@@ -2,11 +2,11 @@ package release
 
 import (
 	"github.com/spf13/cobra"
-	createCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/release/create"
-	deleteCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/release/delete"
-	listCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/release/list"
-	uploadCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/release/upload"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	createCmd "github.com/qubernetic/copia-cli/pkg/cmd/release/create"
+	deleteCmd "github.com/qubernetic/copia-cli/pkg/cmd/release/delete"
+	listCmd "github.com/qubernetic/copia-cli/pkg/cmd/release/list"
+	uploadCmd "github.com/qubernetic/copia-cli/pkg/cmd/release/upload"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 )
 
 func NewCmdRelease(f *cmdutil.Factory) *cobra.Command {
