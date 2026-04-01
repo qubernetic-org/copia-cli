@@ -5,7 +5,7 @@ LDFLAGS := -s -w \
 	-X github.com/qubernetic-org/copia-cli/internal/build.Version=$(VERSION) \
 	-X github.com/qubernetic-org/copia-cli/internal/build.Date=$(DATE)
 
-.PHONY: build test integration acceptance clean
+.PHONY: build test integration acceptance docs clean
 
 build:
 	go build -ldflags "$(LDFLAGS)" -o bin/$(BIN) ./cmd/copia
@@ -19,5 +19,8 @@ integration:
 acceptance:
 	go test -tags=acceptance ./acceptance/...
 
+docs:
+	go run script/gen-docs.go
+
 clean:
-	rm -rf bin/
+	rm -rf bin/ site/

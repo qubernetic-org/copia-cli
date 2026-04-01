@@ -1,6 +1,7 @@
 # Go build
 bin/
 dist/
+site/
 
 # IDE
 .idea/
