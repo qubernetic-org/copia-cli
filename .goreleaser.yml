@@ -39,5 +39,17 @@ release:
 checksum:
   name_template: "checksums.txt"
 
+brews:
+  - repository:
+      owner: qubernetic-org
+      name: homebrew-tap
+    homepage: "https://github.com/qubernetic-org/copia-cli"
+    description: "CLI for Copia — source control for industrial automation"
+    license: "MIT"
+    install: |
+      bin.install "copia"
+    test: |
+      system "#{bin}/copia", "--version"
+
 changelog:
   use: github-native
