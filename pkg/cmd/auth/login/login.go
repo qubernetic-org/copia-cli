@@ -1,0 +1,123 @@
+package login
+
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+
+	"github.com/spf13/cobra"
+	"github.com/qubernetic-org/copia-cli/internal/config"
+	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+)
+
+// LoginOptions holds all inputs for the login command.
+type LoginOptions struct {
+	IO         *iostreams.IOStreams
+	Host       string
+	Token      string
+	ConfigPath string
+	HTTPClient *http.Client
+}
+
+// NewCmdLogin creates the `copia auth login` command.
+func NewCmdLogin(f *cmdutil.Factory) *cobra.Command {
+	opts := &LoginOptions{}
+
+	cmd := &cobra.Command{
+		Use:   "login",
+		Short: "Authenticate with a Copia instance",
+		Example: `  # Interactive login
+  copia auth login
+
+  # Non-interactive login (CI/agent)
+  copia auth login --host app.copia.io --token YOUR_TOKEN`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			opts.IO = f.IOStreams
+			opts.ConfigPath = config.DefaultPath()
+
+			if f.Token != "" {
+				opts.Token = f.Token
+			}
+			if f.Host != "" {
+				opts.Host = f.Host
+			}
+			if opts.Host == "" {
+				opts.Host = "app.copia.io"
+			}
+
+			if opts.Token == "" && opts.IO.IsStdinTTY() {
+				_, _ = fmt.Fprintf(opts.IO.ErrOut, "Enter token for %s: ", opts.Host)
+				tokenBytes, err := io.ReadAll(io.LimitReader(opts.IO.In, 256))
+				if err != nil {
+					return err
+				}
+				opts.Token = string(tokenBytes)
+			}
+
+			if opts.Token == "" {
+				return fmt.Errorf("token required. Use --token flag or run interactively")
+			}
+
+			opts.HTTPClient = &http.Client{}
+			return loginRun(opts)
+		},
+	}
+
+	cmd.Flags().StringVar(&opts.Host, "host", "", "Copia instance hostname (default: app.copia.io)")
+	cmd.Flags().StringVar(&opts.Token, "token", "", "Personal access token")
+
+	return cmd
+}
+
+type userResponse struct {
+	Login string `json:"login"`
+	ID    int64  `json:"id"`
+}
+
+func loginRun(opts *LoginOptions) error {
+	url := fmt.Sprintf("https://%s/api/v1/user", opts.Host)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "token "+opts.Token)
+
+	resp, err := opts.HTTPClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("authentication failed for %s (HTTP %d)", opts.Host, resp.StatusCode)
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	var user userResponse
+	if err := json.Unmarshal(body, &user); err != nil {
+		return fmt.Errorf("parsing user response: %w", err)
+	}
+
+	cfg, err := config.Load(opts.ConfigPath)
+	if err != nil {
+		return err
+	}
+
+	cfg.Hosts[opts.Host] = &config.HostConfig{
+		Token: opts.Token,
+		User:  user.Login,
+	}
+
+	if err := config.Save(opts.ConfigPath, cfg); err != nil {
+		return err
+	}
+
+	_, _ = fmt.Fprintf(opts.IO.Out, "Logged in as %s on %s\n", user.Login, opts.Host)
+	return nil
+}

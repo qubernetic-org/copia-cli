@@ -8,17 +8,38 @@ Copia CLI is a command-line interface for [Copia](https://copia.io) — the sour
 
 **Owner:** Qubernetic (MIT)
 
+## Development Environment
+
+Use the devcontainer for a fully configured environment. No local Go installation needed.
+
+```bash
+# VS Code / Cursor: "Reopen in Container"
+
+# CLI:
+devcontainer up --workspace-folder .
+devcontainer exec --workspace-folder . make build
+devcontainer exec --workspace-folder . make test
+```
+
 ## Architecture
+
+Follows the `gh` CLI repository structure (`github.com/cli/cli`).
 
 ```
 copia-cli/
-├── src/
-│   ├── commands/         # One file per command group (auth, repo, issue, pr, label, release)
-│   ├── api/              # HTTP client, auth helpers, request/response handling
-│   └── config/           # Config management (~/.config/copia/config.yml)
-├── docs/                 # Developer documentation (API reference, auth, gh parity tracker)
-├── tests/
-└── README.md
+├── cmd/copia/              # Entrypoint
+├── internal/
+│   ├── build/              # Version injection (ldflags)
+│   ├── config/             # Config & auth management
+│   └── copiacmd/           # Root command wiring
+├── pkg/
+│   ├── cmd/                # Command packages (one per command group)
+│   ├── cmdutil/            # Shared CLI helpers (factory, flags, JSON)
+│   ├── iostreams/          # TTY-aware I/O abstraction
+│   ├── api/                # Gitea SDK wrapper
+│   └── httpmock/           # HTTP mock for testing
+├── docs/                   # Developer documentation
+└── Makefile
 ```
 
 **Command structure:** `copia <command> <subcommand> [flags]` — mirrors `gh` CLI UX.

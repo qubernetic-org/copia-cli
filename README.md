@@ -2,14 +2,14 @@
 
 # Copia CLI
 
-[![Go](https://img.shields.io/badge/Go-1.23+-00ADD8.svg?logo=go&logoColor=white)](https://go.dev/)
+[![Go](https://img.shields.io/badge/Go-1.26+-00ADD8.svg?logo=go&logoColor=white)](https://go.dev/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-lightgrey.svg)]()
 [![Gitea API](https://img.shields.io/badge/API-Gitea%20REST%20v1-609926.svg?logo=gitea&logoColor=white)](https://docs.gitea.com/api/)
 
 [Copia](https://copia.io) on the command line. Built for automation engineers and CI pipelines.
 
-[Installation](#installation) · [Usage](#usage) · [Commands](#commands) · [Configuration](#configuration) · [Contributing](CONTRIBUTING.md)
+[Installation](#installation) · [Usage](#usage) · [Commands](#commands) · [Configuration](#configuration) · [Roadmap](#roadmap)
 
 </div>
 
@@ -53,7 +53,7 @@ Expand-Archive copia.zip -DestinationPath "$env:LOCALAPPDATA\Programs\copia"
 
 ### Build from Source
 
-Requires [Go 1.23+](https://go.dev/dl/).
+Requires [Go 1.26+](https://go.dev/dl/).
 
 ```bash
 go install github.com/qubernetic-org/copia-cli/cmd/copia@latest
@@ -237,13 +237,15 @@ See [`docs/api-reference.md`](docs/api-reference.md) for the full endpoint mappi
 - `codespace`/`copilot`/`project`/`cache` — GitHub-specific, no Gitea equivalent
 - GUI — this is a CLI tool
 
+## Development
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the development workflow, prerequisites, and project structure.
+
+A [devcontainer](.devcontainer/) configuration is included for VS Code / Cursor — open the repo and select "Reopen in Container" to get a fully configured environment.
+
 ## Related
 
 - **[Copia](https://copia.io)** — Source control platform for industrial automation
 - **[Copia Desktop](https://copia.io/product/copia-desktop/)** — Official desktop app (clone/open only)
 - **[GitHub CLI](https://cli.github.com/)** — The reference implementation this tool mirrors
 - **[Gitea API Docs](https://docs.gitea.com/api/)** — Upstream API reference
-
-## License
-
-MIT — See [LICENSE](LICENSE) for details.

@@ -1,75 +1,18 @@
-# ---> PLC
+# Go build
+bin/
+dist/
 
-# Studio 5000 tempfiles
-*.Sem
-*.Wrk
-*BAK*.acd
-*.ACD_*
-*.acd_*
-*.Recovery
+# IDE
+.idea/
+*.swp
+*.swo
+*~
 
-# B&R
-## tempfiles
-*.isOpen
-*.state
-*/Temp
-## Ignore AR versions as those are not considered part of the project
-*/AS/System
-## Ignore build results
-*/Binaries
-## Ignore debugging files
-*/Diagnosis
-## To save the watch windows and task trace configurations, uncomment the following 3 lines (which makes exceptions for these files):
-## !/Diagnosis/**/
-## !/Diagnosis/**/*.PVM
-## !/Diagnosis/**/*.tc
-## Ignore user settings file
-*/*.set
-## Include SafeDESIGNER .set files
-!*/Physical/**/*.set
-## Ignore upgrades as those are not considered part of the project source code
-**/Upgrades
-
-# Codesys tempfiles
-*.opt
-*.project.~u
-*.precompilecache
-*.library.~u
-*.bootinfo
-*.bootinfo_guids
-
-# TwinCAT files (sourced from https://github.com/github/gitignore/blob/main/TwinCAT3.gitignore)
-*.tpy
-*.tclrs
-*.compiled-library
-# If you have TwinCAT project alone on your system without Codesys, you might want to include *.compileinfo. But if
-#    you have TwinCAT and Codesys projects on your system, you may want to keep *.compileinfo commented out.
-#*.compileinfo
-# Don't include the tmc-file rule if either of the following is true:
-#   1. You've got TwinCAT C++ projects, as the information in the TMC-file is created manually for the C++ projects (in that case, only (manually) ignore the tmc-files for the PLC projects)
-#   2. You've created a standalone PLC-project and added events to it, as these are stored in the TMC-file.
-*.tmc
-*.tmcRefac
-*.tsproj.bak
-*.xti.bak
-LineIDs.dbg
-LineIDs.dbg.bak
-_Boot/
-_CompileInfo/
-_Libraries/
-_ModuleInstall/
-**/.vs/
-*.suo
-
-# Control Expert Files
-*.ztx
-*.BAK
-
-# Siemens TIA Portal Files
-*.backup/
-
-# Misc
+# OS
+.DS_Store
 desktop.ini
 thumbs.db
-*.tmp
 
+# Test
+*.test
+coverage.out

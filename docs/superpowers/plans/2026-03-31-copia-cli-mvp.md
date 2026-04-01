@@ -6,7 +6,7 @@
 
 **Architecture:** Go CLI using Cobra for command routing, Gitea Go SDK for API calls, gh-style factory injection for testability. Domain-driven command packages under `pkg/cmd/`, shared utilities in `pkg/cmdutil/` and `pkg/iostreams/`.
 
-**Tech Stack:** Go 1.23+, Cobra, Gitea SDK (`code.gitea.io/sdk/gitea`), testify, GoReleaser
+**Tech Stack:** Go 1.26+, Cobra, Gitea SDK (`code.gitea.io/sdk/gitea`), testify, GoReleaser
 
 ---
 
@@ -4812,7 +4812,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: "1.23"
+          go-version: "1.26"
       - run: make test
 
   integration:
@@ -4823,7 +4823,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: "1.23"
+          go-version: "1.26"
       - run: make integration
         env:
           COPIA_TEST_TOKEN: ${{ secrets.COPIA_TEST_TOKEN }}
@@ -4836,7 +4836,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: "1.23"
+          go-version: "1.26"
       - run: make build
 ```
 

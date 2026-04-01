@@ -1,0 +1,142 @@
+package view
+
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"strings"
+
+	"github.com/spf13/cobra"
+	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+)
+
+var validJSONFields = []string{"fullName", "description", "private", "defaultBranch", "stars", "forks", "openIssues"}
+
+// ViewOptions holds all inputs for the repo view command.
+type ViewOptions struct {
+	IO         *iostreams.IOStreams
+	HTTPClient *http.Client
+	Host       string
+	Token      string
+	Owner      string
+	Repo       string
+	JSON       cmdutil.JSONFlags
+}
+
+type repoDetail struct {
+	FullName        string `json:"full_name"`
+	Description     string `json:"description"`
+	HTMLURL         string `json:"html_url"`
+	Private         bool   `json:"private"`
+	DefaultBranch   string `json:"default_branch"`
+	StarsCount      int    `json:"stars_count"`
+	ForksCount      int    `json:"forks_count"`
+	OpenIssuesCount int    `json:"open_issues_count"`
+}
+
+// NewCmdView creates the `copia repo view` command.
+func NewCmdView(f *cmdutil.Factory) *cobra.Command {
+	opts := &ViewOptions{}
+
+	cmd := &cobra.Command{
+		Use:   "view [<owner/repo>]",
+		Short: "View a repository",
+		Example: `  copia repo view
+  copia repo view my-org/my-repo
+  copia repo view --json fullName,description`,
+		Args: cobra.MaximumNArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			opts.IO = f.IOStreams
+			host, token, err := f.ResolveAuth()
+			if err != nil {
+				return err
+			}
+			opts.Host = host
+			opts.Token = token
+
+			if len(args) > 0 {
+				parts := splitOwnerRepo(args[0])
+				if parts == nil {
+					return fmt.Errorf("expected owner/repo format")
+				}
+				opts.Owner, opts.Repo = parts[0], parts[1]
+			} else if f.BaseRepo != nil {
+				owner, repo, err := f.BaseRepo()
+				if err != nil {
+					return fmt.Errorf("could not determine repository: %w", err)
+				}
+				opts.Owner, opts.Repo = owner, repo
+			} else {
+				return fmt.Errorf("could not determine repository. Provide owner/repo as argument")
+			}
+
+			opts.HTTPClient = &http.Client{}
+			return viewRun(opts)
+		},
+	}
+
+	cmdutil.AddJSONFlags(cmd, &opts.JSON, validJSONFields)
+
+	return cmd
+}
+
+func viewRun(opts *ViewOptions) error {
+	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s", opts.Host, opts.Owner, opts.Repo)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "token "+opts.Token)
+
+	resp, err := opts.HTTPClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return fmt.Errorf("repository %s/%s not found", opts.Owner, opts.Repo)
+	}
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("API error (HTTP %d)", resp.StatusCode)
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	var repo repoDetail
+	if err := json.Unmarshal(body, &repo); err != nil {
+		return fmt.Errorf("parsing response: %w", err)
+	}
+
+	if opts.JSON.IsJSON() {
+		return cmdutil.PrintJSON(opts.IO.Out, repo)
+	}
+
+	visibility := "public"
+	if repo.Private {
+		visibility = "private"
+	}
+
+	_, _ = fmt.Fprintf(opts.IO.Out, "%s (%s)\n", repo.FullName, visibility)
+	if repo.Description != "" {
+		_, _ = fmt.Fprintf(opts.IO.Out, "%s\n", repo.Description)
+	}
+	_, _ = fmt.Fprintf(opts.IO.Out, "\nDefault branch: %s\n", repo.DefaultBranch)
+	_, _ = fmt.Fprintf(opts.IO.Out, "Stars: %d  Forks: %d  Open issues: %d\n", repo.StarsCount, repo.ForksCount, repo.OpenIssuesCount)
+	_, _ = fmt.Fprintf(opts.IO.Out, "URL: %s\n", repo.HTMLURL)
+
+	return nil
+}
+
+func splitOwnerRepo(nwo string) []string {
+	i := strings.IndexByte(nwo, '/')
+	if i > 0 && i < len(nwo)-1 {
+		return []string{nwo[:i], nwo[i+1:]}
+	}
+	return nil
+}
