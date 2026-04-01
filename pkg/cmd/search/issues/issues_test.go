@@ -15,10 +15,10 @@ func TestSearchIssues_Success(t *testing.T) {
 	defer reg.Verify(t)
 
 	reg.Register(
-		httpmock.REST("GET", "/api/v1/repos/search"),
+		httpmock.REST("GET", "/api/v1/repos/my-org/plc/issues"),
 		httpmock.StringResponse(http.StatusOK, `[
-			{"number":12,"title":"Fix PLC timeout","state":"open","repository":{"full_name":"my-org/plc"}},
-			{"number":5,"title":"Sensor error","state":"closed","repository":{"full_name":"my-org/plc"}}
+			{"number":12,"title":"Fix PLC timeout","state":"open"},
+			{"number":5,"title":"Sensor error","state":"closed"}
 		]`),
 	)
 
@@ -29,6 +29,8 @@ func TestSearchIssues_Success(t *testing.T) {
 		HTTPClient: &http.Client{Transport: reg},
 		Host:       "app.copia.io",
 		Token:      "test-token",
+		Owner:      "my-org",
+		Repo:       "plc",
 		Query:      "timeout",
 		State:      "open",
 		Limit:      30,

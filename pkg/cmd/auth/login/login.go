@@ -1,10 +1,12 @@
 package login
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/qubernetic-org/copia-cli/internal/config"
@@ -49,11 +51,13 @@ func NewCmdLogin(f *cmdutil.Factory) *cobra.Command {
 
 			if opts.Token == "" && opts.IO.IsStdinTTY() {
 				_, _ = fmt.Fprintf(opts.IO.ErrOut, "Enter token for %s: ", opts.Host)
-				tokenBytes, err := io.ReadAll(io.LimitReader(opts.IO.In, 256))
-				if err != nil {
+				scanner := bufio.NewScanner(opts.IO.In)
+				if scanner.Scan() {
+					opts.Token = strings.TrimSpace(scanner.Text())
+				}
+				if err := scanner.Err(); err != nil {
 					return err
 				}
-				opts.Token = string(tokenBytes)
 			}
 
 			if opts.Token == "" {

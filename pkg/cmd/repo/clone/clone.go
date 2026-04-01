@@ -54,7 +54,7 @@ func NewCmdClone(f *cmdutil.Factory) *cobra.Command {
 func cloneRun(opts *CloneOptions) error {
 	cloneURL := buildCloneURL(opts.Host, opts.Repo)
 
-	args := []string{"clone", cloneURL}
+	args := []string{"clone", "--", cloneURL}
 	if opts.Dir != "" {
 		args = append(args, opts.Dir)
 	}

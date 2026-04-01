@@ -42,6 +42,10 @@ func TestEditRun_AddLabels(t *testing.T) {
 	defer reg.Verify(t)
 
 	reg.Register(
+		httpmock.REST("GET", "/api/v1/repos/my-org/my-repo/labels"),
+		httpmock.StringResponse(http.StatusOK, `[{"id":1,"name":"bug"},{"id":2,"name":"feature"}]`),
+	)
+	reg.Register(
 		httpmock.REST("POST", "/api/v1/repos/my-org/my-repo/issues/12/labels"),
 		httpmock.StringResponse(http.StatusOK, `[{"id":1,"name":"bug"}]`),
 	)
