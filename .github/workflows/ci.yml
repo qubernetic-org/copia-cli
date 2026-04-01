@@ -28,7 +28,6 @@ jobs:
 
   integration:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
     needs: test
     steps:
       - uses: actions/checkout@v6
