@@ -6,7 +6,7 @@ Copia CLI supports tab completion for bash, zsh, fish, and PowerShell.
 
 ```bash
 # Add to ~/.bashrc
-echo 'source <(copia completion bash)' >> ~/.bashrc
+echo 'source <(copia-cli completion bash)' >> ~/.bashrc
 source ~/.bashrc
 ```
 
@@ -14,7 +14,7 @@ source ~/.bashrc
 
 ```bash
 # Generate and install
-copia completion zsh > "${fpath[1]}/_copia"
+copia-cli completion zsh > "${fpath[1]}/_copia"
 
 # Rebuild completion cache
 compinit
@@ -23,31 +23,31 @@ compinit
 Or add to `~/.zshrc`:
 
 ```bash
-echo 'source <(copia completion zsh)' >> ~/.zshrc
+echo 'source <(copia-cli completion zsh)' >> ~/.zshrc
 ```
 
 ## Fish
 
 ```bash
-copia completion fish | source
+copia-cli completion fish | source
 
 # To persist
-copia completion fish > ~/.config/fish/completions/copia.fish
+copia-cli completion fish > ~/.config/fish/completions/copia.fish
 ```
 
 ## PowerShell
 
 ```powershell
 # Add to $PROFILE
-copia completion powershell | Out-String | Invoke-Expression
+copia-cli completion powershell | Out-String | Invoke-Expression
 
 # To persist
-copia completion powershell >> $PROFILE
+copia-cli completion powershell >> $PROFILE
 ```
 
 ## What Gets Completed
 
-- Command names: `copia is<TAB>` → `copia issue`
-- Subcommands: `copia issue c<TAB>` → `copia issue create` / `copia issue close` / `copia issue comment`
-- Flag names: `copia issue list --s<TAB>` → `--state`
-- Flag values: `copia issue list --state c<TAB>` → `closed`
+- Command names: `copia-cli is<TAB>` → `copia-cli issue`
+- Subcommands: `copia-cli issue c<TAB>` → `copia-cli issue create` / `copia-cli issue close` / `copia-cli issue comment`
+- Flag names: `copia-cli issue list --s<TAB>` → `--state`
+- Flag values: `copia-cli issue list --state c<TAB>` → `closed`

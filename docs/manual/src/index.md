@@ -20,23 +20,23 @@
 
 ```bash
 # Authenticate
-copia auth login --host app.copia.io --token YOUR_TOKEN
+copia-cli auth login --host app.copia.io --token YOUR_TOKEN
 
 # List your repos
-copia repo list
+copia-cli repo list
 
 # Create an issue
-copia issue create --title "Fix sensor mapping" --label bug
+copia-cli issue create --title "Fix sensor mapping" --label bug
 
 # Open a PR
-copia pr create --title "feat: add safety interlock" --base develop
+copia-cli pr create --title "feat: add safety interlock" --base develop
 
 # Merge it
-copia pr merge 7 --merge --delete-branch
+copia-cli pr merge 7 --merge --delete-branch
 ```
 
 ## Getting Help
 
-- Run `copia --help` for a list of commands
-- Run `copia <command> --help` for command-specific help
+- Run `copia-cli --help` for a list of commands
+- Run `copia-cli <command> --help` for command-specific help
 - [GitHub Issues](https://github.com/qubernetic/copia-cli/issues) for bug reports and feature requests

@@ -5,68 +5,68 @@
 Generate a Personal Access Token on your Copia instance, then:
 
 ```bash
-copia auth login
+copia-cli auth login
 ```
 
 This prompts for your host and token. For CI/automation:
 
 ```bash
-copia auth login --host app.copia.io --token YOUR_TOKEN
+copia-cli auth login --host app.copia.io --token YOUR_TOKEN
 ```
 
 Verify your authentication:
 
 ```bash
-copia auth status
+copia-cli auth status
 ```
 
 ## 2. Work with Repositories
 
 ```bash
 # List your repos
-copia repo list
+copia-cli repo list
 
 # List repos in an organization
-copia repo list --org my-org
+copia-cli repo list --org my-org
 
 # Clone a repo
-copia repo clone my-org/my-plc-project
+copia-cli repo clone my-org/my-plc-project
 
 # View repo details
-copia repo view my-org/my-plc-project
+copia-cli repo view my-org/my-plc-project
 ```
 
 ## 3. Manage Issues
 
 ```bash
 # List open issues
-copia issue list
+copia-cli issue list
 
 # Create an issue
-copia issue create --title "Fix sensor mapping" --label bug
+copia-cli issue create --title "Fix sensor mapping" --label bug
 
 # View issue details
-copia issue view 42
+copia-cli issue view 42
 
 # Add a comment
-copia issue comment 42 --body "Investigating now."
+copia-cli issue comment 42 --body "Investigating now."
 
 # Close with a comment
-copia issue close 42 --comment "Fixed in PR #7"
+copia-cli issue close 42 --comment "Fixed in PR #7"
 ```
 
 ## 4. Pull Requests
 
 ```bash
 # Create a PR
-copia pr create --title "feat: add safety interlock" --base develop --head feature/safety
+copia-cli pr create --title "feat: add safety interlock" --base develop --head feature/safety
 
 # List open PRs
-copia pr list
+copia-cli pr list
 
 # Review and merge
-copia pr review 7 --approve
-copia pr merge 7 --merge --delete-branch
+copia-cli pr review 7 --approve
+copia-cli pr merge 7 --merge --delete-branch
 ```
 
 ## 5. JSON Output for Scripting
@@ -75,10 +75,10 @@ Every list and view command supports `--json`:
 
 ```bash
 # Get issues as JSON
-copia issue list --json number,title,state
+copia-cli issue list --json number,title,state
 
 # Use with jq
-copia repo list --json fullName,description | jq '.[].fullName'
+copia-cli repo list --json fullName,description | jq '.[].fullName'
 ```
 
 ## Next Steps

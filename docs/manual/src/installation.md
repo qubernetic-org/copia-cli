@@ -3,7 +3,7 @@
 ## Homebrew (macOS/Linux)
 
 ```bash
-brew install qubernetic/tap/copia
+brew install qubernetic/tap/copia-cli
 ```
 
 ## Precompiled Binaries
@@ -44,5 +44,5 @@ go install github.com/qubernetic/copia-cli/cmd/copia@latest
 ## Verify Installation
 
 ```bash
-copia --version
+copia-cli --version
 ```
