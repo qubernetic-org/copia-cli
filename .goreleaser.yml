@@ -43,6 +43,7 @@ brews:
   - repository:
       owner: qubernetic-org
       name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
     homepage: "https://github.com/qubernetic-org/copia-cli"
     description: "CLI for Copia — source control for industrial automation"
     license: "MIT"
