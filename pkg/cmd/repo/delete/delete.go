@@ -37,11 +37,11 @@ func NewCmdDelete(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			parts := splitOwnerRepo(args[0])
-			if parts == nil {
-				return fmt.Errorf("expected owner/repo format")
+			owner, repo, err := cmdutil.SplitOwnerRepo(args[0])
+			if err != nil {
+				return err
 			}
-			opts.Owner, opts.Repo = parts[0], parts[1]
+			opts.Owner, opts.Repo = owner, repo
 			opts.HTTPClient = &http.Client{}
 			return deleteRun(opts)
 		},
@@ -78,11 +78,3 @@ func deleteRun(opts *DeleteOptions) error {
 	return nil
 }
 
-func splitOwnerRepo(nwo string) []string {
-	for i, c := range nwo {
-		if c == '/' && i > 0 && i < len(nwo)-1 {
-			return []string{nwo[:i], nwo[i+1:]}
-		}
-	}
-	return nil
-}
