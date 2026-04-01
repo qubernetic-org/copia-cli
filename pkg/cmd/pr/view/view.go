@@ -1,0 +1,141 @@
+package view
+
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"strconv"
+
+	"github.com/spf13/cobra"
+	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+)
+
+var validJSONFields = []string{"number", "title", "body", "state", "mergeable", "author", "base", "head", "createdAt"}
+
+// ViewOptions holds all inputs for the pr view command.
+type ViewOptions struct {
+	IO         *iostreams.IOStreams
+	HTTPClient *http.Client
+	Host       string
+	Token      string
+	Owner      string
+	Repo       string
+	Number     int64
+	JSON       cmdutil.JSONFlags
+}
+
+type userRef struct {
+	Login string `json:"login"`
+}
+
+type branchRef struct {
+	Label string `json:"label"`
+}
+
+type prDetail struct {
+	Number    int64     `json:"number"`
+	Title     string    `json:"title"`
+	Body      string    `json:"body"`
+	State     string    `json:"state"`
+	Mergeable bool      `json:"mergeable"`
+	HTMLURL   string    `json:"html_url"`
+	User      userRef   `json:"user"`
+	Base      branchRef `json:"base"`
+	Head      branchRef `json:"head"`
+	CreatedAt string    `json:"created_at"`
+}
+
+// NewCmdView creates the `copia pr view` command.
+func NewCmdView(f *cmdutil.Factory) *cobra.Command {
+	opts := &ViewOptions{}
+
+	cmd := &cobra.Command{
+		Use:   "view <number>",
+		Short: "View a pull request",
+		Example: `  copia pr view 7
+  copia pr view 7 --json number,title,mergeable`,
+		Args: cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			num, err := strconv.ParseInt(args[0], 10, 64)
+			if err != nil {
+				return fmt.Errorf("invalid PR number: %s", args[0])
+			}
+			opts.Number = num
+			opts.IO = f.IOStreams
+
+			host, token, err := f.ResolveAuth()
+			if err != nil {
+				return err
+			}
+			opts.Host = host
+			opts.Token = token
+
+			if f.BaseRepo == nil {
+				return fmt.Errorf("could not determine repository. Use --repo flag")
+			}
+			owner, repo, err := f.BaseRepo()
+			if err != nil {
+				return err
+			}
+			opts.Owner = owner
+			opts.Repo = repo
+			opts.HTTPClient = &http.Client{}
+			return viewRun(opts)
+		},
+	}
+
+	cmdutil.AddJSONFlags(cmd, &opts.JSON, validJSONFields)
+
+	return cmd
+}
+
+func viewRun(opts *ViewOptions) error {
+	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/pulls/%d",
+		opts.Host, opts.Owner, opts.Repo, opts.Number)
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "token "+opts.Token)
+
+	resp, err := opts.HTTPClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return fmt.Errorf("PR #%d not found", opts.Number)
+	}
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("API error (HTTP %d)", resp.StatusCode)
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	var pr prDetail
+	if err := json.Unmarshal(body, &pr); err != nil {
+		return err
+	}
+
+	if opts.JSON.IsJSON() {
+		return cmdutil.PrintJSON(opts.IO.Out, pr)
+	}
+
+	_, _ = fmt.Fprintf(opts.IO.Out, "#%d %s\n", pr.Number, pr.Title)
+	_, _ = fmt.Fprintf(opts.IO.Out, "State: %s  Author: %s  Mergeable: %v\n", pr.State, pr.User.Login, pr.Mergeable)
+	_, _ = fmt.Fprintf(opts.IO.Out, "Branches: %s <- %s\n", pr.Base.Label, pr.Head.Label)
+
+	if pr.Body != "" {
+		_, _ = fmt.Fprintf(opts.IO.Out, "\n%s\n", pr.Body)
+	}
+
+	_, _ = fmt.Fprintf(opts.IO.Out, "\n%s\n", pr.HTMLURL)
+	return nil
+}
