@@ -1,4 +1,4 @@
-module github.com/qubernetic-org/copia-cli
+module github.com/qubernetic/copia-cli
 
 go 1.26.1
 

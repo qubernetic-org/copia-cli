@@ -36,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `copia pr diff` — view PR diff output
 - `copia pr checkout` — check out PR branch locally
 - `copia issue edit` — edit title, body, labels, assignees, milestone
-- Homebrew tap distribution (`brew install qubernetic-org/tap/copia`)
+- Homebrew tap distribution (`brew install qubernetic/tap/copia`)
 - Go vulnerability check (govulncheck) in CI pipeline and weekly SARIF scan
 - Go mod tidy check in CI
 - Go version auto-bump workflow

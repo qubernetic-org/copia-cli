@@ -3,8 +3,8 @@ package logout
 import (
 	"testing"
 
-	"github.com/qubernetic-org/copia-cli/internal/config"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/internal/config"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

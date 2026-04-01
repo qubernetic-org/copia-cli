@@ -37,7 +37,7 @@ jobs:
     steps:
       - name: Install Copia CLI
         run: |
-          curl -sL https://github.com/qubernetic-org/copia-cli/releases/latest/download/copia_linux_amd64.tar.gz | tar xz
+          curl -sL https://github.com/qubernetic/copia-cli/releases/latest/download/copia_linux_amd64.tar.gz | tar xz
           sudo mv copia /usr/local/bin/
 
       - name: List open issues

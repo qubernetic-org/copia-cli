@@ -7,8 +7,8 @@ import (
 	"net/http"
 
 	"github.com/spf13/cobra"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 var validJSONFields = []string{"full_name", "description", "private", "default_branch", "stars", "forks", "open_issues_count"}

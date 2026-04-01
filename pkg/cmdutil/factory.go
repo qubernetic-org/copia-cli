@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/qubernetic-org/copia-cli/internal/config"
-	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/qubernetic/copia-cli/internal/config"
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 // Factory provides shared dependencies to all commands.

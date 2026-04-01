@@ -2,15 +2,15 @@ package pr
 
 import (
 	"github.com/spf13/cobra"
-	checkoutCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/pr/checkout"
-	closeCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/pr/close"
-	createCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/pr/create"
-	diffCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/pr/diff"
-	listCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/pr/list"
-	mergeCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/pr/merge"
-	reviewCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/pr/review"
-	viewCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/pr/view"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	checkoutCmd "github.com/qubernetic/copia-cli/pkg/cmd/pr/checkout"
+	closeCmd "github.com/qubernetic/copia-cli/pkg/cmd/pr/close"
+	createCmd "github.com/qubernetic/copia-cli/pkg/cmd/pr/create"
+	diffCmd "github.com/qubernetic/copia-cli/pkg/cmd/pr/diff"
+	listCmd "github.com/qubernetic/copia-cli/pkg/cmd/pr/list"
+	mergeCmd "github.com/qubernetic/copia-cli/pkg/cmd/pr/merge"
+	reviewCmd "github.com/qubernetic/copia-cli/pkg/cmd/pr/review"
+	viewCmd "github.com/qubernetic/copia-cli/pkg/cmd/pr/view"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 )
 
 // NewCmdPR creates the `copia pr` command group.

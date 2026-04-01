@@ -2,9 +2,9 @@ package notification
 
 import (
 	"github.com/spf13/cobra"
-	listCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/notification/list"
-	readCmd "github.com/qubernetic-org/copia-cli/pkg/cmd/notification/read"
-	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	listCmd "github.com/qubernetic/copia-cli/pkg/cmd/notification/list"
+	readCmd "github.com/qubernetic/copia-cli/pkg/cmd/notification/read"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 )
 
 func NewCmdNotification(f *cmdutil.Factory) *cobra.Command {
