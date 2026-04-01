@@ -13,8 +13,8 @@ import (
 	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
 )
 
-// ApiOptions holds all inputs for the api command.
-type ApiOptions struct {
+// APIOptions holds all inputs for the api command.
+type APIOptions struct {
 	IO         *iostreams.IOStreams
 	HTTPClient *http.Client
 	Host       string
@@ -25,9 +25,9 @@ type ApiOptions struct {
 	Headers    []string
 }
 
-// NewCmdApi creates the `copia api` command.
-func NewCmdApi(f *cmdutil.Factory) *cobra.Command {
-	opts := &ApiOptions{}
+// NewCmdAPI creates the `copia api` command.
+func NewCmdAPI(f *cmdutil.Factory) *cobra.Command {
+	opts := &APIOptions{}
 
 	cmd := &cobra.Command{
 		Use:   "api <path>",
@@ -67,7 +67,7 @@ func NewCmdApi(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func apiRun(opts *ApiOptions) error {
+func apiRun(opts *APIOptions) error {
 	if opts.Path == "" {
 		return fmt.Errorf("path required")
 	}
@@ -130,7 +130,7 @@ func apiRun(opts *ApiOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	defer func() { _ = resp.Body.Close() }()
+	_ = resp.Body.Close()
 
 	if resp.StatusCode == http.StatusNoContent {
 		return nil

@@ -12,7 +12,7 @@ import (
 	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
 )
 
-var validJSONFields = []string{"number", "title", "body", "state", "author", "labels", "createdAt", "comments"}
+var validJSONFields = []string{"number", "title", "body", "state", "author", "labels", "created_at", "comments"}
 
 // ViewOptions holds all inputs for the issue view command.
 type ViewOptions struct {
@@ -104,7 +104,7 @@ func viewRun(opts *ViewOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	defer func() { _ = resp.Body.Close() }()
+	_ = resp.Body.Close()
 
 	if resp.StatusCode == http.StatusNotFound {
 		return fmt.Errorf("issue #%d not found", opts.Number)

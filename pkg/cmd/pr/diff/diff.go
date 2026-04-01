@@ -75,7 +75,7 @@ func diffRun(opts *DiffOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	defer func() { _ = resp.Body.Close() }()
+	_ = resp.Body.Close()
 
 	if resp.StatusCode == http.StatusNotFound {
 		return fmt.Errorf("PR #%d not found", opts.Number)

@@ -13,7 +13,7 @@ import (
 	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
 )
 
-var validJSONFields = []string{"fullName", "description", "htmlUrl"}
+var validJSONFields = []string{"full_name", "description", "html_url"}
 
 type SearchOptions struct {
 	IO         *iostreams.IOStreams
@@ -79,7 +79,7 @@ func searchRun(opts *SearchOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	defer func() { _ = resp.Body.Close() }()
+	_ = resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("API error (HTTP %d)", resp.StatusCode)
