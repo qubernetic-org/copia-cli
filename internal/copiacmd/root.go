@@ -1,6 +1,7 @@
 package copiacmd
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -34,7 +35,7 @@ func NewRootCmd(f *cmdutil.Factory) *cobra.Command {
 
 	cmd.SetVersionTemplate("copia version {{.Version}}\n")
 
-	// Global flags
+	// Global flags — bound to factory fields, resolved in ResolveAuth()
 	cmd.PersistentFlags().StringVar(&f.Host, "host", "", "Target Copia host")
 	cmd.PersistentFlags().StringVar(&f.Token, "token", "", "Authentication token")
 
@@ -62,19 +63,17 @@ func Main() int {
 		Config: func() (*config.Config, error) {
 			return config.Load(config.DefaultPath())
 		},
+		BaseRepo: cmdutil.DetectBaseRepo(),
 	}
 
-	// Override from env if not set by flag
-	if envToken := os.Getenv("COPIA_TOKEN"); envToken != "" {
-		f.Token = envToken
-	}
-	if envHost := os.Getenv("COPIA_HOST"); envHost != "" {
-		f.Host = envHost
-	}
+	// Note: env vars (COPIA_TOKEN, COPIA_HOST) are resolved in
+	// Factory.ResolveAuth() with correct precedence:
+	// flag > env var > config file
 
 	rootCmd := NewRootCmd(f)
 
 	if err := rootCmd.Execute(); err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 		return 1
 	}
 	return 0
