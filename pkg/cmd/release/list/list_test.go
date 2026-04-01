@@ -1,0 +1,71 @@
+package list
+
+import (
+	"net/http"
+	"testing"
+
+	"github.com/qubernetic-org/copia-cli/pkg/cmdutil"
+	"github.com/qubernetic-org/copia-cli/pkg/httpmock"
+	"github.com/qubernetic-org/copia-cli/pkg/iostreams"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+)
+
+func TestListRun_Success(t *testing.T) {
+	reg := &httpmock.Registry{}
+	defer reg.Verify(t)
+
+	reg.Register(
+		httpmock.REST("GET", "/api/v1/repos/my-org/my-repo/releases"),
+		httpmock.StringResponse(http.StatusOK, `[
+			{"id":1,"tag_name":"v1.0.0","name":"Release 1.0.0","draft":false,"prerelease":false,"published_at":"2026-03-30T10:00:00Z"},
+			{"id":2,"tag_name":"v0.9.0","name":"Beta release","draft":false,"prerelease":true,"published_at":"2026-03-29T10:00:00Z"}
+		]`),
+	)
+
+	ios, _, stdout, _ := iostreams.Test()
+
+	opts := &ListOptions{
+		IO:         ios,
+		HTTPClient: &http.Client{Transport: reg},
+		Host:       "app.copia.io",
+		Token:      "test-token",
+		Owner:      "my-org",
+		Repo:       "my-repo",
+		Limit:      30,
+	}
+
+	err := listRun(opts)
+	require.NoError(t, err)
+	assert.Contains(t, stdout.String(), "v1.0.0")
+	assert.Contains(t, stdout.String(), "v0.9.0")
+}
+
+func TestListRun_JSON(t *testing.T) {
+	reg := &httpmock.Registry{}
+	defer reg.Verify(t)
+
+	reg.Register(
+		httpmock.REST("GET", "/api/v1/repos/my-org/my-repo/releases"),
+		httpmock.StringResponse(http.StatusOK, `[
+			{"id":1,"tag_name":"v1.0.0","name":"Release 1.0.0","draft":false,"prerelease":false,"published_at":"2026-03-30T10:00:00Z"}
+		]`),
+	)
+
+	ios, _, stdout, _ := iostreams.Test()
+
+	opts := &ListOptions{
+		IO:         ios,
+		HTTPClient: &http.Client{Transport: reg},
+		Host:       "app.copia.io",
+		Token:      "test-token",
+		Owner:      "my-org",
+		Repo:       "my-repo",
+		Limit:      30,
+		JSON:       cmdutil.JSONFlags{Fields: []string{"tagName", "name"}},
+	}
+
+	err := listRun(opts)
+	require.NoError(t, err)
+	assert.Contains(t, stdout.String(), `"tag_name"`)
+}
