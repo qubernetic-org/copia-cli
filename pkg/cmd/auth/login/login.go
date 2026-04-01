@@ -92,7 +92,7 @@ func loginRun(opts *LoginOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("authentication failed for %s (HTTP %d)", opts.Host, resp.StatusCode)
