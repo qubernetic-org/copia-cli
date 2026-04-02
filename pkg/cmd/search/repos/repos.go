@@ -41,8 +41,9 @@ func NewCmdSearchRepos(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "repos <query>",
 		Short: "Search repositories",
-		Example: `  copia search repos plc
-  copia search repos "automation controller" --json fullName,description`,
+		Long:  "Search for repositories on Copia matching the given query string.",
+		Example: `  $ copia-cli search repos plc
+  $ copia-cli search repos "automation controller" --json fullName,description`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.Query = args[0]

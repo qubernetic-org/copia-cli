@@ -1,7 +1,13 @@
 # Go build
 bin/
 dist/
-site/
+/site/
+
+# Jekyll build artifacts
+docs/site/_site/
+docs/site/.jekyll-cache/
+docs/site/Gemfile.lock
+docs/site/manual/copia-cli_*.md
 
 # IDE
 .idea/
@@ -18,3 +24,4 @@ thumbs.db
 *.test
 coverage.out
 AUDIT.md
+docs/ghcli_manual_ref/

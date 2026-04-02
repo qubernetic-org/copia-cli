@@ -25,7 +25,8 @@ func NewCmdDelete(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "delete <owner/repo>",
 		Short: "Delete a repository",
-		Example: `  copia repo delete my-org/my-repo --yes`,
+		Long:  "Delete a Copia repository. This action is irreversible. Use --yes to skip the confirmation prompt.",
+		Example: `  $ copia-cli repo delete my-org/my-repo --yes`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams

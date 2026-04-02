@@ -41,8 +41,8 @@ func NewCmdSearchIssues(f *cmdutil.Factory) *cobra.Command {
 		Use:   "issues <query>",
 		Short: "Search issues in a repository",
 		Long:  "Search issues within the current repository. Requires repo context (git remote or owner/repo argument).",
-		Example: `  copia search issues "sensor timeout"
-  copia search issues bug --state closed`,
+		Example: `  $ copia-cli search issues "sensor timeout"
+  $ copia-cli search issues bug --state closed`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.Query = args[0]

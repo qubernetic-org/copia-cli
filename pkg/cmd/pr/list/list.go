@@ -52,10 +52,11 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "List pull requests",
+		Long:    "List pull requests in a Copia repository. By default, only open pull requests are listed.",
 		Aliases: []string{"ls"},
-		Example: `  copia pr list
-  copia pr list --state closed
-  copia pr list --json number,title,state`,
+		Example: `  $ copia-cli pr list
+  $ copia-cli pr list --state closed
+  $ copia-cli pr list --json number,title,state`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
 			host, token, err := f.ResolveAuth()

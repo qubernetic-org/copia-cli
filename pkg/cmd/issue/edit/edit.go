@@ -34,10 +34,18 @@ func NewCmdEdit(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "edit <number>",
 		Short: "Edit an issue",
-		Example: `  copia issue edit 12 --title "New title"
-  copia issue edit 12 --add-label bug --add-label urgent
-  copia issue edit 12 --assignee john --assignee jane
-  copia issue edit 12 --milestone 1`,
+		Long:  "Edit an issue's title, body, labels, assignees, or milestone.",
+		Example: `  # Edit the title
+  $ copia-cli issue edit 12 --title "New title"
+
+  # Add labels
+  $ copia-cli issue edit 12 --add-label bug --add-label urgent
+
+  # Set assignees
+  $ copia-cli issue edit 12 --assignee john --assignee jane
+
+  # Set milestone
+  $ copia-cli issue edit 12 --milestone 1`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			num, err := strconv.ParseInt(args[0], 10, 64)

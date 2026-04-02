@@ -44,8 +44,12 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create",
 		Short: "Create an issue",
-		Example: `  copia issue create --title "Fix sensor mapping" --label bug
-  copia issue create --title "Add feature" --body "Description here"`,
+		Long:  "Create an issue on Copia. The title is required; body and labels are optional.",
+		Example: `  # Create an issue with a label
+  $ copia-cli issue create --title "Fix sensor mapping" --label bug
+
+  # Create an issue with a body
+  $ copia-cli issue create --title "Add feature" --body "Description here"`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
 			host, token, err := f.ResolveAuth()

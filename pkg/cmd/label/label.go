@@ -15,8 +15,10 @@ func NewCmdLabel(f *cmdutil.Factory) *cobra.Command {
 		Long:  "Work with repository labels.",
 	}
 
-	cmd.AddCommand(listCmd.NewCmdList(f))
-	cmd.AddCommand(createCmd.NewCmdCreate(f))
+	cmdutil.AddGroup(cmd, "General commands",
+		listCmd.NewCmdList(f),
+		createCmd.NewCmdCreate(f),
+	)
 
 	return cmd
 }

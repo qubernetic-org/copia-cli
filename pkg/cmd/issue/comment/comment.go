@@ -31,7 +31,8 @@ func NewCmdComment(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "comment <number>",
 		Short:   "Add a comment to an issue",
-		Example: `  copia issue comment 12 --body "Investigating this now."`,
+		Long:    "Add a comment to a Copia issue. The comment body is supplied via the --body flag.",
+		Example: `  $ copia-cli issue comment 12 --body "Investigating this now."`,
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			num, err := strconv.ParseInt(args[0], 10, 64)

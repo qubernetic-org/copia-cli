@@ -35,9 +35,15 @@ func NewCmdReview(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "review <number>",
 		Short: "Submit a review on a pull request",
-		Example: `  copia pr review 7 --approve
-  copia pr review 7 --request-changes --body "Please fix the tests."
-  copia pr review 7 --comment --body "Looks good overall."`,
+		Long:  "Add a review to a pull request. Use --approve, --request-changes, or --comment to specify the review action.",
+		Example: `  # Approve a pull request
+  $ copia-cli pr review 7 --approve
+
+  # Request changes
+  $ copia-cli pr review 7 --request-changes --body "Please fix the tests."
+
+  # Leave a comment
+  $ copia-cli pr review 7 --comment --body "Looks good overall."`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			num, err := strconv.ParseInt(args[0], 10, 64)

@@ -25,7 +25,8 @@ func NewCmdStatus(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "status",
 		Short:   "View authentication status",
-		Example: "  copia auth status",
+		Long:    "Display the authentication state for each configured Copia host, including the active user and token validity.",
+		Example: "  $ copia-cli auth status",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
 			opts.ConfigPath = config.DefaultPath()

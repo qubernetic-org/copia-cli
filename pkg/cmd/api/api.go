@@ -32,18 +32,18 @@ func NewCmdAPI(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "api <path>",
 		Short: "Make an API request",
-		Long:  "Make an authenticated request to the Copia/Gitea REST API.",
+		Long:  "Make an authenticated HTTP request to the Copia REST API and print the response. The endpoint argument should be a path of a Gitea API v1 endpoint.",
 		Example: `  # Get authenticated user
-  copia api /user
+  $ copia-cli api /user
 
   # Create an issue
-  copia api -X POST /repos/my-org/my-repo/issues --field title="Bug report"
+  $ copia-cli api -X POST /repos/my-org/my-repo/issues --field title="Bug report"
 
   # Delete a repo
-  copia api -X DELETE /repos/my-org/old-repo
+  $ copia-cli api -X DELETE /repos/my-org/old-repo
 
   # Custom header
-  copia api /user --header "Accept: application/json"`,
+  $ copia-cli api /user --header "Accept: application/json"`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.Path = args[0]
