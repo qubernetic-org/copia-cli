@@ -54,10 +54,7 @@ func NewCmdEdit(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Run from inside a git repository")
-			}
-			owner, repo, err := f.BaseRepo()
+			owner, repo, err := f.ResolveRepo()
 			if err != nil {
 				return err
 			}
