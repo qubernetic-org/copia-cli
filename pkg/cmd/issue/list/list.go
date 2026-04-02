@@ -78,6 +78,12 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 }
 
 func ListRun(opts *ListOptions) error {
+	switch opts.State {
+	case "open", "closed", "all":
+	default:
+		return fmt.Errorf("invalid state %q: valid values are {open|closed|all}", opts.State)
+	}
+
 	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues?state=%s&limit=%d&type=issues",
 		opts.Host, opts.Owner, opts.Repo, opts.State, opts.Limit)
 
