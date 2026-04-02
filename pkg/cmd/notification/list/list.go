@@ -17,6 +17,7 @@ type ListOptions struct {
 	HTTPClient *http.Client
 	Host       string
 	Token      string
+	All        bool
 	JSON       cmdutil.JSONFlags
 }
 
@@ -57,12 +58,16 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 		},
 	}
 
+	cmd.Flags().BoolVar(&opts.All, "all", false, "Show read and unread notifications")
 	cmdutil.AddJSONFlags(cmd, &opts.JSON, []string{"id", "subject", "repository", "unread"})
 	return cmd
 }
 
 func ListRun(opts *ListOptions) error {
-	url := fmt.Sprintf("https://%s/api/v1/notifications", opts.Host)
+	url := fmt.Sprintf("https://%s/api/v1/notifications?page=1", opts.Host)
+	if opts.All {
+		url += "&all=true"
+	}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return err
