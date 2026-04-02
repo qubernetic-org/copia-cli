@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"text/tabwriter"
 
 	"github.com/spf13/cobra"
@@ -24,6 +25,7 @@ type ListOptions struct {
 	Repo       string
 	State      string
 	Limit      int
+	Labels     []string
 	JSON       cmdutil.JSONFlags
 }
 
@@ -72,6 +74,7 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 
 	cmd.Flags().StringVarP(&opts.State, "state", "s", "open", "Filter by state: {open|closed|all}")
 	cmd.Flags().IntVarP(&opts.Limit, "limit", "L", 30, "Maximum number of issues")
+	cmd.Flags().StringSliceVarP(&opts.Labels, "label", "l", nil, "Filter by label")
 	cmdutil.AddJSONFlags(cmd, &opts.JSON, validJSONFields)
 
 	return cmd
@@ -88,10 +91,13 @@ func ListRun(opts *ListOptions) error {
 		return fmt.Errorf("invalid state %q: valid values are {open|closed|all}", opts.State)
 	}
 
-	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues?state=%s&limit=%d&type=issues",
+	u := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues?state=%s&limit=%d&type=issues",
 		opts.Host, opts.Owner, opts.Repo, opts.State, opts.Limit)
+	if len(opts.Labels) > 0 {
+		u += "&labels=" + strings.Join(opts.Labels, ",")
+	}
 
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest("GET", u, nil)
 	if err != nil {
 		return err
 	}
