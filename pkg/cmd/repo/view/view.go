@@ -61,14 +61,12 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 					return err
 				}
 				opts.Owner, opts.Repo = owner, repo
-			} else if f.BaseRepo != nil {
-				owner, repo, err := f.BaseRepo()
+			} else {
+				owner, repo, err := f.ResolveRepo()
 				if err != nil {
 					return fmt.Errorf("could not determine repository: %w", err)
 				}
 				opts.Owner, opts.Repo = owner, repo
-			} else {
-				return fmt.Errorf("could not determine repository. Provide owner/repo as argument")
 			}
 
 			opts.HTTPClient = &http.Client{}

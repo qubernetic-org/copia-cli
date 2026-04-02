@@ -98,6 +98,51 @@ func TestFactory_ResolveAuth_NoConfig(t *testing.T) {
 	assert.Contains(t, err.Error(), "no host configured")
 }
 
+func TestFactory_ResolveRepo_FlagOverride(t *testing.T) {
+	f := &Factory{
+		Repo: "flag-org/flag-repo",
+		BaseRepo: func() (string, string, error) {
+			return "git-org", "git-repo", nil
+		},
+	}
+
+	owner, repo, err := f.ResolveRepo()
+	assert.NoError(t, err)
+	assert.Equal(t, "flag-org", owner)
+	assert.Equal(t, "flag-repo", repo)
+}
+
+func TestFactory_ResolveRepo_BaseRepoFallback(t *testing.T) {
+	f := &Factory{
+		BaseRepo: func() (string, string, error) {
+			return "git-org", "git-repo", nil
+		},
+	}
+
+	owner, repo, err := f.ResolveRepo()
+	assert.NoError(t, err)
+	assert.Equal(t, "git-org", owner)
+	assert.Equal(t, "git-repo", repo)
+}
+
+func TestFactory_ResolveRepo_NoRepoNoBaseRepo(t *testing.T) {
+	f := &Factory{}
+
+	_, _, err := f.ResolveRepo()
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "could not determine repository")
+}
+
+func TestFactory_ResolveRepo_InvalidFormat(t *testing.T) {
+	f := &Factory{
+		Repo: "invalid-no-slash",
+	}
+
+	_, _, err := f.ResolveRepo()
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "expected owner/repo format")
+}
+
 func TestParseRemoteURL_HTTPS(t *testing.T) {
 	owner, repo, err := ParseRemoteURL("https://app.copia.io/my-org/my-repo.git")
 	assert.NoError(t, err)
