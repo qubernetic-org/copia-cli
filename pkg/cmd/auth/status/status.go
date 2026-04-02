@@ -15,6 +15,7 @@ type StatusOptions struct {
 	IO         *iostreams.IOStreams
 	ConfigPath string
 	HTTPClient *http.Client
+	Host       string // filter to specific host (optional)
 }
 
 // NewCmdStatus creates the `copia auth status` command.
@@ -29,6 +30,7 @@ func NewCmdStatus(f *cmdutil.Factory) *cobra.Command {
 			opts.IO = f.IOStreams
 			opts.ConfigPath = config.DefaultPath()
 			opts.HTTPClient = &http.Client{}
+			opts.Host = f.Host
 			return StatusRun(opts)
 		},
 	}
@@ -46,7 +48,17 @@ func StatusRun(opts *StatusOptions) error {
 		return fmt.Errorf("not logged in to any Copia instance. Run 'copia auth login'")
 	}
 
+	// If --host is specified, only show that host
+	if opts.Host != "" {
+		if _, ok := cfg.Hosts[opts.Host]; !ok {
+			return fmt.Errorf("not logged in to %s", opts.Host)
+		}
+	}
+
 	for host, hc := range cfg.Hosts {
+		if opts.Host != "" && host != opts.Host {
+			continue
+		}
 		tokenStatus := "Token valid"
 		if opts.HTTPClient != nil {
 			url := fmt.Sprintf("https://%s/api/v1/user", host)
