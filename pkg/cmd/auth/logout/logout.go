@@ -24,7 +24,7 @@ func NewCmdLogout(f *cmdutil.Factory) *cobra.Command {
 		Use:   "logout",
 		Short: "Log out of a Copia instance",
 		Long:  "Remove the stored authentication credentials for a Copia host. This does not revoke the token on the server.",
-		Example: "  copia auth logout --host app.copia.io",
+		Example: "  $ copia-cli auth logout --host app.copia.io",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
 			opts.ConfigPath = config.DefaultPath()

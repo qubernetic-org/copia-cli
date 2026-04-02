@@ -43,9 +43,14 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 		Use:   "view [<owner/repo>]",
 		Short: "View a repository",
 		Long:  "Display the description and other information about a repository. With no argument, the repository for the current directory is displayed.",
-		Example: `  copia repo view
-  copia repo view my-org/my-repo
-  copia repo view --json fullName,description`,
+		Example: `  # View the current repository
+  $ copia-cli repo view
+
+  # View a specific repository
+  $ copia-cli repo view my-org/my-repo
+
+  # View as JSON
+  $ copia-cli repo view --json fullName,description`,
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams

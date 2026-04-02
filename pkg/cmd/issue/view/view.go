@@ -54,8 +54,11 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 		Use:   "view <number>",
 		Short: "View an issue",
 		Long:  "Display the title, body, and other information about an issue.",
-		Example: `  copia issue view 12
-  copia issue view 12 --json number,title,state`,
+		Example: `  # View an issue
+  $ copia-cli issue view 12
+
+  # View as JSON
+  $ copia-cli issue view 12 --json number,title,state`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			num, err := strconv.ParseInt(args[0], 10, 64)

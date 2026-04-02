@@ -38,9 +38,14 @@ func NewCmdMerge(f *cmdutil.Factory) *cobra.Command {
 		Use:   "merge <number>",
 		Short: "Merge a pull request",
 		Long:  "Merge a pull request on Copia. By default a merge commit is created. Use --squash or --rebase to change the merge method.",
-		Example: `  copia pr merge 7
-  copia pr merge 7 --squash
-  copia pr merge 7 --rebase --delete-branch`,
+		Example: `  # Merge a pull request
+  $ copia-cli pr merge 7
+
+  # Squash and merge
+  $ copia-cli pr merge 7 --squash
+
+  # Rebase and delete the branch
+  $ copia-cli pr merge 7 --rebase --delete-branch`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			num, err := strconv.ParseInt(args[0], 10, 64)

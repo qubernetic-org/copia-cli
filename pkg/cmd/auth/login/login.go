@@ -32,10 +32,10 @@ func NewCmdLogin(f *cmdutil.Factory) *cobra.Command {
 		Short: "Authenticate with a Copia instance",
 		Long:  "Authenticate with a Copia host. The default authentication mode is interactive, prompting for host and token. Use --host and --token for non-interactive login in CI environments.",
 		Example: `  # Interactive login
-  copia auth login
+  $ copia-cli auth login
 
   # Non-interactive login (CI/agent)
-  copia auth login --host app.copia.io --token YOUR_TOKEN`,
+  $ copia-cli auth login --host app.copia.io --token YOUR_TOKEN`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
 			opts.ConfigPath = config.DefaultPath()

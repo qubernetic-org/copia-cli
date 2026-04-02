@@ -34,9 +34,14 @@ func NewCmdClose(f *cmdutil.Factory) *cobra.Command {
 		Use:     "close <number>",
 		Short:   "Close a pull request",
 		Long:    "Close a pull request by number. Optionally add a closing comment with --comment or delete the branch with --delete-branch.",
-		Example: `  copia pr close 7
-  copia pr close 7 --comment "Closing in favor of #8"
-  copia pr close 7 --delete-branch`,
+		Example: `  # Close a pull request
+  $ copia-cli pr close 7
+
+  # Close with a comment
+  $ copia-cli pr close 7 --comment "Closing in favor of #8"
+
+  # Close and delete the branch
+  $ copia-cli pr close 7 --delete-branch`,
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			num, err := strconv.ParseInt(args[0], 10, 64)

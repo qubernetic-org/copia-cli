@@ -28,7 +28,7 @@ func NewCmdDiff(f *cmdutil.Factory) *cobra.Command {
 		Use:     "diff <number>",
 		Short:   "View diff for a pull request",
 		Long:    "View changes in a pull request as a unified diff.",
-		Example: "  copia pr diff 7",
+		Example: "  $ copia-cli pr diff 7",
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			num, err := strconv.ParseInt(args[0], 10, 64)

@@ -34,8 +34,8 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 		Short:   "List your organizations",
 		Long:    "List organizations that the authenticated user belongs to.",
 		Aliases: []string{"ls"},
-		Example: `  copia org list
-  copia org list --json username,full_name`,
+		Example: `  $ copia-cli org list
+  $ copia-cli org list --json username,full_name`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
 			host, token, err := f.ResolveAuth()

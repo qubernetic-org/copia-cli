@@ -42,8 +42,8 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 		Short:   "List releases",
 		Long:    "List releases in a Copia repository, ordered by creation date.",
 		Aliases: []string{"ls"},
-		Example: `  copia release list
-  copia release list --json tagName,name`,
+		Example: `  $ copia-cli release list
+  $ copia-cli release list --json tagName,name`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
 			host, token, err := f.ResolveAuth()

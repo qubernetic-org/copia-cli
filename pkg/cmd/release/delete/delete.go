@@ -28,7 +28,7 @@ func NewCmdDelete(f *cmdutil.Factory) *cobra.Command {
 		Use:     "delete <tag>",
 		Short:   "Delete a release",
 		Long:    "Delete a release from a Copia repository by tag name.",
-		Example: "  copia release delete v1.0.0",
+		Example: "  $ copia-cli release delete v1.0.0",
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.Tag = args[0]
