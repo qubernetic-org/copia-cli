@@ -64,6 +64,10 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 }
 
 func ListRun(opts *ListOptions) error {
+	if err := cmdutil.ValidateLimit(opts.Limit); err != nil {
+		return err
+	}
+
 	endpoint := "/api/v1/user/repos"
 	if opts.Org != "" {
 		endpoint = fmt.Sprintf("/api/v1/orgs/%s/repos", opts.Org)

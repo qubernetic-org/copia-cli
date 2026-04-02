@@ -84,6 +84,10 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 }
 
 func ListRun(opts *ListOptions) error {
+	if err := cmdutil.ValidateLimit(opts.Limit); err != nil {
+		return err
+	}
+
 	switch opts.State {
 	case "open", "closed", "merged", "all":
 	default:

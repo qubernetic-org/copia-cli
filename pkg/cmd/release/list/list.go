@@ -70,6 +70,10 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 }
 
 func ListRun(opts *ListOptions) error {
+	if err := cmdutil.ValidateLimit(opts.Limit); err != nil {
+		return err
+	}
+
 	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/releases?limit=%d",
 		opts.Host, opts.Owner, opts.Repo, opts.Limit)
 
