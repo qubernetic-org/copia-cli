@@ -73,4 +73,4 @@ Phase 4: winget, OS keyring, aliases, browse, status dashboard, ssh-key, pr chec
 
 - `docs/api-reference.md` — Full Gitea API endpoint mapping with request/response examples
 - `docs/authentication.md` — Auth methods, token generation, config file format, multi-instance setup
-- `docs/gh-parity.md` — Feature parity tracker (48 implementable commands: 42 full, 6 partial, 14 impossible)
+- `docs/parity.md` — Feature parity tracker (48 implementable commands: 42 full, 6 partial, 14 impossible)
