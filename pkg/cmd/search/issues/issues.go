@@ -78,11 +78,13 @@ func SearchRun(opts *SearchOptions) error {
 		return err
 	}
 
-	u := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues?q=%s&limit=%d&type=issues",
-		opts.Host, opts.Owner, opts.Repo, url.QueryEscape(opts.Query), opts.Limit)
-	if opts.State != "" {
-		u += "&state=" + url.QueryEscape(opts.State)
+	state := opts.State
+	if state == "" {
+		state = "all"
 	}
+
+	u := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues?q=%s&limit=%d&type=issues&state=%s",
+		opts.Host, opts.Owner, opts.Repo, url.QueryEscape(opts.Query), opts.Limit, url.QueryEscape(state))
 
 	req, err := http.NewRequest("GET", u, nil)
 	if err != nil {
