@@ -59,7 +59,7 @@ func statusRun(opts *StatusOptions) error {
 				if err != nil {
 					tokenStatus = fmt.Sprintf("Error: %v", err)
 				} else {
-					_ = resp.Body.Close()
+					defer func() { _ = resp.Body.Close() }()
 					if resp.StatusCode != http.StatusOK {
 						tokenStatus = fmt.Sprintf("Token invalid (HTTP %d)", resp.StatusCode)
 					}

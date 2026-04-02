@@ -105,7 +105,7 @@ func viewRun(opts *ViewOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode == http.StatusNotFound {
 		return fmt.Errorf("PR #%d not found", opts.Number)

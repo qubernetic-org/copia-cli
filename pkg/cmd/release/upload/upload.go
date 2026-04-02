@@ -152,7 +152,7 @@ func uploadFile(opts *UploadOptions, releaseID int64, filePath string) error {
 	if err != nil {
 		return err
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusCreated {
 		return fmt.Errorf("HTTP %d", resp.StatusCode)
