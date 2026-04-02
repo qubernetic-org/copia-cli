@@ -15,8 +15,8 @@ Copia requires authentication for **all** API calls. There is no anonymous acces
 ### Use the Token
 
 ```bash
-# CLI (planned)
-copia auth login --token <your-token>
+# CLI
+copia-cli auth login --token <your-token>
 
 # Direct API call
 curl -H "Authorization: token <your-token>" \

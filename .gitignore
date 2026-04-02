@@ -24,4 +24,4 @@ thumbs.db
 *.test
 coverage.out
 AUDIT.md
-docs/ghcli_manual_ref/
+docs/superpowers/
