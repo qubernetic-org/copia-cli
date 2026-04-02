@@ -34,7 +34,7 @@ func TestSearchRepos_Success(t *testing.T) {
 		Limit:      30,
 	}
 
-	err := searchRun(opts)
+	err := SearchRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "plc-project")
 }
@@ -62,7 +62,7 @@ func TestSearchRepos_JSON(t *testing.T) {
 		JSON:       cmdutil.JSONFlags{Fields: []string{"fullName"}},
 	}
 
-	err := searchRun(opts)
+	err := SearchRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), `"full_name"`)
 }

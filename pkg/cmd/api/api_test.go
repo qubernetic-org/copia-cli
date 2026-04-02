@@ -30,7 +30,7 @@ func TestApiRun_GET(t *testing.T) {
 		Path:       "/user",
 	}
 
-	err := apiRun(opts)
+	err := APIRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "john")
 }
@@ -56,7 +56,7 @@ func TestApiRun_POST_WithFields(t *testing.T) {
 		Fields:     []string{"title=test issue", "body=description"},
 	}
 
-	err := apiRun(opts)
+	err := APIRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "test issue")
 }
@@ -81,7 +81,7 @@ func TestApiRun_DELETE(t *testing.T) {
 		Path:       "/repos/my-org/my-repo",
 	}
 
-	err := apiRun(opts)
+	err := APIRun(opts)
 	require.NoError(t, err)
 }
 
@@ -104,7 +104,7 @@ func TestApiRun_DefaultMethodGET(t *testing.T) {
 		Path:       "/version",
 	}
 
-	err := apiRun(opts)
+	err := APIRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "1.21.0")
 }
@@ -114,7 +114,7 @@ func TestApiRun_MissingPath(t *testing.T) {
 
 	opts := &APIOptions{IO: ios, Path: ""}
 
-	err := apiRun(opts)
+	err := APIRun(opts)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "path required")
 }

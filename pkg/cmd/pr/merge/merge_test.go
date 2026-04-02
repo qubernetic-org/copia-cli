@@ -32,7 +32,7 @@ func TestMergeRun_Success(t *testing.T) {
 		Method:     "merge",
 	}
 
-	err := mergeRun(opts)
+	err := MergeRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Merged PR #7")
 }
@@ -59,7 +59,7 @@ func TestMergeRun_Squash(t *testing.T) {
 		Method:     "squash",
 	}
 
-	err := mergeRun(opts)
+	err := MergeRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Merged PR #7")
 }
@@ -87,7 +87,7 @@ func TestMergeRun_WithDeleteBranch(t *testing.T) {
 		DeleteBranch: true,
 	}
 
-	err := mergeRun(opts)
+	err := MergeRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Merged PR #7")
 }

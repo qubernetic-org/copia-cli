@@ -34,7 +34,7 @@ func TestListRun_Success(t *testing.T) {
 		Repo:       "my-repo",
 	}
 
-	err := listRun(opts)
+	err := ListRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "bug")
 	assert.Contains(t, stdout.String(), "feature")
@@ -63,7 +63,7 @@ func TestListRun_JSON(t *testing.T) {
 		JSON:       cmdutil.JSONFlags{Fields: []string{"name", "color"}},
 	}
 
-	err := listRun(opts)
+	err := ListRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), `"name"`)
 	assert.Contains(t, stdout.String(), "bug")

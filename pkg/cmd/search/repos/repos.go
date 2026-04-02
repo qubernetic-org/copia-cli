@@ -41,8 +41,9 @@ func NewCmdSearchRepos(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "repos <query>",
 		Short: "Search repositories",
-		Example: `  copia search repos plc
-  copia search repos "automation controller" --json fullName,description`,
+		Long:  "Search for repositories on Copia matching the given query string.",
+		Example: `  $ copia-cli search repos plc
+  $ copia-cli search repos "automation controller" --json fullName,description`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.Query = args[0]
@@ -55,7 +56,7 @@ func NewCmdSearchRepos(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 			opts.HTTPClient = &http.Client{}
-			return searchRun(opts)
+			return SearchRun(opts)
 		},
 	}
 
@@ -65,7 +66,11 @@ func NewCmdSearchRepos(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func searchRun(opts *SearchOptions) error {
+func SearchRun(opts *SearchOptions) error {
+	if err := cmdutil.ValidateLimit(opts.Limit); err != nil {
+		return err
+	}
+
 	u := fmt.Sprintf("https://%s/api/v1/repos/search?q=%s&limit=%d",
 		opts.Host, url.QueryEscape(opts.Query), opts.Limit)
 
@@ -79,7 +84,7 @@ func searchRun(opts *SearchOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("API error (HTTP %d)", resp.StatusCode)

@@ -30,11 +30,12 @@ func NewCmdLogin(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "login",
 		Short: "Authenticate with a Copia instance",
+		Long:  "Authenticate with a Copia host. The default authentication mode is interactive, prompting for host and token. Use --host and --token for non-interactive login in CI environments.",
 		Example: `  # Interactive login
-  copia auth login
+  $ copia-cli auth login
 
   # Non-interactive login (CI/agent)
-  copia auth login --host app.copia.io --token YOUR_TOKEN`,
+  $ copia-cli auth login --host app.copia.io --token YOUR_TOKEN`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
 			opts.ConfigPath = config.DefaultPath()
@@ -65,7 +66,7 @@ func NewCmdLogin(f *cmdutil.Factory) *cobra.Command {
 			}
 
 			opts.HTTPClient = &http.Client{}
-			return loginRun(opts)
+			return LoginRun(opts)
 		},
 	}
 
@@ -80,7 +81,7 @@ type userResponse struct {
 	ID    int64  `json:"id"`
 }
 
-func loginRun(opts *LoginOptions) error {
+func LoginRun(opts *LoginOptions) error {
 	url := fmt.Sprintf("https://%s/api/v1/user", opts.Host)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

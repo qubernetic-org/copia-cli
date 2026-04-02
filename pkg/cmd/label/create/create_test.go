@@ -33,7 +33,7 @@ func TestCreateRun_Success(t *testing.T) {
 		Description: "Critical issue",
 	}
 
-	err := createRun(opts)
+	err := CreateRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "critical")
 }
@@ -46,7 +46,7 @@ func TestCreateRun_MissingName(t *testing.T) {
 		Name: "",
 	}
 
-	err := createRun(opts)
+	err := CreateRun(opts)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "name required")
 }

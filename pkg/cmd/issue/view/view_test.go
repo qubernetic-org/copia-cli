@@ -38,7 +38,7 @@ func TestViewRun_Success(t *testing.T) {
 		Number:     12,
 	}
 
-	err := viewRun(opts)
+	err := ViewRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Fix PLC connection timeout")
 	assert.Contains(t, stdout.String(), "john")
@@ -69,7 +69,7 @@ func TestViewRun_JSON(t *testing.T) {
 		JSON:       cmdutil.JSONFlags{Fields: []string{"number", "title"}},
 	}
 
-	err := viewRun(opts)
+	err := ViewRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), `"number"`)
 }
@@ -95,7 +95,7 @@ func TestViewRun_NotFound(t *testing.T) {
 		Number:     999,
 	}
 
-	err := viewRun(opts)
+	err := ViewRun(opts)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "not found")
 }

@@ -52,10 +52,11 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "List pull requests",
+		Long:    "List pull requests in a Copia repository. By default, only open pull requests are listed.",
 		Aliases: []string{"ls"},
-		Example: `  copia pr list
-  copia pr list --state closed
-  copia pr list --json number,title,state`,
+		Example: `  $ copia-cli pr list
+  $ copia-cli pr list --state closed
+  $ copia-cli pr list --json number,title,state`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
 			host, token, err := f.ResolveAuth()
@@ -65,17 +66,14 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Run from inside a git repository")
-			}
-			owner, repo, err := f.BaseRepo()
+			owner, repo, err := f.ResolveRepo()
 			if err != nil {
 				return err
 			}
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return listRun(opts)
+			return ListRun(opts)
 		},
 	}
 
@@ -86,7 +84,17 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func listRun(opts *ListOptions) error {
+func ListRun(opts *ListOptions) error {
+	if err := cmdutil.ValidateLimit(opts.Limit); err != nil {
+		return err
+	}
+
+	switch opts.State {
+	case "open", "closed", "merged", "all":
+	default:
+		return fmt.Errorf("invalid state %q: valid values are {open|closed|merged|all}", opts.State)
+	}
+
 	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/pulls?state=%s&limit=%d",
 		opts.Host, opts.Owner, opts.Repo, opts.State, opts.Limit)
 
@@ -100,7 +108,7 @@ func listRun(opts *ListOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("API error (HTTP %d)", resp.StatusCode)

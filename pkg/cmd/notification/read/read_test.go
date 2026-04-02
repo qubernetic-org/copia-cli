@@ -29,7 +29,7 @@ func TestReadRun_MarkAll(t *testing.T) {
 		All:        true,
 	}
 
-	err := readRun(opts)
+	err := ReadRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "All notifications marked as read")
 }
@@ -53,7 +53,7 @@ func TestReadRun_MarkSingle(t *testing.T) {
 		ThreadID:   42,
 	}
 
-	err := readRun(opts)
+	err := ReadRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Notification #42 marked as read")
 }

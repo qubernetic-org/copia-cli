@@ -14,8 +14,13 @@ func NewCmdOrg(f *cmdutil.Factory) *cobra.Command {
 		Long:  "Work with Copia organizations.",
 	}
 
-	cmd.AddCommand(listCmd.NewCmdList(f))
-	cmd.AddCommand(viewCmd.NewCmdView(f))
+	cmdutil.AddGroup(cmd, "General commands",
+		listCmd.NewCmdList(f),
+	)
+
+	cmdutil.AddGroup(cmd, "Targeted commands",
+		viewCmd.NewCmdView(f),
+	)
 
 	return cmd
 }

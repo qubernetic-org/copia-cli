@@ -22,6 +22,7 @@ func NewCmdCheckout(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "checkout <number>",
 		Short: "Check out a pull request locally",
+		Long:  "Check out a pull request branch in the local git repository.",
 		Example: `  copia pr checkout 7`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

@@ -47,8 +47,12 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create <tag>",
 		Short: "Create a release",
-		Example: `  copia release create v1.0.0 --title "Release 1.0.0" --notes "Changelog here"
-  copia release create v2.0.0-rc.1 --draft --prerelease`,
+		Long:  "Create a new release for a Copia repository. A tag name is required. Use --draft or --prerelease to control release visibility.",
+		Example: `  # Create a release
+  $ copia-cli release create v1.0.0 --title "Release 1.0.0" --notes "Changelog here"
+
+  # Create a draft prerelease
+  $ copia-cli release create v2.0.0-rc.1 --draft --prerelease`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.Tag = args[0]
@@ -61,17 +65,14 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Run from inside a git repository")
-			}
-			owner, repo, err := f.BaseRepo()
+			owner, repo, err := f.ResolveRepo()
 			if err != nil {
 				return err
 			}
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return createRun(opts)
+			return CreateRun(opts)
 		},
 	}
 
@@ -83,7 +84,7 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func createRun(opts *CreateOptions) error {
+func CreateRun(opts *CreateOptions) error {
 	if opts.Tag == "" {
 		return fmt.Errorf("tag required")
 	}
@@ -113,7 +114,7 @@ func createRun(opts *CreateOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusCreated {
 		respBody, _ := io.ReadAll(resp.Body)

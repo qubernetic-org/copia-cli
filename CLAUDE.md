@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Copia CLI is a command-line interface for [Copia](https://copia.io) — the source control platform for industrial automation. Modeled after GitHub CLI (`gh`), built on the Gitea-compatible REST API. Phase 1 (MVP) and Phase 2 (Workflow) are complete with 30+ subcommands across 7 command groups.
 
-**Owner:** Qubernetic (MIT)
+**Owner:** Qubernetic (AGPL-3.0 + Commercial)
 
 ## Development Environment
 
@@ -73,4 +73,4 @@ Phase 4: winget, OS keyring, aliases, browse, status dashboard, ssh-key, pr chec
 
 - `docs/api-reference.md` — Full Gitea API endpoint mapping with request/response examples
 - `docs/authentication.md` — Auth methods, token generation, config file format, multi-instance setup
-- `docs/gh-parity.md` — Feature parity tracker (48 implementable commands: 42 full, 6 partial, 14 impossible)
+- `docs/parity.md` — Feature parity tracker (48 implementable commands: 42 full, 6 partial, 14 impossible)

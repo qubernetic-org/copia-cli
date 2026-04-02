@@ -31,8 +31,12 @@ func NewCmdUpload(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "upload <tag> <files>...",
 		Short: "Upload assets to a release",
-		Example: `  copia release upload v1.0.0 binary.tar.gz
-  copia release upload v1.0.0 *.tar.gz *.zip`,
+		Long:  "Upload asset files to a Copia release. Specify the release tag followed by one or more file paths.",
+		Example: `  # Upload a single asset
+  $ copia-cli release upload v1.0.0 binary.tar.gz
+
+  # Upload multiple assets
+  $ copia-cli release upload v1.0.0 *.tar.gz *.zip`,
 		Args: cobra.MinimumNArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.Tag = args[0]
@@ -46,24 +50,21 @@ func NewCmdUpload(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Run from inside a git repository")
-			}
-			owner, repo, err := f.BaseRepo()
+			owner, repo, err := f.ResolveRepo()
 			if err != nil {
 				return err
 			}
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return uploadRun(opts)
+			return UploadRun(opts)
 		},
 	}
 
 	return cmd
 }
 
-func uploadRun(opts *UploadOptions) error {
+func UploadRun(opts *UploadOptions) error {
 	// Validate files exist first
 	for _, f := range opts.Files {
 		if _, err := os.Stat(f); err != nil {
@@ -152,7 +153,7 @@ func uploadFile(opts *UploadOptions, releaseID int64, filePath string) error {
 	if err != nil {
 		return err
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusCreated {
 		return fmt.Errorf("HTTP %d", resp.StatusCode)

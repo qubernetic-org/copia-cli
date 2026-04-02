@@ -39,10 +39,11 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "List repositories",
+		Long:    "List repositories owned by the authenticated user or a specified organization.",
 		Aliases: []string{"ls"},
-		Example: `  copia repo list
-  copia repo list --org my-org
-  copia repo list --json fullName,description`,
+		Example: `  $ copia-cli repo list
+  $ copia-cli repo list --org my-org
+  $ copia-cli repo list --json fullName,description`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
 			host, token, err := f.ResolveAuth()
@@ -52,7 +53,7 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 			opts.HTTPClient = &http.Client{}
-			return listRun(opts)
+			return ListRun(opts)
 		},
 	}
 
@@ -63,7 +64,11 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func listRun(opts *ListOptions) error {
+func ListRun(opts *ListOptions) error {
+	if err := cmdutil.ValidateLimit(opts.Limit); err != nil {
+		return err
+	}
+
 	endpoint := "/api/v1/user/repos"
 	if opts.Org != "" {
 		endpoint = fmt.Sprintf("/api/v1/orgs/%s/repos", opts.Org)
@@ -80,7 +85,7 @@ func listRun(opts *ListOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("API error (HTTP %d)", resp.StatusCode)

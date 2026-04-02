@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"text/tabwriter"
 
 	"github.com/spf13/cobra"
@@ -24,6 +25,7 @@ type ListOptions struct {
 	Repo       string
 	State      string
 	Limit      int
+	Labels     []string
 	JSON       cmdutil.JSONFlags
 }
 
@@ -46,10 +48,11 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "List issues in a repository",
+		Long:    "List issues in a Copia repository. By default, only open issues are listed.",
 		Aliases: []string{"ls"},
-		Example: `  copia issue list
-  copia issue list --state closed
-  copia issue list --json number,title,state`,
+		Example: `  $ copia-cli issue list
+  $ copia-cli issue list --state closed
+  $ copia-cli issue list --json number,title,state`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
 			host, token, err := f.ResolveAuth()
@@ -59,32 +62,43 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Run from inside a git repository")
-			}
-			owner, repo, err := f.BaseRepo()
+			owner, repo, err := f.ResolveRepo()
 			if err != nil {
 				return err
 			}
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return listRun(opts)
+			return ListRun(opts)
 		},
 	}
 
 	cmd.Flags().StringVarP(&opts.State, "state", "s", "open", "Filter by state: {open|closed|all}")
 	cmd.Flags().IntVarP(&opts.Limit, "limit", "L", 30, "Maximum number of issues")
+	cmd.Flags().StringSliceVarP(&opts.Labels, "label", "l", nil, "Filter by label")
 	cmdutil.AddJSONFlags(cmd, &opts.JSON, validJSONFields)
 
 	return cmd
 }
 
-func listRun(opts *ListOptions) error {
-	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues?state=%s&limit=%d&type=issues",
-		opts.Host, opts.Owner, opts.Repo, opts.State, opts.Limit)
+func ListRun(opts *ListOptions) error {
+	if err := cmdutil.ValidateLimit(opts.Limit); err != nil {
+		return err
+	}
 
-	req, err := http.NewRequest("GET", url, nil)
+	switch opts.State {
+	case "open", "closed", "all":
+	default:
+		return fmt.Errorf("invalid state %q: valid values are {open|closed|all}", opts.State)
+	}
+
+	u := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues?state=%s&limit=%d&type=issues",
+		opts.Host, opts.Owner, opts.Repo, opts.State, opts.Limit)
+	if len(opts.Labels) > 0 {
+		u += "&labels=" + strings.Join(opts.Labels, ",")
+	}
+
+	req, err := http.NewRequest("GET", u, nil)
 	if err != nil {
 		return err
 	}
@@ -94,7 +108,7 @@ func listRun(opts *ListOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("API error (HTTP %d)", resp.StatusCode)

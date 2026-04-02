@@ -32,9 +32,10 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "List your organizations",
+		Long:    "List organizations that the authenticated user belongs to.",
 		Aliases: []string{"ls"},
-		Example: `  copia org list
-  copia org list --json username,full_name`,
+		Example: `  $ copia-cli org list
+  $ copia-cli org list --json username,full_name`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
 			host, token, err := f.ResolveAuth()
@@ -44,7 +45,7 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 			opts.HTTPClient = &http.Client{}
-			return listRun(opts)
+			return ListRun(opts)
 		},
 	}
 
@@ -52,7 +53,7 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func listRun(opts *ListOptions) error {
+func ListRun(opts *ListOptions) error {
 	url := fmt.Sprintf("https://%s/api/v1/user/orgs", opts.Host)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -64,7 +65,7 @@ func listRun(opts *ListOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("API error (HTTP %d)", resp.StatusCode)

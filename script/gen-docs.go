@@ -3,18 +3,17 @@ package main
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
 
-	"github.com/spf13/cobra/doc"
 	"github.com/qubernetic/copia-cli/internal/config"
 	"github.com/qubernetic/copia-cli/internal/copiacmd"
+	"github.com/qubernetic/copia-cli/internal/docs"
 	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 func main() {
-	outDir := "docs/manual/src/commands"
+	outDir := "docs/site/manual"
 	if len(os.Args) > 1 {
 		outDir = os.Args[1]
 	}
@@ -36,21 +35,17 @@ func main() {
 	rootCmd.DisableAutoGenTag = true
 
 	linkHandler := func(name string) string {
-		base := strings.TrimSuffix(name, ".md")
-		return base + ".md"
+		return "./" + strings.TrimSuffix(name, ".md")
 	}
 
-	filePrepender := func(filename string) string {
-		name := filepath.Base(filename)
-		name = strings.TrimSuffix(name, ".md")
-		name = strings.ReplaceAll(name, "_", " ")
-		return fmt.Sprintf("# %s\n\n", name)
+	filePrepender := func(_ string) string {
+		return "---\nlayout: manual\npermalink: /:path/:basename\n---\n\n"
 	}
 
-	if err := doc.GenMarkdownTreeCustom(rootCmd, outDir, filePrepender, linkHandler); err != nil {
+	if err := docs.GenMarkdownTreeCustom(rootCmd, outDir, filePrepender, linkHandler); err != nil {
 		fmt.Fprintf(os.Stderr, "Error generating docs: %v\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Printf("Generated command docs in %s\n", outDir)
+	fmt.Printf("Generated docs in %s\n", outDir)
 }

@@ -11,6 +11,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestListRun_InvalidState(t *testing.T) {
+	ios, _, _, _ := iostreams.Test()
+
+	opts := &ListOptions{
+		IO:    ios,
+		State: "invalid",
+		Limit: 30,
+	}
+
+	err := ListRun(opts)
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "invalid state")
+}
+
 func TestListRun_Success(t *testing.T) {
 	reg := &httpmock.Registry{}
 	defer reg.Verify(t)
@@ -36,7 +50,7 @@ func TestListRun_Success(t *testing.T) {
 		Limit:      30,
 	}
 
-	err := listRun(opts)
+	err := ListRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "add cylinder wrapper")
 	assert.Contains(t, stdout.String(), "sensor timeout")
@@ -67,7 +81,7 @@ func TestListRun_JSON(t *testing.T) {
 		JSON:       cmdutil.JSONFlags{Fields: []string{"number", "title"}},
 	}
 
-	err := listRun(opts)
+	err := ListRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), `"number"`)
 }

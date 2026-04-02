@@ -31,7 +31,8 @@ func NewCmdComment(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "comment <number>",
 		Short:   "Add a comment to an issue",
-		Example: `  copia issue comment 12 --body "Investigating this now."`,
+		Long:    "Add a comment to a Copia issue. The comment body is supplied via the --body flag.",
+		Example: `  $ copia-cli issue comment 12 --body "Investigating this now."`,
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			num, err := strconv.ParseInt(args[0], 10, 64)
@@ -48,17 +49,14 @@ func NewCmdComment(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Run from inside a git repository")
-			}
-			owner, repo, err := f.BaseRepo()
+			owner, repo, err := f.ResolveRepo()
 			if err != nil {
 				return err
 			}
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return commentRun(opts)
+			return CommentRun(opts)
 		},
 	}
 
@@ -67,7 +65,7 @@ func NewCmdComment(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func commentRun(opts *CommentOptions) error {
+func CommentRun(opts *CommentOptions) error {
 	if opts.Body == "" {
 		return fmt.Errorf("body required")
 	}
@@ -87,7 +85,7 @@ func commentRun(opts *CommentOptions) error {
 	if err != nil {
 		return err
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusCreated {
 		return fmt.Errorf("failed to add comment (HTTP %d)", resp.StatusCode)

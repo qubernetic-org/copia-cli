@@ -41,8 +41,8 @@ func NewCmdSearchIssues(f *cmdutil.Factory) *cobra.Command {
 		Use:   "issues <query>",
 		Short: "Search issues in a repository",
 		Long:  "Search issues within the current repository. Requires repo context (git remote or owner/repo argument).",
-		Example: `  copia search issues "sensor timeout"
-  copia search issues bug --state closed`,
+		Example: `  $ copia-cli search issues "sensor timeout"
+  $ copia-cli search issues bug --state closed`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.Query = args[0]
@@ -55,17 +55,14 @@ func NewCmdSearchIssues(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Run from inside a git repository")
-			}
-			owner, repo, err := f.BaseRepo()
+			owner, repo, err := f.ResolveRepo()
 			if err != nil {
 				return err
 			}
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return searchRun(opts)
+			return SearchRun(opts)
 		},
 	}
 
@@ -76,12 +73,18 @@ func NewCmdSearchIssues(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func searchRun(opts *SearchOptions) error {
-	u := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues?q=%s&limit=%d&type=issues",
-		opts.Host, opts.Owner, opts.Repo, url.QueryEscape(opts.Query), opts.Limit)
-	if opts.State != "" {
-		u += "&state=" + url.QueryEscape(opts.State)
+func SearchRun(opts *SearchOptions) error {
+	if err := cmdutil.ValidateLimit(opts.Limit); err != nil {
+		return err
 	}
+
+	state := opts.State
+	if state == "" {
+		state = "all"
+	}
+
+	u := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues?q=%s&limit=%d&type=issues&state=%s",
+		opts.Host, opts.Owner, opts.Repo, url.QueryEscape(opts.Query), opts.Limit, url.QueryEscape(state))
 
 	req, err := http.NewRequest("GET", u, nil)
 	if err != nil {
@@ -93,7 +96,7 @@ func searchRun(opts *SearchOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("API error (HTTP %d)", resp.StatusCode)

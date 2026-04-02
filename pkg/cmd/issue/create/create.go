@@ -44,8 +44,12 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create",
 		Short: "Create an issue",
-		Example: `  copia issue create --title "Fix sensor mapping" --label bug
-  copia issue create --title "Add feature" --body "Description here"`,
+		Long:  "Create an issue on Copia. The title is required; body and labels are optional.",
+		Example: `  # Create an issue with a label
+  $ copia-cli issue create --title "Fix sensor mapping" --label bug
+
+  # Create an issue with a body
+  $ copia-cli issue create --title "Add feature" --body "Description here"`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
 			host, token, err := f.ResolveAuth()
@@ -55,17 +59,14 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Run from inside a git repository")
-			}
-			owner, repo, err := f.BaseRepo()
+			owner, repo, err := f.ResolveRepo()
 			if err != nil {
 				return err
 			}
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return createRun(opts)
+			return CreateRun(opts)
 		},
 	}
 
@@ -76,7 +77,7 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func createRun(opts *CreateOptions) error {
+func CreateRun(opts *CreateOptions) error {
 	if opts.Title == "" {
 		return fmt.Errorf("title required")
 	}
@@ -104,7 +105,7 @@ func createRun(opts *CreateOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusCreated {
 		respBody, _ := io.ReadAll(resp.Body)

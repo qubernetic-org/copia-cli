@@ -33,7 +33,8 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "view <org>",
 		Short:   "View an organization",
-		Example: "  copia org view my-org",
+		Long:    "Display information about a Copia organization, including its description and member visibility settings.",
+		Example: "  $ copia-cli org view my-org",
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.Name = args[0]
@@ -45,7 +46,7 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 			opts.HTTPClient = &http.Client{}
-			return viewRun(opts)
+			return ViewRun(opts)
 		},
 	}
 
@@ -53,7 +54,7 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func viewRun(opts *ViewOptions) error {
+func ViewRun(opts *ViewOptions) error {
 	url := fmt.Sprintf("https://%s/api/v1/orgs/%s", opts.Host, opts.Name)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -65,7 +66,7 @@ func viewRun(opts *ViewOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode == http.StatusNotFound {
 		return fmt.Errorf("organization %s not found", opts.Name)

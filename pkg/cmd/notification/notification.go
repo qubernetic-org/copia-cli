@@ -14,8 +14,10 @@ func NewCmdNotification(f *cmdutil.Factory) *cobra.Command {
 		Long:  "Work with Copia notifications.",
 	}
 
-	cmd.AddCommand(listCmd.NewCmdList(f))
-	cmd.AddCommand(readCmd.NewCmdRead(f))
+	cmdutil.AddGroup(cmd, "General commands",
+		listCmd.NewCmdList(f),
+		readCmd.NewCmdRead(f),
+	)
 
 	return cmd
 }
