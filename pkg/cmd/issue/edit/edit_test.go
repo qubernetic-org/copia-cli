@@ -32,7 +32,7 @@ func TestEditRun_SetTitle(t *testing.T) {
 		Title:      "Updated title",
 	}
 
-	err := editRun(opts)
+	err := EditRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Updated issue #12")
 }
@@ -63,7 +63,7 @@ func TestEditRun_AddLabels(t *testing.T) {
 		AddLabels:  []string{"bug"},
 	}
 
-	err := editRun(opts)
+	err := EditRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Updated issue #12")
 }
@@ -90,7 +90,7 @@ func TestEditRun_SetAssignees(t *testing.T) {
 		Assignees:  []string{"john", "jane"},
 	}
 
-	err := editRun(opts)
+	err := EditRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Updated issue #12")
 }
@@ -117,7 +117,7 @@ func TestEditRun_SetMilestone(t *testing.T) {
 		Milestone:  1,
 	}
 
-	err := editRun(opts)
+	err := EditRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Updated issue #12")
 }
@@ -130,7 +130,7 @@ func TestEditRun_NothingToEdit(t *testing.T) {
 		Number: 12,
 	}
 
-	err := editRun(opts)
+	err := EditRun(opts)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "nothing to edit")
 }

@@ -77,7 +77,7 @@ func NewCmdReview(f *cmdutil.Factory) *cobra.Command {
 			}
 
 			opts.HTTPClient = &http.Client{}
-			return reviewRun(opts)
+			return ReviewRun(opts)
 		},
 	}
 
@@ -89,7 +89,7 @@ func NewCmdReview(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func reviewRun(opts *ReviewOptions) error {
+func ReviewRun(opts *ReviewOptions) error {
 	payload := reviewRequest{
 		Event: opts.Event,
 		Body:  opts.Body,

@@ -55,7 +55,7 @@ func NewCmdComment(f *cmdutil.Factory) *cobra.Command {
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return commentRun(opts)
+			return CommentRun(opts)
 		},
 	}
 
@@ -64,7 +64,7 @@ func NewCmdComment(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func commentRun(opts *CommentOptions) error {
+func CommentRun(opts *CommentOptions) error {
 	if opts.Body == "" {
 		return fmt.Errorf("body required")
 	}

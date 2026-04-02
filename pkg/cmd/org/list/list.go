@@ -44,7 +44,7 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 			opts.HTTPClient = &http.Client{}
-			return listRun(opts)
+			return ListRun(opts)
 		},
 	}
 
@@ -52,7 +52,7 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func listRun(opts *ListOptions) error {
+func ListRun(opts *ListOptions) error {
 	url := fmt.Sprintf("https://%s/api/v1/user/orgs", opts.Host)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

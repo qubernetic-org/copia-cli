@@ -56,7 +56,7 @@ func NewCmdClose(f *cmdutil.Factory) *cobra.Command {
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return closeRun(opts)
+			return CloseRun(opts)
 		},
 	}
 
@@ -65,7 +65,7 @@ func NewCmdClose(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func closeRun(opts *CloseOptions) error {
+func CloseRun(opts *CloseOptions) error {
 	if opts.Comment != "" {
 		commentPayload, _ := json.Marshal(map[string]string{"body": opts.Comment})
 		commentURL := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues/%d/comments",

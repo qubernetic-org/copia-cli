@@ -61,7 +61,7 @@ func NewCmdEdit(f *cmdutil.Factory) *cobra.Command {
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return editRun(opts)
+			return EditRun(opts)
 		},
 	}
 
@@ -74,7 +74,7 @@ func NewCmdEdit(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func editRun(opts *EditOptions) error {
+func EditRun(opts *EditOptions) error {
 	hasIssueUpdate := opts.Title != "" || opts.Body != "" || len(opts.Assignees) > 0 || opts.Milestone > 0
 	hasLabelAdd := len(opts.AddLabels) > 0
 

@@ -29,14 +29,14 @@ func NewCmdStatus(f *cmdutil.Factory) *cobra.Command {
 			opts.IO = f.IOStreams
 			opts.ConfigPath = config.DefaultPath()
 			opts.HTTPClient = &http.Client{}
-			return statusRun(opts)
+			return StatusRun(opts)
 		},
 	}
 
 	return cmd
 }
 
-func statusRun(opts *StatusOptions) error {
+func StatusRun(opts *StatusOptions) error {
 	cfg, err := config.Load(opts.ConfigPath)
 	if err != nil {
 		return err

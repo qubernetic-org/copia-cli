@@ -53,14 +53,14 @@ func NewCmdUpload(f *cmdutil.Factory) *cobra.Command {
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return uploadRun(opts)
+			return UploadRun(opts)
 		},
 	}
 
 	return cmd
 }
 
-func uploadRun(opts *UploadOptions) error {
+func UploadRun(opts *UploadOptions) error {
 	// Validate files exist first
 	for _, f := range opts.Files {
 		if _, err := os.Stat(f); err != nil {

@@ -55,7 +55,7 @@ func NewCmdSearchRepos(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 			opts.HTTPClient = &http.Client{}
-			return searchRun(opts)
+			return SearchRun(opts)
 		},
 	}
 
@@ -65,7 +65,7 @@ func NewCmdSearchRepos(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func searchRun(opts *SearchOptions) error {
+func SearchRun(opts *SearchOptions) error {
 	u := fmt.Sprintf("https://%s/api/v1/repos/search?q=%s&limit=%d",
 		opts.Host, url.QueryEscape(opts.Query), opts.Limit)
 

@@ -72,7 +72,7 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return listRun(opts)
+			return ListRun(opts)
 		},
 	}
 
@@ -83,7 +83,7 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func listRun(opts *ListOptions) error {
+func ListRun(opts *ListOptions) error {
 	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/pulls?state=%s&limit=%d",
 		opts.Host, opts.Owner, opts.Repo, opts.State, opts.Limit)
 

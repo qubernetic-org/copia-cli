@@ -33,7 +33,7 @@ func TestCreateRun_Success(t *testing.T) {
 		Notes:      "First stable release.",
 	}
 
-	err := createRun(opts)
+	err := CreateRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "v1.0.0")
 }
@@ -42,7 +42,7 @@ func TestCreateRun_MissingTag(t *testing.T) {
 	ios, _, _, _ := iostreams.Test()
 	opts := &CreateOptions{IO: ios, Tag: ""}
 
-	err := createRun(opts)
+	err := CreateRun(opts)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "tag required")
 }
@@ -70,7 +70,7 @@ func TestCreateRun_Draft(t *testing.T) {
 		Draft:      true,
 	}
 
-	err := createRun(opts)
+	err := CreateRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "v2.0.0-rc.1")
 }

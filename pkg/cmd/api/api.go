@@ -56,7 +56,7 @@ func NewCmdAPI(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 			opts.HTTPClient = &http.Client{}
-			return apiRun(opts)
+			return APIRun(opts)
 		},
 	}
 
@@ -67,7 +67,7 @@ func NewCmdAPI(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func apiRun(opts *APIOptions) error {
+func APIRun(opts *APIOptions) error {
 	if opts.Path == "" {
 		return fmt.Errorf("path required")
 	}

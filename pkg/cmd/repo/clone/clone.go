@@ -45,14 +45,14 @@ func NewCmdClone(f *cmdutil.Factory) *cobra.Command {
 				opts.Dir = args[1]
 			}
 
-			return cloneRun(opts)
+			return CloneRun(opts)
 		},
 	}
 
 	return cmd
 }
 
-func cloneRun(opts *CloneOptions) error {
+func CloneRun(opts *CloneOptions) error {
 	cloneURL := buildCloneURL(opts.Host, opts.Repo)
 
 	// Use token in URL for authentication, then remove it from the remote.

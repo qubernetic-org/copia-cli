@@ -41,7 +41,7 @@ index abc1234..def5678 100644
 		Number:     7,
 	}
 
-	err := diffRun(opts)
+	err := DiffRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "diff --git")
 	assert.Contains(t, stdout.String(), "+import \"fmt\"")

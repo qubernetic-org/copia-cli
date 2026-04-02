@@ -32,7 +32,7 @@ func TestReviewRun_Approve(t *testing.T) {
 		Event:      "APPROVED",
 	}
 
-	err := reviewRun(opts)
+	err := ReviewRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Approved PR #7")
 }
@@ -60,7 +60,7 @@ func TestReviewRun_RequestChanges(t *testing.T) {
 		Body:       "Please fix the tests.",
 	}
 
-	err := reviewRun(opts)
+	err := ReviewRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Requested changes on PR #7")
 }
@@ -88,7 +88,7 @@ func TestReviewRun_Comment(t *testing.T) {
 		Body:       "Looks good overall.",
 	}
 
-	err := reviewRun(opts)
+	err := ReviewRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Commented on PR #7")
 }

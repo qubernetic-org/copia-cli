@@ -47,14 +47,14 @@ func NewCmdDelete(f *cmdutil.Factory) *cobra.Command {
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return deleteRun(opts)
+			return DeleteRun(opts)
 		},
 	}
 
 	return cmd
 }
 
-func deleteRun(opts *DeleteOptions) error {
+func DeleteRun(opts *DeleteOptions) error {
 	// First, look up release ID by tag
 	lookupURL := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/releases/tags/%s",
 		opts.Host, opts.Owner, opts.Repo, opts.Tag)

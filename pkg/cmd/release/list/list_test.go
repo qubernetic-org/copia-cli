@@ -35,7 +35,7 @@ func TestListRun_Success(t *testing.T) {
 		Limit:      30,
 	}
 
-	err := listRun(opts)
+	err := ListRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "v1.0.0")
 	assert.Contains(t, stdout.String(), "v0.9.0")
@@ -65,7 +65,7 @@ func TestListRun_JSON(t *testing.T) {
 		JSON:       cmdutil.JSONFlags{Fields: []string{"tagName", "name"}},
 	}
 
-	err := listRun(opts)
+	err := ListRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), `"tag_name"`)
 }

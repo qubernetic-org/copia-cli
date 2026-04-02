@@ -31,7 +31,7 @@ func TestCloseRun_Success(t *testing.T) {
 		Number:     12,
 	}
 
-	err := closeRun(opts)
+	err := CloseRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Closed issue #12")
 }
@@ -62,7 +62,7 @@ func TestCloseRun_WithComment(t *testing.T) {
 		Comment:    "Fixed in PR #7",
 	}
 
-	err := closeRun(opts)
+	err := CloseRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Closed issue #12")
 }

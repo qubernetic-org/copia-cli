@@ -54,14 +54,14 @@ func NewCmdClose(f *cmdutil.Factory) *cobra.Command {
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return closeRun(opts)
+			return CloseRun(opts)
 		},
 	}
 
 	return cmd
 }
 
-func closeRun(opts *CloseOptions) error {
+func CloseRun(opts *CloseOptions) error {
 	payload, _ := json.Marshal(map[string]string{"state": "closed"})
 	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/pulls/%d",
 		opts.Host, opts.Owner, opts.Repo, opts.Number)

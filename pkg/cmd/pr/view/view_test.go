@@ -38,7 +38,7 @@ func TestViewRun_Success(t *testing.T) {
 		Number:     7,
 	}
 
-	err := viewRun(opts)
+	err := ViewRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "feat: add cylinder wrapper")
 	assert.Contains(t, stdout.String(), "john")
@@ -71,7 +71,7 @@ func TestViewRun_JSON(t *testing.T) {
 		JSON:       cmdutil.JSONFlags{Fields: []string{"number", "title"}},
 	}
 
-	err := viewRun(opts)
+	err := ViewRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), `"number"`)
 }

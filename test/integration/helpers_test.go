@@ -3,8 +3,12 @@
 package integration
 
 import (
+	"bytes"
+	"net/http"
 	"os"
 	"testing"
+
+	"github.com/qubernetic/copia-cli/pkg/iostreams"
 )
 
 type testEnv struct {
@@ -32,4 +36,15 @@ func loadTestEnv(t *testing.T) testEnv {
 		Owner: owner,
 		Repo:  repo,
 	}
+}
+
+// testIO returns IOStreams and stdout buffer for asserting CLI output.
+func testIO() (*iostreams.IOStreams, *bytes.Buffer, *bytes.Buffer) {
+	ios, _, stdout, stderr := iostreams.Test()
+	return ios, stdout, stderr
+}
+
+// testHTTPClient returns a real HTTP client for integration tests.
+func testHTTPClient() *http.Client {
+	return &http.Client{}
 }

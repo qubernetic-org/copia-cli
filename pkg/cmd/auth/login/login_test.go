@@ -31,7 +31,7 @@ func TestLoginRun_NonInteractive_Success(t *testing.T) {
 		HTTPClient: &http.Client{Transport: reg},
 	}
 
-	err := loginRun(opts)
+	err := LoginRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Logged in as john")
 
@@ -60,7 +60,7 @@ func TestLoginRun_InvalidToken(t *testing.T) {
 		HTTPClient: &http.Client{Transport: reg},
 	}
 
-	err := loginRun(opts)
+	err := LoginRun(opts)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "authentication failed")
 }

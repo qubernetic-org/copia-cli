@@ -31,7 +31,7 @@ func TestListRun_Success(t *testing.T) {
 		Token:      "test-token",
 	}
 
-	err := listRun(opts)
+	err := ListRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Fix PLC timeout")
 	assert.Contains(t, stdout.String(), "Add sensor")
