@@ -1,5 +1,7 @@
 // Package docs generates Jekyll-compatible markdown documentation for Cobra commands.
 // Adapted from github.com/cli/cli/v2/internal/docs with GitHub-specific content removed.
+//
+//nolint:errcheck // fmt.Fprint write errors are intentionally ignored, matching gh CLI upstream style.
 package docs
 
 import (
@@ -271,7 +273,7 @@ func GenMarkdownTreeCustom(cmd *cobra.Command, dir string, filePrepender, linkHa
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	if _, err := io.WriteString(f, filePrepender(filename)); err != nil {
 		return err
