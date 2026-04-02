@@ -14,9 +14,10 @@ type Factory struct {
 	Config   func() (*config.Config, error)
 	BaseRepo func() (string, string, error) // returns owner, repo
 
-	// Overrides (flags only — env vars resolved in ResolveAuth)
+	// Overrides (flags only ��� env vars resolved in ResolveAuth)
 	Token string
 	Host  string
+	Repo  string // -R/--repo flag override for BaseRepo
 }
 
 // ResolveAuth returns the host and token, resolving in order:
@@ -60,4 +61,17 @@ func (f *Factory) ResolveAuth() (host, token string, err error) {
 		return "", "", fmt.Errorf("no token configured for %s. Run 'copia auth login' first", host)
 	}
 	return host, token, nil
+}
+
+// ResolveRepo returns owner and repo, resolving in order:
+// 1. -R/--repo flag (highest priority)
+// 2. BaseRepo from git remote (fallback)
+func (f *Factory) ResolveRepo() (owner, repo string, err error) {
+	if f.Repo != "" {
+		return SplitOwnerRepo(f.Repo)
+	}
+	if f.BaseRepo == nil {
+		return "", "", fmt.Errorf("could not determine repository. Use -R owner/repo or run from inside a git repository")
+	}
+	return f.BaseRepo()
 }

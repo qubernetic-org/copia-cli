@@ -38,6 +38,7 @@ func NewRootCmd(f *cmdutil.Factory) *cobra.Command {
 	// Global flags — bound to factory fields, resolved in ResolveAuth()
 	cmd.PersistentFlags().StringVar(&f.Host, "host", "", "Target Copia host")
 	cmd.PersistentFlags().StringVar(&f.Token, "token", "", "Authentication token")
+	cmd.PersistentFlags().StringVarP(&f.Repo, "repo", "R", "", "Select repository (owner/repo)")
 
 	cmd.AddCommand(authCmd.NewCmdAuth(f))
 	cmd.AddCommand(repoCmd.NewCmdRepo(f))
