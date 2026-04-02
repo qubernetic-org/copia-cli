@@ -5,7 +5,7 @@
 [![CI](https://github.com/qubernetic/copia-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/qubernetic/copia-cli/actions/workflows/ci.yml)
 [![Go](https://img.shields.io/badge/Go-1.26+-00ADD8.svg?logo=go&logoColor=white)](https://go.dev/)
 [![Release](https://img.shields.io/github/v/release/qubernetic/copia-cli?include_prereleases)](https://github.com/qubernetic/copia-cli/releases)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
 
 </div>
 
@@ -72,6 +72,6 @@ $ copia-cli pr merge 7 --merge --delete-branch
 
 ## License
 
-[MIT](LICENSE)
+[AGPL-3.0](LICENSE) — see [LICENSE-COMMERCIAL.md](LICENSE-COMMERCIAL.md) for commercial licensing options.
 
 [releases page]: https://github.com/qubernetic/copia-cli/releases/latest

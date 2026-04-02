@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Copia CLI is a command-line interface for [Copia](https://copia.io) — the source control platform for industrial automation. Modeled after GitHub CLI (`gh`), built on the Gitea-compatible REST API. Phase 1 (MVP) and Phase 2 (Workflow) are complete with 30+ subcommands across 7 command groups.
 
-**Owner:** Qubernetic (MIT)
+**Owner:** Qubernetic (AGPL-3.0 + Commercial)
 
 ## Development Environment
 
