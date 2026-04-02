@@ -70,7 +70,7 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 			}
 
 			opts.HTTPClient = &http.Client{}
-			return viewRun(opts)
+			return ViewRun(opts)
 		},
 	}
 
@@ -79,7 +79,7 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func viewRun(opts *ViewOptions) error {
+func ViewRun(opts *ViewOptions) error {
 	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s", opts.Host, opts.Owner, opts.Repo)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

@@ -32,7 +32,7 @@ func TestCommentRun_Success(t *testing.T) {
 		Body:       "Investigating this now.",
 	}
 
-	err := commentRun(opts)
+	err := CommentRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Comment added to issue #12")
 }
@@ -42,7 +42,7 @@ func TestCommentRun_MissingBody(t *testing.T) {
 
 	opts := &CommentOptions{IO: ios, Body: ""}
 
-	err := commentRun(opts)
+	err := CommentRun(opts)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "body required")
 }

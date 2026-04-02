@@ -40,7 +40,7 @@ func TestViewRun_Success(t *testing.T) {
 		Repo:       "my-repo",
 	}
 
-	err := viewRun(opts)
+	err := ViewRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "my-org/my-repo")
 	assert.Contains(t, stdout.String(), "Main PLC project")
@@ -70,7 +70,7 @@ func TestViewRun_JSON(t *testing.T) {
 		JSON:       cmdutil.JSONFlags{Fields: []string{"fullName", "description"}},
 	}
 
-	err := viewRun(opts)
+	err := ViewRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), `"full_name"`)
 }
@@ -95,7 +95,7 @@ func TestViewRun_NotFound(t *testing.T) {
 		Repo:       "missing",
 	}
 
-	err := viewRun(opts)
+	err := ViewRun(opts)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "not found")
 }

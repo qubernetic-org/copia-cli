@@ -51,14 +51,14 @@ func NewCmdDiff(f *cmdutil.Factory) *cobra.Command {
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return diffRun(opts)
+			return DiffRun(opts)
 		},
 	}
 
 	return cmd
 }
 
-func diffRun(opts *DiffOptions) error {
+func DiffRun(opts *DiffOptions) error {
 	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/pulls/%d.diff",
 		opts.Host, opts.Owner, opts.Repo, opts.Number)
 

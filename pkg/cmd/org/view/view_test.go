@@ -29,7 +29,7 @@ func TestViewRun_Success(t *testing.T) {
 		Name:       "my-org",
 	}
 
-	err := viewRun(opts)
+	err := ViewRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "my-org")
 	assert.Contains(t, stdout.String(), "Industrial automation")

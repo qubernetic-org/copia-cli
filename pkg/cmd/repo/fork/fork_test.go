@@ -30,7 +30,7 @@ func TestForkRun_Success(t *testing.T) {
 		Repo:       "project",
 	}
 
-	err := forkRun(opts)
+	err := ForkRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "john/project")
 }
@@ -56,7 +56,7 @@ func TestForkRun_ToOrg(t *testing.T) {
 		Org:        "my-org",
 	}
 
-	err := forkRun(opts)
+	err := ForkRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "my-org/project")
 }

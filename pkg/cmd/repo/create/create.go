@@ -56,7 +56,7 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 			opts.HTTPClient = &http.Client{}
-			return createRun(opts)
+			return CreateRun(opts)
 		},
 	}
 
@@ -67,7 +67,7 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func createRun(opts *CreateOptions) error {
+func CreateRun(opts *CreateOptions) error {
 	if opts.Name == "" {
 		return fmt.Errorf("name required")
 	}

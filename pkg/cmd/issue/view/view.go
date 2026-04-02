@@ -78,7 +78,7 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return viewRun(opts)
+			return ViewRun(opts)
 		},
 	}
 
@@ -87,7 +87,7 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func viewRun(opts *ViewOptions) error {
+func ViewRun(opts *ViewOptions) error {
 	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues/%d",
 		opts.Host, opts.Owner, opts.Repo, opts.Number)
 

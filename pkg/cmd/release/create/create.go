@@ -68,7 +68,7 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return createRun(opts)
+			return CreateRun(opts)
 		},
 	}
 
@@ -80,7 +80,7 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func createRun(opts *CreateOptions) error {
+func CreateRun(opts *CreateOptions) error {
 	if opts.Tag == "" {
 		return fmt.Errorf("tag required")
 	}

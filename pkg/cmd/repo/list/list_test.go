@@ -33,7 +33,7 @@ func TestListRun_UserRepos(t *testing.T) {
 		Limit:      30,
 	}
 
-	err := listRun(opts)
+	err := ListRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "john/plc-project")
 	assert.Contains(t, stdout.String(), "john/hmi-config")
@@ -61,7 +61,7 @@ func TestListRun_OrgRepos(t *testing.T) {
 		Limit:      30,
 	}
 
-	err := listRun(opts)
+	err := ListRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "my-org/main-plc")
 }
@@ -88,7 +88,7 @@ func TestListRun_JSON(t *testing.T) {
 		JSON:       cmdutil.JSONFlags{Fields: []string{"fullName", "description"}},
 	}
 
-	err := listRun(opts)
+	err := ListRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "john/plc-project")
 	assert.Contains(t, stdout.String(), "PLC code")

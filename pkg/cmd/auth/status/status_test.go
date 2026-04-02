@@ -36,7 +36,7 @@ func TestStatusRun_LoggedIn(t *testing.T) {
 		HTTPClient: &http.Client{Transport: reg},
 	}
 
-	err := statusRun(opts)
+	err := StatusRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "app.copia.io")
 	assert.Contains(t, stdout.String(), "john")
@@ -55,7 +55,7 @@ func TestStatusRun_NoHosts(t *testing.T) {
 		ConfigPath: configPath,
 	}
 
-	err := statusRun(opts)
+	err := StatusRun(opts)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "not logged in")
 }
@@ -85,7 +85,7 @@ func TestStatusRun_InvalidToken(t *testing.T) {
 		HTTPClient: &http.Client{Transport: reg},
 	}
 
-	err := statusRun(opts)
+	err := StatusRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Token invalid")
 }

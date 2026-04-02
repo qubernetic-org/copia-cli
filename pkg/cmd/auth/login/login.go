@@ -65,7 +65,7 @@ func NewCmdLogin(f *cmdutil.Factory) *cobra.Command {
 			}
 
 			opts.HTTPClient = &http.Client{}
-			return loginRun(opts)
+			return LoginRun(opts)
 		},
 	}
 
@@ -80,7 +80,7 @@ type userResponse struct {
 	ID    int64  `json:"id"`
 }
 
-func loginRun(opts *LoginOptions) error {
+func LoginRun(opts *LoginOptions) error {
 	url := fmt.Sprintf("https://%s/api/v1/user", opts.Host)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

@@ -43,7 +43,7 @@ func NewCmdDelete(f *cmdutil.Factory) *cobra.Command {
 			}
 			opts.Owner, opts.Repo = owner, repo
 			opts.HTTPClient = &http.Client{}
-			return deleteRun(opts)
+			return DeleteRun(opts)
 		},
 	}
 
@@ -52,7 +52,7 @@ func NewCmdDelete(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func deleteRun(opts *DeleteOptions) error {
+func DeleteRun(opts *DeleteOptions) error {
 	if !opts.Confirmed {
 		return fmt.Errorf("deleting %s/%s is irreversible; use --yes to confirm", opts.Owner, opts.Repo)
 	}

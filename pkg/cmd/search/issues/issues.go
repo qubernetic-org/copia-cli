@@ -62,7 +62,7 @@ func NewCmdSearchIssues(f *cmdutil.Factory) *cobra.Command {
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return searchRun(opts)
+			return SearchRun(opts)
 		},
 	}
 
@@ -73,7 +73,7 @@ func NewCmdSearchIssues(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func searchRun(opts *SearchOptions) error {
+func SearchRun(opts *SearchOptions) error {
 	u := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues?q=%s&limit=%d&type=issues",
 		opts.Host, opts.Owner, opts.Repo, url.QueryEscape(opts.Query), opts.Limit)
 	if opts.State != "" {

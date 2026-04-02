@@ -32,7 +32,7 @@ func TestCreateRun_Success(t *testing.T) {
 		Body:       "The sensor I/O mapping is incorrect.",
 	}
 
-	err := createRun(opts)
+	err := CreateRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "#13")
 }
@@ -42,7 +42,7 @@ func TestCreateRun_MissingTitle(t *testing.T) {
 
 	opts := &CreateOptions{IO: ios, Title: ""}
 
-	err := createRun(opts)
+	err := CreateRun(opts)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "title required")
 }

@@ -31,7 +31,7 @@ func TestCloseRun_Success(t *testing.T) {
 		Number:     7,
 	}
 
-	err := closeRun(opts)
+	err := CloseRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Closed PR #7")
 }

@@ -50,7 +50,7 @@ func NewCmdRead(f *cmdutil.Factory) *cobra.Command {
 			}
 
 			opts.HTTPClient = &http.Client{}
-			return readRun(opts)
+			return ReadRun(opts)
 		},
 	}
 
@@ -59,7 +59,7 @@ func NewCmdRead(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func readRun(opts *ReadOptions) error {
+func ReadRun(opts *ReadOptions) error {
 	var method, url string
 
 	if opts.All {

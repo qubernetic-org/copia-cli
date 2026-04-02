@@ -30,7 +30,7 @@ func TestCreateRun_UserRepo(t *testing.T) {
 		Private:    true,
 	}
 
-	err := createRun(opts)
+	err := CreateRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "john/new-repo")
 }
@@ -55,7 +55,7 @@ func TestCreateRun_OrgRepo(t *testing.T) {
 		Org:        "my-org",
 	}
 
-	err := createRun(opts)
+	err := CreateRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "my-org/new-repo")
 }
@@ -64,7 +64,7 @@ func TestCreateRun_MissingName(t *testing.T) {
 	ios, _, _, _ := iostreams.Test()
 	opts := &CreateOptions{IO: ios, Name: ""}
 
-	err := createRun(opts)
+	err := CreateRun(opts)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "name required")
 }

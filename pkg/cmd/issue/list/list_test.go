@@ -36,7 +36,7 @@ func TestListRun_Success(t *testing.T) {
 		Limit:      30,
 	}
 
-	err := listRun(opts)
+	err := ListRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Fix PLC connection timeout")
 	assert.Contains(t, stdout.String(), "12")
@@ -67,7 +67,7 @@ func TestListRun_JSON(t *testing.T) {
 		JSON:       cmdutil.JSONFlags{Fields: []string{"number", "title"}},
 	}
 
-	err := listRun(opts)
+	err := ListRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), `"number"`)
 }

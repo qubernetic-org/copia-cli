@@ -75,7 +75,7 @@ func NewCmdMerge(f *cmdutil.Factory) *cobra.Command {
 				opts.Method = "merge"
 			}
 
-			return mergeRun(opts)
+			return MergeRun(opts)
 		},
 	}
 
@@ -87,7 +87,7 @@ func NewCmdMerge(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func mergeRun(opts *MergeOptions) error {
+func MergeRun(opts *MergeOptions) error {
 	payload := mergeRequest{
 		Do:                    opts.Method,
 		DeleteBranchAfterMerge: opts.DeleteBranch,

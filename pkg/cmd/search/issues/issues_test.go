@@ -36,7 +36,7 @@ func TestSearchIssues_Success(t *testing.T) {
 		Limit:      30,
 	}
 
-	err := searchRun(opts)
+	err := SearchRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Fix PLC timeout")
 }

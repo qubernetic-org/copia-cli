@@ -35,7 +35,7 @@ func TestDeleteRun_Success(t *testing.T) {
 		Tag:        "v1.0.0",
 	}
 
-	err := deleteRun(opts)
+	err := DeleteRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Deleted release v1.0.0")
 }
@@ -61,7 +61,7 @@ func TestDeleteRun_NotFound(t *testing.T) {
 		Tag:        "v9.9.9",
 	}
 
-	err := deleteRun(opts)
+	err := DeleteRun(opts)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "not found")
 }

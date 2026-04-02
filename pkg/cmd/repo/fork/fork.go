@@ -57,7 +57,7 @@ func NewCmdFork(f *cmdutil.Factory) *cobra.Command {
 			}
 			opts.Owner, opts.Repo = owner, repo
 			opts.HTTPClient = &http.Client{}
-			return forkRun(opts)
+			return ForkRun(opts)
 		},
 	}
 
@@ -66,7 +66,7 @@ func NewCmdFork(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func forkRun(opts *ForkOptions) error {
+func ForkRun(opts *ForkOptions) error {
 	payload := forkRequest{Organization: opts.Org}
 	body, err := json.Marshal(payload)
 	if err != nil {
