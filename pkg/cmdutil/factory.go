@@ -75,3 +75,11 @@ func (f *Factory) ResolveRepo() (owner, repo string, err error) {
 	}
 	return f.BaseRepo()
 }
+
+// ValidateLimit returns an error if limit is not a positive integer.
+func ValidateLimit(limit int) error {
+	if limit < 1 {
+		return fmt.Errorf("invalid limit: %d", limit)
+	}
+	return nil
+}

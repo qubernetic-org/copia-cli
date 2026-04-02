@@ -66,6 +66,10 @@ func NewCmdSearchRepos(f *cmdutil.Factory) *cobra.Command {
 }
 
 func SearchRun(opts *SearchOptions) error {
+	if err := cmdutil.ValidateLimit(opts.Limit); err != nil {
+		return err
+	}
+
 	u := fmt.Sprintf("https://%s/api/v1/repos/search?q=%s&limit=%d",
 		opts.Host, url.QueryEscape(opts.Query), opts.Limit)
 

@@ -11,6 +11,19 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestListRun_InvalidLimit(t *testing.T) {
+	ios, _, _, _ := iostreams.Test()
+
+	opts := &ListOptions{
+		IO:    ios,
+		Limit: -1,
+	}
+
+	err := ListRun(opts)
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "invalid limit")
+}
+
 func TestListRun_UserRepos(t *testing.T) {
 	reg := &httpmock.Registry{}
 	defer reg.Verify(t)

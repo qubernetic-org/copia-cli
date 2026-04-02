@@ -74,6 +74,10 @@ func NewCmdSearchIssues(f *cmdutil.Factory) *cobra.Command {
 }
 
 func SearchRun(opts *SearchOptions) error {
+	if err := cmdutil.ValidateLimit(opts.Limit); err != nil {
+		return err
+	}
+
 	u := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues?q=%s&limit=%d&type=issues",
 		opts.Host, opts.Owner, opts.Repo, url.QueryEscape(opts.Query), opts.Limit)
 	if opts.State != "" {

@@ -17,6 +17,7 @@ func TestListRun_InvalidState(t *testing.T) {
 	opts := &ListOptions{
 		IO:    ios,
 		State: "invalid",
+		Limit: 30,
 	}
 
 	err := ListRun(opts)
