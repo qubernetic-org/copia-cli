@@ -46,6 +46,7 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create",
 		Short: "Create a pull request",
+		Long:  "Create a pull request on Copia. The --base and --head branches must be specified along with a title.",
 		Example: `  copia pr create --title "feat: add wrapper" --base main --head feature/wrapper
   copia pr create --title "fix: timeout" --base develop --head fix/timeout --body "Fixes #12"`,
 		RunE: func(cmd *cobra.Command, args []string) error {

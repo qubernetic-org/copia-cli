@@ -37,6 +37,7 @@ func NewCmdMerge(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "merge <number>",
 		Short: "Merge a pull request",
+		Long:  "Merge a pull request on Copia. By default a merge commit is created. Use --squash or --rebase to change the merge method.",
 		Example: `  copia pr merge 7
   copia pr merge 7 --squash
   copia pr merge 7 --rebase --delete-branch`,

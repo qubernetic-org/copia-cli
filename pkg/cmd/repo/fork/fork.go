@@ -38,6 +38,7 @@ func NewCmdFork(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "fork <owner/repo>",
 		Short: "Fork a repository",
+		Long:  "Create a fork of a Copia repository. By default the fork is created under the authenticated user. Use --org to fork into an organization.",
 		Example: `  copia repo fork upstream-org/project
   copia repo fork upstream-org/project --org my-org`,
 		Args: cobra.ExactArgs(1),

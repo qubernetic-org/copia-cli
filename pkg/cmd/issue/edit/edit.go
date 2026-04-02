@@ -34,6 +34,7 @@ func NewCmdEdit(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "edit <number>",
 		Short: "Edit an issue",
+		Long:  "Edit an issue's title, body, labels, assignees, or milestone.",
 		Example: `  copia issue edit 12 --title "New title"
   copia issue edit 12 --add-label bug --add-label urgent
   copia issue edit 12 --assignee john --assignee jane

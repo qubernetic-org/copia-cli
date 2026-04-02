@@ -40,6 +40,7 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "List releases",
+		Long:    "List releases in a Copia repository, ordered by creation date.",
 		Aliases: []string{"ls"},
 		Example: `  copia release list
   copia release list --json tagName,name`,

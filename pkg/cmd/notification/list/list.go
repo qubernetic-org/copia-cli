@@ -43,6 +43,7 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "List notifications",
+		Long:    "List notifications for the authenticated user. By default, only unread notifications are shown.",
 		Aliases: []string{"ls"},
 		Example: "  copia notification list",
 		RunE: func(cmd *cobra.Command, args []string) error {

@@ -39,6 +39,7 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "List labels in a repository",
+		Long:    "List labels in a Copia repository. Labels are displayed with their name, color, and description.",
 		Aliases: []string{"ls"},
 		Example: `  copia label list
   copia label list --json name,color`,

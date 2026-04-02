@@ -31,6 +31,7 @@ func NewCmdClose(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "close <number>",
 		Short: "Close an issue",
+		Long:  "Close an issue by number. Optionally add a closing comment with --comment.",
 		Example: `  copia issue close 12
   copia issue close 12 --comment "Fixed in PR #7"`,
 		Args: cobra.ExactArgs(1),

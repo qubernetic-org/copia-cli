@@ -30,6 +30,7 @@ func NewCmdLogin(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "login",
 		Short: "Authenticate with a Copia instance",
+		Long:  "Authenticate with a Copia host. The default authentication mode is interactive, prompting for host and token. Use --host and --token for non-interactive login in CI environments.",
 		Example: `  # Interactive login
   copia auth login
 

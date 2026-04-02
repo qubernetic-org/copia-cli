@@ -25,6 +25,7 @@ func NewCmdRead(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "read [<thread-id>]",
 		Short: "Mark notifications as read",
+		Long:  "Mark notifications as read. Specify a thread ID to mark a single notification, or use --all to mark all notifications as read.",
 		Example: `  copia notification read --all
   copia notification read 42`,
 		Args: cobra.MaximumNArgs(1),

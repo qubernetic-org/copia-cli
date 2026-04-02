@@ -27,6 +27,7 @@ func NewCmdClone(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "clone <owner/repo | URL> [<directory>]",
 		Short: "Clone a repository",
+		Long:  "Clone a Copia repository locally. The repository can be specified as owner/repo or as a full URL.",
 		Example: `  copia repo clone my-org/my-repo
   copia repo clone https://app.copia.io/my-org/my-repo.git`,
 		Args: cobra.RangeArgs(1, 2),

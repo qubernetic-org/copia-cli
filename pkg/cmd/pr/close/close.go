@@ -33,6 +33,7 @@ func NewCmdClose(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "close <number>",
 		Short:   "Close a pull request",
+		Long:    "Close a pull request by number. Optionally add a closing comment with --comment or delete the branch with --delete-branch.",
 		Example: `  copia pr close 7
   copia pr close 7 --comment "Closing in favor of #8"
   copia pr close 7 --delete-branch`,

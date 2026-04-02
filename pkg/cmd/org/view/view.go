@@ -33,6 +33,7 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "view <org>",
 		Short:   "View an organization",
+		Long:    "Display information about a Copia organization, including its description and member visibility settings.",
 		Example: "  copia org view my-org",
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

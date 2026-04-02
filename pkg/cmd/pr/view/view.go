@@ -54,6 +54,7 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "view <number>",
 		Short: "View a pull request",
+		Long:  "Display the title, body, and other information about a pull request.",
 		Example: `  copia pr view 7
   copia pr view 7 --json number,title,mergeable`,
 		Args: cobra.ExactArgs(1),

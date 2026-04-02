@@ -32,6 +32,7 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "List your organizations",
+		Long:    "List organizations that the authenticated user belongs to.",
 		Aliases: []string{"ls"},
 		Example: `  copia org list
   copia org list --json username,full_name`,

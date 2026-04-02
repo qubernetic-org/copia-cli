@@ -32,7 +32,7 @@ func NewCmdAPI(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "api <path>",
 		Short: "Make an API request",
-		Long:  "Make an authenticated request to the Copia/Gitea REST API.",
+		Long:  "Make an authenticated HTTP request to the Copia REST API and print the response. The endpoint argument should be a path of a Gitea API v1 endpoint.",
 		Example: `  # Get authenticated user
   copia api /user
 

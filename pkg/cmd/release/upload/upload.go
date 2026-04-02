@@ -31,6 +31,7 @@ func NewCmdUpload(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "upload <tag> <files>...",
 		Short: "Upload assets to a release",
+		Long:  "Upload asset files to a Copia release. Specify the release tag followed by one or more file paths.",
 		Example: `  copia release upload v1.0.0 binary.tar.gz
   copia release upload v1.0.0 *.tar.gz *.zip`,
 		Args: cobra.MinimumNArgs(2),

@@ -41,6 +41,7 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create <name>",
 		Short: "Create a repository",
+		Long:  "Create a new Copia repository. By default the repository is created under the authenticated user. Use --org to create it under an organization.",
 		Example: `  copia repo create my-repo
   copia repo create my-repo --org my-org --private
   copia repo create my-repo --description "PLC project"`,

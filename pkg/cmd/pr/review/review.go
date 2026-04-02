@@ -35,6 +35,7 @@ func NewCmdReview(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "review <number>",
 		Short: "Submit a review on a pull request",
+		Long:  "Add a review to a pull request. Use --approve, --request-changes, or --comment to specify the review action.",
 		Example: `  copia pr review 7 --approve
   copia pr review 7 --request-changes --body "Please fix the tests."
   copia pr review 7 --comment --body "Looks good overall."`,

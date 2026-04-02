@@ -47,6 +47,7 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create <tag>",
 		Short: "Create a release",
+		Long:  "Create a new release for a Copia repository. A tag name is required. Use --draft or --prerelease to control release visibility.",
 		Example: `  copia release create v1.0.0 --title "Release 1.0.0" --notes "Changelog here"
   copia release create v2.0.0-rc.1 --draft --prerelease`,
 		Args: cobra.ExactArgs(1),

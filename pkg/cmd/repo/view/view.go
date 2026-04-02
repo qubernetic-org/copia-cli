@@ -42,6 +42,7 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "view [<owner/repo>]",
 		Short: "View a repository",
+		Long:  "Display the description and other information about a repository. With no argument, the repository for the current directory is displayed.",
 		Example: `  copia repo view
   copia repo view my-org/my-repo
   copia repo view --json fullName,description`,
