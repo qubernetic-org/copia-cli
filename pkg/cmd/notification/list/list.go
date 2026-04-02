@@ -17,6 +17,7 @@ type ListOptions struct {
 	HTTPClient *http.Client
 	Host       string
 	Token      string
+	All        bool
 	JSON       cmdutil.JSONFlags
 }
 
@@ -42,8 +43,9 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "List notifications",
+		Long:    "List notifications for the authenticated user. By default, only unread notifications are shown.",
 		Aliases: []string{"ls"},
-		Example: "  copia notification list",
+		Example: "  $ copia-cli notification list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
 			host, token, err := f.ResolveAuth()
@@ -53,16 +55,20 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 			opts.HTTPClient = &http.Client{}
-			return listRun(opts)
+			return ListRun(opts)
 		},
 	}
 
+	cmd.Flags().BoolVar(&opts.All, "all", false, "Show read and unread notifications")
 	cmdutil.AddJSONFlags(cmd, &opts.JSON, []string{"id", "subject", "repository", "unread"})
 	return cmd
 }
 
-func listRun(opts *ListOptions) error {
-	url := fmt.Sprintf("https://%s/api/v1/notifications", opts.Host)
+func ListRun(opts *ListOptions) error {
+	url := fmt.Sprintf("https://%s/api/v1/notifications?page=1", opts.Host)
+	if opts.All {
+		url += "&all=true"
+	}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return err
@@ -73,7 +79,7 @@ func listRun(opts *ListOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("API error (HTTP %d)", resp.StatusCode)

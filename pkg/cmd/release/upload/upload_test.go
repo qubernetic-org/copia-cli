@@ -43,7 +43,7 @@ func TestUploadRun_Success(t *testing.T) {
 		Files:      []string{filePath},
 	}
 
-	err := uploadRun(opts)
+	err := UploadRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "binary.tar.gz")
 }
@@ -57,7 +57,7 @@ func TestUploadRun_FileNotFound(t *testing.T) {
 		Files: []string{"/nonexistent/file.tar.gz"},
 	}
 
-	err := uploadRun(opts)
+	err := UploadRun(opts)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "no such file")
 }

@@ -27,7 +27,8 @@ func NewCmdDiff(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "diff <number>",
 		Short:   "View diff for a pull request",
-		Example: "  copia pr diff 7",
+		Long:    "View changes in a pull request as a unified diff.",
+		Example: "  $ copia-cli pr diff 7",
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			num, err := strconv.ParseInt(args[0], 10, 64)
@@ -44,24 +45,21 @@ func NewCmdDiff(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Run from inside a git repository")
-			}
-			owner, repo, err := f.BaseRepo()
+			owner, repo, err := f.ResolveRepo()
 			if err != nil {
 				return err
 			}
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return diffRun(opts)
+			return DiffRun(opts)
 		},
 	}
 
 	return cmd
 }
 
-func diffRun(opts *DiffOptions) error {
+func DiffRun(opts *DiffOptions) error {
 	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/pulls/%d.diff",
 		opts.Host, opts.Owner, opts.Repo, opts.Number)
 
@@ -75,7 +73,7 @@ func diffRun(opts *DiffOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode == http.StatusNotFound {
 		return fmt.Errorf("PR #%d not found", opts.Number)

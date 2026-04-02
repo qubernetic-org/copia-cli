@@ -3,56 +3,71 @@
 package integration
 
 import (
-	"encoding/json"
-	"fmt"
-	"io"
 	"net/http"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/qubernetic/copia-cli/pkg/cmd/auth/login"
+	"github.com/qubernetic/copia-cli/pkg/cmd/auth/status"
 )
 
-func TestAuth_ValidateToken(t *testing.T) {
+func TestAuth_LoginRun_ValidToken(t *testing.T) {
 	env := loadTestEnv(t)
+	ios, stdout, _ := testIO()
 
-	url := fmt.Sprintf("https://%s/api/v1/user", env.Host)
-	req, err := http.NewRequest("GET", url, nil)
-	require.NoError(t, err)
-	req.Header.Set("Authorization", "token "+env.Token)
-
-	resp, err := http.DefaultClient.Do(req)
-	require.NoError(t, err)
-	defer func() { _ = resp.Body.Close() }()
-
-	assert.Equal(t, http.StatusOK, resp.StatusCode)
-
-	body, err := io.ReadAll(resp.Body)
-	require.NoError(t, err)
-
-	var user struct {
-		Login string `json:"login"`
-		ID    int64  `json:"id"`
+	opts := &login.LoginOptions{
+		IO:         ios,
+		Host:       env.Host,
+		Token:      env.Token,
+		ConfigPath: filepath.Join(t.TempDir(), "config.yml"),
+		HTTPClient: &http.Client{},
 	}
-	require.NoError(t, json.Unmarshal(body, &user))
-	assert.NotEmpty(t, user.Login)
-	assert.Greater(t, user.ID, int64(0))
 
-	t.Logf("Authenticated as: %s (ID: %d)", user.Login, user.ID)
+	err := login.LoginRun(opts)
+	require.NoError(t, err)
+	assert.Contains(t, stdout.String(), "Logged in as")
+	t.Logf("Output: %s", stdout.String())
 }
 
-func TestAuth_InvalidToken(t *testing.T) {
+func TestAuth_LoginRun_InvalidToken(t *testing.T) {
 	env := loadTestEnv(t)
+	ios, _, _ := testIO()
 
-	url := fmt.Sprintf("https://%s/api/v1/user", env.Host)
-	req, err := http.NewRequest("GET", url, nil)
+	opts := &login.LoginOptions{
+		IO:         ios,
+		Host:       env.Host,
+		Token:      "invalid-token-does-not-exist",
+		ConfigPath: filepath.Join(t.TempDir(), "config.yml"),
+		HTTPClient: &http.Client{},
+	}
+
+	err := login.LoginRun(opts)
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "authentication failed")
+}
+
+func TestAuth_StatusRun(t *testing.T) {
+	env := loadTestEnv(t)
+	ios, stdout, _ := testIO()
+
+	// StatusRun reads from config file, so write one
+	configPath := filepath.Join(t.TempDir(), "config.yml")
+	configContent := []byte("hosts:\n  " + env.Host + ":\n    token: " + env.Token + "\n    user: testuser\n")
+	require.NoError(t, os.WriteFile(configPath, configContent, 0600))
+
+	opts := &status.StatusOptions{
+		IO:         ios,
+		ConfigPath: configPath,
+		HTTPClient: &http.Client{},
+	}
+
+	err := status.StatusRun(opts)
 	require.NoError(t, err)
-	req.Header.Set("Authorization", "token invalid-token-that-does-not-exist")
-
-	resp, err := http.DefaultClient.Do(req)
-	require.NoError(t, err)
-	defer func() { _ = resp.Body.Close() }()
-
-	// Copia/Gitea returns 403 for invalid tokens (not 401)
-	assert.Contains(t, []int{http.StatusUnauthorized, http.StatusForbidden}, resp.StatusCode)
+	assert.Contains(t, stdout.String(), env.Host)
+	assert.Contains(t, stdout.String(), "Token valid")
+	t.Logf("Output: %s", stdout.String())
 }

@@ -4,8 +4,9 @@ on:
   push:
     branches: [main]
     paths:
-      - "docs/manual/**"
+      - "docs/site/**"
       - "pkg/cmd/**"
+      - "internal/docs/**"
       - ".github/workflows/docs.yml"
   workflow_dispatch:
 
@@ -31,18 +32,14 @@ jobs:
       - name: Generate command docs
         run: go run script/gen-docs.go
 
-      - name: Setup mdBook
-        uses: jontze/action-mdbook@v4
+      - name: Build Jekyll site
+        uses: actions/jekyll-build-pages@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build manual
-        run: mdbook build docs/manual
+          source: docs/site
+          destination: ./_site
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
-        with:
-          path: site
 
   deploy:
     needs: build

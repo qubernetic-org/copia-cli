@@ -5,13 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.5.0-rc.1] - 2026-04-02
+## [0.5.0-rc.2] - 2026-04-02
 
 ### Added
 
 - Release variants: .deb, .rpm packages via nfpms
 - macOS universal binary (amd64+arm64 fat binary)
 - linux/386, linux/arm (v6), windows/386 build targets
+- `-R`/`--repo` flag for all repo-scoped commands (#105)
+- Jekyll manual site matching gh CLI layout (#132)
+- Command group annotations (General/Targeted) on parent commands
+- Long descriptions and descriptive examples for all commands
+- Platform install guides (Linux, macOS, Windows, source)
+- `notification list --all` flag (#109)
+- `issue list --label` flag (#111)
+- `pr close --comment` and `--delete-branch` flags (#112)
+
+### Fixed
+
+- `auth login` failed with "file already closed" due to premature response body close (#97)
+- `resp.Body.Close` before `ReadAll` in all HTTP commands (#100)
+- `repo clone` failed on private repos — missing auth (#101)
+- PATCH/POST commands rejected valid 201 status from Gitea API (#102)
+- `--state` flag not validated in issue/pr list (#106)
+- `auth status` did not error for unknown host (#107)
+- `search issues` returned empty results — defaulted to open only (#108)
+- `notification list` HTTP 500 without page parameter (#109)
+- `--limit` accepted negative values (#110)
+- GoReleaser archive format deprecation warnings (#96)
+
+### Changed
+
+- License changed from MIT to AGPL-3.0 + Commercial dual license (#135)
+- Documentation migrated from mdBook to Jekyll (#132)
+- README restructured to match gh CLI lean style (#83)
+- Integration tests rewritten to exercise CLI code paths (#103)
+- `docs/` reorganized to match gh CLI convention
 
 ## [0.4.0-rc.1] - 2026-04-02
 

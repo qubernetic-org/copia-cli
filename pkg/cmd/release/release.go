@@ -16,10 +16,15 @@ func NewCmdRelease(f *cmdutil.Factory) *cobra.Command {
 		Long:  "Work with Copia repository releases.",
 	}
 
-	cmd.AddCommand(listCmd.NewCmdList(f))
-	cmd.AddCommand(createCmd.NewCmdCreate(f))
-	cmd.AddCommand(deleteCmd.NewCmdDelete(f))
-	cmd.AddCommand(uploadCmd.NewCmdUpload(f))
+	cmdutil.AddGroup(cmd, "General commands",
+		listCmd.NewCmdList(f),
+		createCmd.NewCmdCreate(f),
+	)
+
+	cmdutil.AddGroup(cmd, "Targeted commands",
+		deleteCmd.NewCmdDelete(f),
+		uploadCmd.NewCmdUpload(f),
+	)
 
 	return cmd
 }

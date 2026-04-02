@@ -42,9 +42,15 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "view [<owner/repo>]",
 		Short: "View a repository",
-		Example: `  copia repo view
-  copia repo view my-org/my-repo
-  copia repo view --json fullName,description`,
+		Long:  "Display the description and other information about a repository. With no argument, the repository for the current directory is displayed.",
+		Example: `  # View the current repository
+  $ copia-cli repo view
+
+  # View a specific repository
+  $ copia-cli repo view my-org/my-repo
+
+  # View as JSON
+  $ copia-cli repo view --json fullName,description`,
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
@@ -61,18 +67,16 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 					return err
 				}
 				opts.Owner, opts.Repo = owner, repo
-			} else if f.BaseRepo != nil {
-				owner, repo, err := f.BaseRepo()
+			} else {
+				owner, repo, err := f.ResolveRepo()
 				if err != nil {
 					return fmt.Errorf("could not determine repository: %w", err)
 				}
 				opts.Owner, opts.Repo = owner, repo
-			} else {
-				return fmt.Errorf("could not determine repository. Provide owner/repo as argument")
 			}
 
 			opts.HTTPClient = &http.Client{}
-			return viewRun(opts)
+			return ViewRun(opts)
 		},
 	}
 
@@ -81,7 +85,7 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func viewRun(opts *ViewOptions) error {
+func ViewRun(opts *ViewOptions) error {
 	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s", opts.Host, opts.Owner, opts.Repo)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -93,7 +97,7 @@ func viewRun(opts *ViewOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode == http.StatusNotFound {
 		return fmt.Errorf("repository %s/%s not found", opts.Owner, opts.Repo)

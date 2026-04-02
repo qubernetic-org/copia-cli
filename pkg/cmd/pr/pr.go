@@ -21,14 +21,19 @@ func NewCmdPR(f *cmdutil.Factory) *cobra.Command {
 		Long:  "Work with Copia pull requests.",
 	}
 
-	cmd.AddCommand(listCmd.NewCmdList(f))
-	cmd.AddCommand(createCmd.NewCmdCreate(f))
-	cmd.AddCommand(viewCmd.NewCmdView(f))
-	cmd.AddCommand(mergeCmd.NewCmdMerge(f))
-	cmd.AddCommand(closeCmd.NewCmdClose(f))
-	cmd.AddCommand(reviewCmd.NewCmdReview(f))
-	cmd.AddCommand(diffCmd.NewCmdDiff(f))
-	cmd.AddCommand(checkoutCmd.NewCmdCheckout(f))
+	cmdutil.AddGroup(cmd, "General commands",
+		listCmd.NewCmdList(f),
+		createCmd.NewCmdCreate(f),
+	)
+
+	cmdutil.AddGroup(cmd, "Targeted commands",
+		viewCmd.NewCmdView(f),
+		mergeCmd.NewCmdMerge(f),
+		closeCmd.NewCmdClose(f),
+		reviewCmd.NewCmdReview(f),
+		diffCmd.NewCmdDiff(f),
+		checkoutCmd.NewCmdCheckout(f),
+	)
 
 	return cmd
 }

@@ -54,8 +54,12 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "view <number>",
 		Short: "View a pull request",
-		Example: `  copia pr view 7
-  copia pr view 7 --json number,title,mergeable`,
+		Long:  "Display the title, body, and other information about a pull request.",
+		Example: `  # View a pull request
+  $ copia-cli pr view 7
+
+  # View as JSON
+  $ copia-cli pr view 7 --json number,title,mergeable`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			num, err := strconv.ParseInt(args[0], 10, 64)
@@ -72,17 +76,14 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Run from inside a git repository")
-			}
-			owner, repo, err := f.BaseRepo()
+			owner, repo, err := f.ResolveRepo()
 			if err != nil {
 				return err
 			}
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return viewRun(opts)
+			return ViewRun(opts)
 		},
 	}
 
@@ -91,7 +92,7 @@ func NewCmdView(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func viewRun(opts *ViewOptions) error {
+func ViewRun(opts *ViewOptions) error {
 	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/pulls/%d",
 		opts.Host, opts.Owner, opts.Repo, opts.Number)
 
@@ -105,7 +106,7 @@ func viewRun(opts *ViewOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode == http.StatusNotFound {
 		return fmt.Errorf("PR #%d not found", opts.Number)

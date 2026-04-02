@@ -27,7 +27,8 @@ func NewCmdDelete(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "delete <tag>",
 		Short:   "Delete a release",
-		Example: "  copia release delete v1.0.0",
+		Long:    "Delete a release from a Copia repository by tag name.",
+		Example: "  $ copia-cli release delete v1.0.0",
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.Tag = args[0]
@@ -40,24 +41,21 @@ func NewCmdDelete(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Run from inside a git repository")
-			}
-			owner, repo, err := f.BaseRepo()
+			owner, repo, err := f.ResolveRepo()
 			if err != nil {
 				return err
 			}
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return deleteRun(opts)
+			return DeleteRun(opts)
 		},
 	}
 
 	return cmd
 }
 
-func deleteRun(opts *DeleteOptions) error {
+func DeleteRun(opts *DeleteOptions) error {
 	// First, look up release ID by tag
 	lookupURL := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/releases/tags/%s",
 		opts.Host, opts.Owner, opts.Repo, opts.Tag)

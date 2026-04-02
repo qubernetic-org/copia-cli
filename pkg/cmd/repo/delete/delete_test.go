@@ -31,7 +31,7 @@ func TestDeleteRun_Success(t *testing.T) {
 		Confirmed:  true,
 	}
 
-	err := deleteRun(opts)
+	err := DeleteRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "Deleted repository my-org/my-repo")
 }
@@ -46,7 +46,7 @@ func TestDeleteRun_NotConfirmed(t *testing.T) {
 		Confirmed: false,
 	}
 
-	err := deleteRun(opts)
+	err := DeleteRun(opts)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "use --yes to confirm")
 }
@@ -72,7 +72,7 @@ func TestDeleteRun_NotFound(t *testing.T) {
 		Confirmed:  true,
 	}
 
-	err := deleteRun(opts)
+	err := DeleteRun(opts)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "failed to delete")
 }

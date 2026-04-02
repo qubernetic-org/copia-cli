@@ -41,9 +41,15 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create <name>",
 		Short: "Create a repository",
-		Example: `  copia repo create my-repo
-  copia repo create my-repo --org my-org --private
-  copia repo create my-repo --description "PLC project"`,
+		Long:  "Create a new Copia repository. By default the repository is created under the authenticated user. Use --org to create it under an organization.",
+		Example: `  # Create a repository
+  $ copia-cli repo create my-repo
+
+  # Create a private repository under an organization
+  $ copia-cli repo create my-repo --org my-org --private
+
+  # Create with a description
+  $ copia-cli repo create my-repo --description "PLC project"`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.Name = args[0]
@@ -56,7 +62,7 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 			opts.HTTPClient = &http.Client{}
-			return createRun(opts)
+			return CreateRun(opts)
 		},
 	}
 
@@ -67,7 +73,7 @@ func NewCmdCreate(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func createRun(opts *CreateOptions) error {
+func CreateRun(opts *CreateOptions) error {
 	if opts.Name == "" {
 		return fmt.Errorf("name required")
 	}
@@ -100,7 +106,7 @@ func createRun(opts *CreateOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusCreated {
 		respBody, _ := io.ReadAll(resp.Body)

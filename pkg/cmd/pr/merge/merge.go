@@ -37,9 +37,15 @@ func NewCmdMerge(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "merge <number>",
 		Short: "Merge a pull request",
-		Example: `  copia pr merge 7
-  copia pr merge 7 --squash
-  copia pr merge 7 --rebase --delete-branch`,
+		Long:  "Merge a pull request on Copia. By default a merge commit is created. Use --squash or --rebase to change the merge method.",
+		Example: `  # Merge a pull request
+  $ copia-cli pr merge 7
+
+  # Squash and merge
+  $ copia-cli pr merge 7 --squash
+
+  # Rebase and delete the branch
+  $ copia-cli pr merge 7 --rebase --delete-branch`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			num, err := strconv.ParseInt(args[0], 10, 64)
@@ -56,10 +62,7 @@ func NewCmdMerge(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Run from inside a git repository")
-			}
-			owner, repo, err := f.BaseRepo()
+			owner, repo, err := f.ResolveRepo()
 			if err != nil {
 				return err
 			}
@@ -78,7 +81,7 @@ func NewCmdMerge(f *cmdutil.Factory) *cobra.Command {
 				opts.Method = "merge"
 			}
 
-			return mergeRun(opts)
+			return MergeRun(opts)
 		},
 	}
 
@@ -90,7 +93,7 @@ func NewCmdMerge(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func mergeRun(opts *MergeOptions) error {
+func MergeRun(opts *MergeOptions) error {
 	payload := mergeRequest{
 		Do:                    opts.Method,
 		DeleteBranchAfterMerge: opts.DeleteBranch,
@@ -115,9 +118,9 @@ func mergeRun(opts *MergeOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
 		return fmt.Errorf("failed to merge PR (HTTP %d)", resp.StatusCode)
 	}
 

@@ -31,8 +31,12 @@ func NewCmdClose(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "close <number>",
 		Short: "Close an issue",
-		Example: `  copia issue close 12
-  copia issue close 12 --comment "Fixed in PR #7"`,
+		Long:  "Close an issue by number. Optionally add a closing comment with --comment.",
+		Example: `  # Close an issue
+  $ copia-cli issue close 12
+
+  # Close with a comment
+  $ copia-cli issue close 12 --comment "Fixed in PR #7"`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			num, err := strconv.ParseInt(args[0], 10, 64)
@@ -49,17 +53,14 @@ func NewCmdClose(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Run from inside a git repository")
-			}
-			owner, repo, err := f.BaseRepo()
+			owner, repo, err := f.ResolveRepo()
 			if err != nil {
 				return err
 			}
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return closeRun(opts)
+			return CloseRun(opts)
 		},
 	}
 
@@ -68,7 +69,7 @@ func NewCmdClose(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func closeRun(opts *CloseOptions) error {
+func CloseRun(opts *CloseOptions) error {
 	if opts.Comment != "" {
 		commentPayload, _ := json.Marshal(map[string]string{"body": opts.Comment})
 		commentURL := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues/%d/comments",
@@ -85,7 +86,7 @@ func closeRun(opts *CloseOptions) error {
 		if err != nil {
 			return err
 		}
-		_ = resp.Body.Close()
+		defer func() { _ = resp.Body.Close() }()
 		if resp.StatusCode != http.StatusCreated {
 			return fmt.Errorf("failed to add comment (HTTP %d)", resp.StatusCode)
 		}
@@ -106,9 +107,9 @@ func closeRun(opts *CloseOptions) error {
 	if err != nil {
 		return err
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
 		return fmt.Errorf("failed to close issue (HTTP %d)", resp.StatusCode)
 	}
 

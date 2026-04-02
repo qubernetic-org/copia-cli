@@ -32,7 +32,7 @@ func TestListRun_Success(t *testing.T) {
 		Token:      "test-token",
 	}
 
-	err := listRun(opts)
+	err := ListRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), "my-org")
 	assert.Contains(t, stdout.String(), "other-org")
@@ -57,7 +57,7 @@ func TestListRun_JSON(t *testing.T) {
 		JSON:       cmdutil.JSONFlags{Fields: []string{"username"}},
 	}
 
-	err := listRun(opts)
+	err := ListRun(opts)
 	require.NoError(t, err)
 	assert.Contains(t, stdout.String(), `"username"`)
 }

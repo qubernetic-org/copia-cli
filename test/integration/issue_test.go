@@ -3,136 +3,137 @@
 package integration
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	issueclose "github.com/qubernetic/copia-cli/pkg/cmd/issue/close"
+	issuecomment "github.com/qubernetic/copia-cli/pkg/cmd/issue/comment"
+	issuecreate "github.com/qubernetic/copia-cli/pkg/cmd/issue/create"
+	issueedit "github.com/qubernetic/copia-cli/pkg/cmd/issue/edit"
+	issuelist "github.com/qubernetic/copia-cli/pkg/cmd/issue/list"
+	issueview "github.com/qubernetic/copia-cli/pkg/cmd/issue/view"
 )
 
 func TestIssue_FullLifecycle(t *testing.T) {
 	env := loadTestEnv(t)
-	baseURL := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues", env.Host, env.Owner, env.Repo)
 
-	// Create issue
-	createPayload, _ := json.Marshal(map[string]string{
-		"title": "[integration-test] lifecycle test",
-		"body":  "Created by integration test. Will be closed automatically.",
-	})
-
-	createReq, err := http.NewRequest("POST", baseURL, bytes.NewReader(createPayload))
-	require.NoError(t, err)
-	createReq.Header.Set("Authorization", "token "+env.Token)
-	createReq.Header.Set("Content-Type", "application/json")
-
-	createResp, err := http.DefaultClient.Do(createReq)
-	require.NoError(t, err)
-	defer func() { _ = createResp.Body.Close() }()
-
-	require.Equal(t, http.StatusCreated, createResp.StatusCode)
-
-	createBody, err := io.ReadAll(createResp.Body)
-	require.NoError(t, err)
-
-	var created struct {
-		Number int64  `json:"number"`
-		Title  string `json:"title"`
-		State  string `json:"state"`
+	// Create
+	createIO, createOut, _ := testIO()
+	createOpts := &issuecreate.CreateOptions{
+		IO:         createIO,
+		HTTPClient: &http.Client{},
+		Host:       env.Host,
+		Token:      env.Token,
+		Owner:      env.Owner,
+		Repo:       env.Repo,
+		Title:      "[integration-test] CLI lifecycle test",
+		Body:       "Created by integration test via CreateRun.",
 	}
-	require.NoError(t, json.Unmarshal(createBody, &created))
-	assert.Equal(t, "[integration-test] lifecycle test", created.Title)
-	assert.Equal(t, "open", created.State)
+	err := issuecreate.CreateRun(createOpts)
+	require.NoError(t, err)
+	assert.Contains(t, createOut.String(), "Created issue #")
+	t.Logf("Create: %s", createOut.String())
 
-	t.Logf("Created issue #%d", created.Number)
+	// Extract issue number from output
+	var issueNumber int64
+	_, _ = fmt.Sscanf(createOut.String(), "Created issue #%d", &issueNumber)
+	require.Greater(t, issueNumber, int64(0), "failed to parse issue number")
 
-	// Cleanup: close issue at end
+	// Cleanup: close at end
 	defer func() {
-		closePayload, _ := json.Marshal(map[string]string{"state": "closed"})
-		closeURL := fmt.Sprintf("%s/%d", baseURL, created.Number)
-		closeReq, err := http.NewRequest("PATCH", closeURL, bytes.NewReader(closePayload))
-		if err != nil {
-			t.Logf("Failed to create close request: %v", err)
-			return
-		}
-		closeReq.Header.Set("Authorization", "token "+env.Token)
-		closeReq.Header.Set("Content-Type", "application/json")
-
-		closeResp, err := http.DefaultClient.Do(closeReq)
-		if err != nil {
-			t.Logf("Failed to close issue: %v", err)
-			return
-		}
-		_ = closeResp.Body.Close()
-		t.Logf("Closed issue #%d (HTTP %d)", created.Number, closeResp.StatusCode)
+		closeIO, _, _ := testIO()
+		_ = issueclose.CloseRun(&issueclose.CloseOptions{
+			IO: closeIO, HTTPClient: &http.Client{},
+			Host: env.Host, Token: env.Token,
+			Owner: env.Owner, Repo: env.Repo,
+			Number: issueNumber,
+		})
+		t.Logf("Closed issue #%d", issueNumber)
 	}()
 
-	// View issue
-	viewURL := fmt.Sprintf("%s/%d", baseURL, created.Number)
-	viewReq, err := http.NewRequest("GET", viewURL, nil)
-	require.NoError(t, err)
-	viewReq.Header.Set("Authorization", "token "+env.Token)
-
-	viewResp, err := http.DefaultClient.Do(viewReq)
-	require.NoError(t, err)
-	defer func() { _ = viewResp.Body.Close() }()
-
-	assert.Equal(t, http.StatusOK, viewResp.StatusCode)
-
-	viewBody, err := io.ReadAll(viewResp.Body)
-	require.NoError(t, err)
-
-	var viewed struct {
-		Number int64  `json:"number"`
-		Title  string `json:"title"`
-	}
-	require.NoError(t, json.Unmarshal(viewBody, &viewed))
-	assert.Equal(t, created.Number, viewed.Number)
-
-	// Add comment
-	commentPayload, _ := json.Marshal(map[string]string{
-		"body": "Integration test comment — will be cleaned up.",
+	// View
+	viewIO, viewOut, _ := testIO()
+	err = issueview.ViewRun(&issueview.ViewOptions{
+		IO: viewIO, HTTPClient: &http.Client{},
+		Host: env.Host, Token: env.Token,
+		Owner: env.Owner, Repo: env.Repo,
+		Number: issueNumber,
 	})
-	commentURL := fmt.Sprintf("%s/%d/comments", baseURL, created.Number)
-	commentReq, err := http.NewRequest("POST", commentURL, bytes.NewReader(commentPayload))
 	require.NoError(t, err)
-	commentReq.Header.Set("Authorization", "token "+env.Token)
-	commentReq.Header.Set("Content-Type", "application/json")
+	assert.Contains(t, viewOut.String(), "[integration-test] CLI lifecycle test")
+	t.Logf("View: %s", viewOut.String())
 
-	commentResp, err := http.DefaultClient.Do(commentReq)
+	// Comment
+	commentIO, _, _ := testIO()
+	err = issuecomment.CommentRun(&issuecomment.CommentOptions{
+		IO: commentIO, HTTPClient: &http.Client{},
+		Host: env.Host, Token: env.Token,
+		Owner: env.Owner, Repo: env.Repo,
+		Number: issueNumber,
+		Body:   "Integration test comment via CommentRun.",
+	})
 	require.NoError(t, err)
-	defer func() { _ = commentResp.Body.Close() }()
+	t.Logf("Comment added to #%d", issueNumber)
 
-	assert.Equal(t, http.StatusCreated, commentResp.StatusCode)
+	// Edit title
+	editIO, _, _ := testIO()
+	err = issueedit.EditRun(&issueedit.EditOptions{
+		IO: editIO, HTTPClient: &http.Client{},
+		Host: env.Host, Token: env.Token,
+		Owner: env.Owner, Repo: env.Repo,
+		Number: issueNumber,
+		Title:  "[integration-test] CLI lifecycle test (edited)",
+	})
+	require.NoError(t, err)
+	t.Logf("Edited issue #%d", issueNumber)
 
-	t.Logf("Added comment to issue #%d", created.Number)
+	// Close
+	closeIO, closeOut, _ := testIO()
+	err = issueclose.CloseRun(&issueclose.CloseOptions{
+		IO: closeIO, HTTPClient: &http.Client{},
+		Host: env.Host, Token: env.Token,
+		Owner: env.Owner, Repo: env.Repo,
+		Number: issueNumber,
+	})
+	require.NoError(t, err)
+	assert.Contains(t, closeOut.String(), "Closed issue")
+	t.Logf("Close: %s", closeOut.String())
 }
 
 func TestIssue_List(t *testing.T) {
 	env := loadTestEnv(t)
+	ios, stdout, _ := testIO()
 
-	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s/issues?state=all&limit=5&type=issues",
-		env.Host, env.Owner, env.Repo)
-	req, err := http.NewRequest("GET", url, nil)
-	require.NoError(t, err)
-	req.Header.Set("Authorization", "token "+env.Token)
-
-	resp, err := http.DefaultClient.Do(req)
-	require.NoError(t, err)
-	defer func() { _ = resp.Body.Close() }()
-
-	assert.Equal(t, http.StatusOK, resp.StatusCode)
-
-	body, err := io.ReadAll(resp.Body)
-	require.NoError(t, err)
-
-	var issues []struct {
-		Number int64 `json:"number"`
+	opts := &issuelist.ListOptions{
+		IO:         ios,
+		HTTPClient: &http.Client{},
+		Host:       env.Host,
+		Token:      env.Token,
+		Owner:      env.Owner,
+		Repo:       env.Repo,
+		State:      "all",
+		Limit:      5,
 	}
-	require.NoError(t, json.Unmarshal(body, &issues))
 
-	t.Logf("Found %d issues", len(issues))
+	err := issuelist.ListRun(opts)
+	require.NoError(t, err)
+	t.Logf("Output: %s", stdout.String())
+}
+
+func TestIssue_ViewNotFound(t *testing.T) {
+	env := loadTestEnv(t)
+	ios, _, _ := testIO()
+
+	err := issueview.ViewRun(&issueview.ViewOptions{
+		IO: ios, HTTPClient: &http.Client{},
+		Host: env.Host, Token: env.Token,
+		Owner: env.Owner, Repo: env.Repo,
+		Number: 99999,
+	})
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "not found")
 }

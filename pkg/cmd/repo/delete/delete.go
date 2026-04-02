@@ -25,7 +25,8 @@ func NewCmdDelete(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "delete <owner/repo>",
 		Short: "Delete a repository",
-		Example: `  copia repo delete my-org/my-repo --yes`,
+		Long:  "Delete a Copia repository. This action is irreversible. Use --yes to skip the confirmation prompt.",
+		Example: `  $ copia-cli repo delete my-org/my-repo --yes`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
@@ -43,7 +44,7 @@ func NewCmdDelete(f *cmdutil.Factory) *cobra.Command {
 			}
 			opts.Owner, opts.Repo = owner, repo
 			opts.HTTPClient = &http.Client{}
-			return deleteRun(opts)
+			return DeleteRun(opts)
 		},
 	}
 
@@ -52,7 +53,7 @@ func NewCmdDelete(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func deleteRun(opts *DeleteOptions) error {
+func DeleteRun(opts *DeleteOptions) error {
 	if !opts.Confirmed {
 		return fmt.Errorf("deleting %s/%s is irreversible; use --yes to confirm", opts.Owner, opts.Repo)
 	}
@@ -68,7 +69,7 @@ func deleteRun(opts *DeleteOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusNoContent {
 		return fmt.Errorf("failed to delete repository (HTTP %d)", resp.StatusCode)

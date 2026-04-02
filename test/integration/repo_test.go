@@ -3,66 +3,89 @@
 package integration
 
 import (
-	"encoding/json"
-	"fmt"
-	"io"
 	"net/http"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	repolist "github.com/qubernetic/copia-cli/pkg/cmd/repo/list"
+	repoview "github.com/qubernetic/copia-cli/pkg/cmd/repo/view"
+	"github.com/qubernetic/copia-cli/pkg/cmdutil"
 )
 
-func TestRepo_ListUserRepos(t *testing.T) {
+func TestRepoList_Run(t *testing.T) {
 	env := loadTestEnv(t)
+	ios, stdout, _ := testIO()
 
-	url := fmt.Sprintf("https://%s/api/v1/user/repos?limit=5", env.Host)
-	req, err := http.NewRequest("GET", url, nil)
-	require.NoError(t, err)
-	req.Header.Set("Authorization", "token "+env.Token)
-
-	resp, err := http.DefaultClient.Do(req)
-	require.NoError(t, err)
-	defer func() { _ = resp.Body.Close() }()
-
-	assert.Equal(t, http.StatusOK, resp.StatusCode)
-
-	body, err := io.ReadAll(resp.Body)
-	require.NoError(t, err)
-
-	var repos []struct {
-		FullName string `json:"full_name"`
+	opts := &repolist.ListOptions{
+		IO:         ios,
+		HTTPClient: &http.Client{},
+		Host:       env.Host,
+		Token:      env.Token,
+		Limit:      5,
 	}
-	require.NoError(t, json.Unmarshal(body, &repos))
-	assert.NotEmpty(t, repos)
 
-	t.Logf("Found %d repos", len(repos))
+	err := repolist.ListRun(opts)
+	require.NoError(t, err)
+	assert.NotEmpty(t, stdout.String())
+	t.Logf("Output: %s", stdout.String())
 }
 
-func TestRepo_ViewTestRepo(t *testing.T) {
+func TestRepoList_JSON(t *testing.T) {
 	env := loadTestEnv(t)
+	ios, stdout, _ := testIO()
 
-	url := fmt.Sprintf("https://%s/api/v1/repos/%s/%s", env.Host, env.Owner, env.Repo)
-	req, err := http.NewRequest("GET", url, nil)
-	require.NoError(t, err)
-	req.Header.Set("Authorization", "token "+env.Token)
-
-	resp, err := http.DefaultClient.Do(req)
-	require.NoError(t, err)
-	defer func() { _ = resp.Body.Close() }()
-
-	assert.Equal(t, http.StatusOK, resp.StatusCode)
-
-	body, err := io.ReadAll(resp.Body)
-	require.NoError(t, err)
-
-	var repo struct {
-		FullName      string `json:"full_name"`
-		DefaultBranch string `json:"default_branch"`
+	opts := &repolist.ListOptions{
+		IO:         ios,
+		HTTPClient: &http.Client{},
+		Host:       env.Host,
+		Token:      env.Token,
+		Limit:      2,
+		JSON:       cmdutil.JSONFlags{Fields: []string{"full_name"}},
 	}
-	require.NoError(t, json.Unmarshal(body, &repo))
-	assert.Contains(t, repo.FullName, env.Repo)
-	assert.NotEmpty(t, repo.DefaultBranch)
 
-	t.Logf("Repo: %s (default branch: %s)", repo.FullName, repo.DefaultBranch)
+	err := repolist.ListRun(opts)
+	require.NoError(t, err)
+	assert.Contains(t, stdout.String(), "full_name")
+	t.Logf("Output: %s", stdout.String())
+}
+
+func TestRepoView_Run(t *testing.T) {
+	env := loadTestEnv(t)
+	ios, stdout, _ := testIO()
+
+	opts := &repoview.ViewOptions{
+		IO:         ios,
+		HTTPClient: &http.Client{},
+		Host:       env.Host,
+		Token:      env.Token,
+		Owner:      env.Owner,
+		Repo:       env.Repo,
+	}
+
+	err := repoview.ViewRun(opts)
+	require.NoError(t, err)
+	output := stdout.String()
+	assert.Contains(t, output, env.Owner+"/"+env.Repo)
+	assert.Contains(t, output, "Default branch")
+	t.Logf("Output: %s", output)
+}
+
+func TestRepoView_NotFound(t *testing.T) {
+	env := loadTestEnv(t)
+	ios, _, _ := testIO()
+
+	opts := &repoview.ViewOptions{
+		IO:         ios,
+		HTTPClient: &http.Client{},
+		Host:       env.Host,
+		Token:      env.Token,
+		Owner:      "nonexistent-org-xyz",
+		Repo:       "nonexistent-repo-xyz",
+	}
+
+	err := repoview.ViewRun(opts)
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "not found")
 }

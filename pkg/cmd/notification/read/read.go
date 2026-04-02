@@ -25,8 +25,12 @@ func NewCmdRead(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "read [<thread-id>]",
 		Short: "Mark notifications as read",
-		Example: `  copia notification read --all
-  copia notification read 42`,
+		Long:  "Mark notifications as read. Specify a thread ID to mark a single notification, or use --all to mark all notifications as read.",
+		Example: `  # Mark all notifications as read
+  $ copia-cli notification read --all
+
+  # Mark a single notification as read
+  $ copia-cli notification read 42`,
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
@@ -50,7 +54,7 @@ func NewCmdRead(f *cmdutil.Factory) *cobra.Command {
 			}
 
 			opts.HTTPClient = &http.Client{}
-			return readRun(opts)
+			return ReadRun(opts)
 		},
 	}
 
@@ -59,7 +63,7 @@ func NewCmdRead(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func readRun(opts *ReadOptions) error {
+func ReadRun(opts *ReadOptions) error {
 	var method, url string
 
 	if opts.All {
@@ -80,7 +84,7 @@ func readRun(opts *ReadOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusResetContent && resp.StatusCode != http.StatusNoContent {
 		return fmt.Errorf("failed to mark as read (HTTP %d)", resp.StatusCode)

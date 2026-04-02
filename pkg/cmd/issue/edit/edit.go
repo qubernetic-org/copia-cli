@@ -34,10 +34,18 @@ func NewCmdEdit(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "edit <number>",
 		Short: "Edit an issue",
-		Example: `  copia issue edit 12 --title "New title"
-  copia issue edit 12 --add-label bug --add-label urgent
-  copia issue edit 12 --assignee john --assignee jane
-  copia issue edit 12 --milestone 1`,
+		Long:  "Edit an issue's title, body, labels, assignees, or milestone.",
+		Example: `  # Edit the title
+  $ copia-cli issue edit 12 --title "New title"
+
+  # Add labels
+  $ copia-cli issue edit 12 --add-label bug --add-label urgent
+
+  # Set assignees
+  $ copia-cli issue edit 12 --assignee john --assignee jane
+
+  # Set milestone
+  $ copia-cli issue edit 12 --milestone 1`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			num, err := strconv.ParseInt(args[0], 10, 64)
@@ -54,17 +62,14 @@ func NewCmdEdit(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Run from inside a git repository")
-			}
-			owner, repo, err := f.BaseRepo()
+			owner, repo, err := f.ResolveRepo()
 			if err != nil {
 				return err
 			}
 			opts.Owner = owner
 			opts.Repo = repo
 			opts.HTTPClient = &http.Client{}
-			return editRun(opts)
+			return EditRun(opts)
 		},
 	}
 
@@ -77,7 +82,7 @@ func NewCmdEdit(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func editRun(opts *EditOptions) error {
+func EditRun(opts *EditOptions) error {
 	hasIssueUpdate := opts.Title != "" || opts.Body != "" || len(opts.Assignees) > 0 || opts.Milestone > 0
 	hasLabelAdd := len(opts.AddLabels) > 0
 
@@ -135,9 +140,9 @@ func updateIssue(opts *EditOptions) error {
 	if err != nil {
 		return err
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
 		return fmt.Errorf("failed to update issue (HTTP %d)", resp.StatusCode)
 	}
 
@@ -174,9 +179,9 @@ func addLabels(opts *EditOptions) error {
 	if err != nil {
 		return err
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
 		return fmt.Errorf("failed to add labels (HTTP %d)", resp.StatusCode)
 	}
 
@@ -202,7 +207,7 @@ func resolveLabelIDs(opts *EditOptions) ([]int64, error) {
 	if err != nil {
 		return nil, err
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {

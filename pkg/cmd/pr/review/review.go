@@ -35,9 +35,15 @@ func NewCmdReview(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "review <number>",
 		Short: "Submit a review on a pull request",
-		Example: `  copia pr review 7 --approve
-  copia pr review 7 --request-changes --body "Please fix the tests."
-  copia pr review 7 --comment --body "Looks good overall."`,
+		Long:  "Add a review to a pull request. Use --approve, --request-changes, or --comment to specify the review action.",
+		Example: `  # Approve a pull request
+  $ copia-cli pr review 7 --approve
+
+  # Request changes
+  $ copia-cli pr review 7 --request-changes --body "Please fix the tests."
+
+  # Leave a comment
+  $ copia-cli pr review 7 --comment --body "Looks good overall."`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			num, err := strconv.ParseInt(args[0], 10, 64)
@@ -54,10 +60,7 @@ func NewCmdReview(f *cmdutil.Factory) *cobra.Command {
 			opts.Host = host
 			opts.Token = token
 
-			if f.BaseRepo == nil {
-				return fmt.Errorf("could not determine repository. Run from inside a git repository")
-			}
-			owner, repo, err := f.BaseRepo()
+			owner, repo, err := f.ResolveRepo()
 			if err != nil {
 				return err
 			}
@@ -80,7 +83,7 @@ func NewCmdReview(f *cmdutil.Factory) *cobra.Command {
 			}
 
 			opts.HTTPClient = &http.Client{}
-			return reviewRun(opts)
+			return ReviewRun(opts)
 		},
 	}
 
@@ -92,7 +95,7 @@ func NewCmdReview(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func reviewRun(opts *ReviewOptions) error {
+func ReviewRun(opts *ReviewOptions) error {
 	payload := reviewRequest{
 		Event: opts.Event,
 		Body:  opts.Body,
@@ -117,9 +120,9 @@ func reviewRun(opts *ReviewOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
 		return fmt.Errorf("failed to submit review (HTTP %d)", resp.StatusCode)
 	}
 

@@ -38,8 +38,12 @@ func NewCmdFork(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "fork <owner/repo>",
 		Short: "Fork a repository",
-		Example: `  copia repo fork upstream-org/project
-  copia repo fork upstream-org/project --org my-org`,
+		Long:  "Create a fork of a Copia repository. By default the fork is created under the authenticated user. Use --org to fork into an organization.",
+		Example: `  # Fork a repository
+  $ copia-cli repo fork upstream-org/project
+
+  # Fork into an organization
+  $ copia-cli repo fork upstream-org/project --org my-org`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opts.IO = f.IOStreams
@@ -57,7 +61,7 @@ func NewCmdFork(f *cmdutil.Factory) *cobra.Command {
 			}
 			opts.Owner, opts.Repo = owner, repo
 			opts.HTTPClient = &http.Client{}
-			return forkRun(opts)
+			return ForkRun(opts)
 		},
 	}
 
@@ -66,7 +70,7 @@ func NewCmdFork(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-func forkRun(opts *ForkOptions) error {
+func ForkRun(opts *ForkOptions) error {
 	payload := forkRequest{Organization: opts.Org}
 	body, err := json.Marshal(payload)
 	if err != nil {
@@ -85,7 +89,7 @@ func forkRun(opts *ForkOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusAccepted && resp.StatusCode != http.StatusCreated {
 		respBody, _ := io.ReadAll(resp.Body)

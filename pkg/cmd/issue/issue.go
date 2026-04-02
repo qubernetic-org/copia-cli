@@ -19,12 +19,17 @@ func NewCmdIssue(f *cmdutil.Factory) *cobra.Command {
 		Long:  "Work with Copia repository issues.",
 	}
 
-	cmd.AddCommand(listCmd.NewCmdList(f))
-	cmd.AddCommand(createCmd.NewCmdCreate(f))
-	cmd.AddCommand(viewCmd.NewCmdView(f))
-	cmd.AddCommand(closeCmd.NewCmdClose(f))
-	cmd.AddCommand(commentCmd.NewCmdComment(f))
-	cmd.AddCommand(editCmd.NewCmdEdit(f))
+	cmdutil.AddGroup(cmd, "General commands",
+		listCmd.NewCmdList(f),
+		createCmd.NewCmdCreate(f),
+	)
+
+	cmdutil.AddGroup(cmd, "Targeted commands",
+		viewCmd.NewCmdView(f),
+		closeCmd.NewCmdClose(f),
+		commentCmd.NewCmdComment(f),
+		editCmd.NewCmdEdit(f),
+	)
 
 	return cmd
 }

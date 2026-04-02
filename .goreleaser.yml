@@ -38,11 +38,13 @@ universal_binaries:
     name_template: "copia-cli"
 
 archives:
-  - format: tar.gz
+  - formats:
+      - tar.gz
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     format_overrides:
       - goos: windows
-        format: zip
+        formats:
+          - zip
     files:
       - LICENSE
       - README.md
@@ -64,7 +66,7 @@ brews:
       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
     homepage: "https://github.com/qubernetic/copia-cli"
     description: "CLI for Copia — source control for industrial automation"
-    license: "MIT"
+    license: "AGPL-3.0"
     install: |
       bin.install "copia-cli"
     test: |
@@ -77,7 +79,7 @@ nfpms:
     homepage: "https://github.com/qubernetic/copia-cli"
     maintainer: "Qubernetic <hello@qubernetic.io>"
     description: "CLI for Copia — source control for industrial automation"
-    license: MIT
+    license: AGPL-3.0
     formats:
       - deb
       - rpm
