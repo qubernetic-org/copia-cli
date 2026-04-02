@@ -19,12 +19,17 @@ func NewCmdRepo(f *cmdutil.Factory) *cobra.Command {
 		Long:  "Work with Copia repositories.",
 	}
 
-	cmd.AddCommand(listCmd.NewCmdList(f))
-	cmd.AddCommand(viewCmd.NewCmdView(f))
-	cmd.AddCommand(cloneCmd.NewCmdClone(f))
-	cmd.AddCommand(createCmd.NewCmdCreate(f))
-	cmd.AddCommand(deleteCmd.NewCmdDelete(f))
-	cmd.AddCommand(forkCmd.NewCmdFork(f))
+	cmdutil.AddGroup(cmd, "General commands",
+		listCmd.NewCmdList(f),
+		cloneCmd.NewCmdClone(f),
+		createCmd.NewCmdCreate(f),
+	)
+
+	cmdutil.AddGroup(cmd, "Targeted commands",
+		viewCmd.NewCmdView(f),
+		deleteCmd.NewCmdDelete(f),
+		forkCmd.NewCmdFork(f),
+	)
 
 	return cmd
 }

@@ -14,8 +14,10 @@ func NewCmdSearch(f *cmdutil.Factory) *cobra.Command {
 		Long:  "Search repositories and issues.",
 	}
 
-	cmd.AddCommand(reposCmd.NewCmdSearchRepos(f))
-	cmd.AddCommand(issuesCmd.NewCmdSearchIssues(f))
+	cmdutil.AddGroup(cmd, "General commands",
+		reposCmd.NewCmdSearchRepos(f),
+		issuesCmd.NewCmdSearchIssues(f),
+	)
 
 	return cmd
 }
