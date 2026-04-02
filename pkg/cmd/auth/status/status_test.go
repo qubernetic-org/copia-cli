@@ -60,6 +60,61 @@ func TestStatusRun_NoHosts(t *testing.T) {
 	assert.Contains(t, err.Error(), "not logged in")
 }
 
+func TestStatusRun_UnknownHost(t *testing.T) {
+	configPath := t.TempDir() + "/config.yml"
+	cfg := &config.Config{
+		Hosts: map[string]*config.HostConfig{
+			"app.copia.io": {Token: "abc123", User: "john"},
+		},
+	}
+	require.NoError(t, config.Save(configPath, cfg))
+
+	ios, _, _, _ := iostreams.Test()
+
+	opts := &StatusOptions{
+		IO:         ios,
+		ConfigPath: configPath,
+		Host:       "unknown.example.com",
+	}
+
+	err := StatusRun(opts)
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "not logged in to unknown.example.com")
+}
+
+func TestStatusRun_SpecificHost(t *testing.T) {
+	reg := &httpmock.Registry{}
+	defer reg.Verify(t)
+
+	reg.Register(
+		httpmock.REST("GET", "/api/v1/user"),
+		httpmock.StringResponse(http.StatusOK, `{"login":"john","id":1}`),
+	)
+
+	configPath := t.TempDir() + "/config.yml"
+	cfg := &config.Config{
+		Hosts: map[string]*config.HostConfig{
+			"app.copia.io":  {Token: "abc123", User: "john"},
+			"other.copia.io": {Token: "xyz789", User: "jane"},
+		},
+	}
+	require.NoError(t, config.Save(configPath, cfg))
+
+	ios, _, stdout, _ := iostreams.Test()
+
+	opts := &StatusOptions{
+		IO:         ios,
+		ConfigPath: configPath,
+		HTTPClient: &http.Client{Transport: reg},
+		Host:       "app.copia.io",
+	}
+
+	err := StatusRun(opts)
+	require.NoError(t, err)
+	assert.Contains(t, stdout.String(), "app.copia.io")
+	assert.NotContains(t, stdout.String(), "other.copia.io")
+}
+
 func TestStatusRun_InvalidToken(t *testing.T) {
 	reg := &httpmock.Registry{}
 	defer reg.Verify(t)
