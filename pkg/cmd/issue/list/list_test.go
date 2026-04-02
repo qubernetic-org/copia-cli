@@ -11,6 +11,19 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestListRun_InvalidState(t *testing.T) {
+	ios, _, _, _ := iostreams.Test()
+
+	opts := &ListOptions{
+		IO:    ios,
+		State: "invalid",
+	}
+
+	err := ListRun(opts)
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "invalid state")
+}
+
 func TestListRun_Success(t *testing.T) {
 	reg := &httpmock.Registry{}
 	defer reg.Verify(t)
