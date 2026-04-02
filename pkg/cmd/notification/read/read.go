@@ -80,7 +80,7 @@ func readRun(opts *ReadOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusResetContent && resp.StatusCode != http.StatusNoContent {
 		return fmt.Errorf("failed to mark as read (HTTP %d)", resp.StatusCode)

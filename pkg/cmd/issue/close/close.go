@@ -85,7 +85,7 @@ func closeRun(opts *CloseOptions) error {
 		if err != nil {
 			return err
 		}
-		_ = resp.Body.Close()
+		defer func() { _ = resp.Body.Close() }()
 		if resp.StatusCode != http.StatusCreated {
 			return fmt.Errorf("failed to add comment (HTTP %d)", resp.StatusCode)
 		}
@@ -106,9 +106,9 @@ func closeRun(opts *CloseOptions) error {
 	if err != nil {
 		return err
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
 		return fmt.Errorf("failed to close issue (HTTP %d)", resp.StatusCode)
 	}
 

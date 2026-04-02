@@ -135,9 +135,9 @@ func updateIssue(opts *EditOptions) error {
 	if err != nil {
 		return err
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
 		return fmt.Errorf("failed to update issue (HTTP %d)", resp.StatusCode)
 	}
 
@@ -174,9 +174,9 @@ func addLabels(opts *EditOptions) error {
 	if err != nil {
 		return err
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
 		return fmt.Errorf("failed to add labels (HTTP %d)", resp.StatusCode)
 	}
 
@@ -202,7 +202,7 @@ func resolveLabelIDs(opts *EditOptions) ([]int64, error) {
 	if err != nil {
 		return nil, err
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {

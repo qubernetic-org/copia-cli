@@ -68,7 +68,7 @@ func deleteRun(opts *DeleteOptions) error {
 	if err != nil {
 		return fmt.Errorf("connecting to %s: %w", opts.Host, err)
 	}
-	_ = resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusNoContent {
 		return fmt.Errorf("failed to delete repository (HTTP %d)", resp.StatusCode)
