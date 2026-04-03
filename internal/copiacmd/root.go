@@ -33,7 +33,7 @@ func NewRootCmd(f *cmdutil.Factory) *cobra.Command {
 		SilenceUsage:  true,
 	}
 
-	cmd.SetVersionTemplate("copia-cli version {{.Version}}\n")
+	cmd.SetVersionTemplate(build.VersionInfo() + "\n")
 
 	// Global flags — bound to factory fields, resolved in ResolveAuth()
 	cmd.PersistentFlags().StringVar(&f.Host, "host", "", "Target Copia host")
