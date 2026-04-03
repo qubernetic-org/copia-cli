@@ -27,7 +27,7 @@ Follows the `gh` CLI repository structure (`github.com/cli/cli`).
 
 ```
 copia-cli/
-├── cmd/copia/              # Entrypoint
+├── cmd/copia-cli/          # Entrypoint
 ├── internal/
 │   ├── build/              # Version injection (ldflags)
 │   ├── config/             # Config & auth management

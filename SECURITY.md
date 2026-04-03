@@ -25,7 +25,7 @@ Please include:
 
 - A description of the issue and its potential impact
 - Steps to reproduce or a scenario demonstrating the problem
-- Your OS and `copia --version` output
+- Your OS and `copia-cli --version` output
 
 ## Response Timeline
 
