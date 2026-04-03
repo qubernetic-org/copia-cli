@@ -6,7 +6,7 @@
 [![Go](https://img.shields.io/badge/Go-1.26+-00ADD8.svg?logo=go&logoColor=white)](https://go.dev/)
 [![Release](https://img.shields.io/github/v/release/qubernetic/copia-cli?include_prereleases)](https://github.com/qubernetic/copia-cli/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
-[![codecov](https://codecov.io/gh/qubernetic/copia-cli/graph/badge.svg)](https://codecov.io/gh/qubernetic/copia-cli)
+[![codecov](https://codecov.io/gh/qubernetic/copia-cli/graph/badge.svg?token=53E14B9UE1)](https://codecov.io/gh/qubernetic/copia-cli)
 
 </div>
 
