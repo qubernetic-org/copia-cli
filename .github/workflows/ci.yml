@@ -22,7 +22,13 @@ jobs:
         run: make build
 
       - name: Test
-        run: make test
+        run: go test -coverprofile=coverage.out ./...
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: coverage.out
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Ensure go.mod is tidy
         run: |
