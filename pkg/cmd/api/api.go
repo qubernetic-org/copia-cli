@@ -32,7 +32,14 @@ func NewCmdAPI(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "api <path>",
 		Short: "Make an API request",
-		Long:  "Make an authenticated HTTP request to the Copia REST API and print the response. The endpoint argument should be a path of a Gitea API v1 endpoint.",
+		Long: `Make an authenticated HTTP request to the Copia REST API and print the response.
+
+The endpoint argument should be a path of a Gitea API v1 endpoint. The /api/v1
+prefix is added automatically if not present.
+
+Use --field to send JSON body fields (automatically switches to POST method).
+Use --method to override the HTTP method (GET, POST, PATCH, DELETE, PUT).
+Use --header to add custom HTTP headers.`,
 		Example: `  # Get authenticated user
   $ copia-cli api /user
 
