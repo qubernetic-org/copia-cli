@@ -55,7 +55,7 @@ func NewRootCmd(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-// Main is the entrypoint called from cmd/copia/main.go.
+// Main is the entrypoint called from cmd/copia-cli/main.go.
 func Main() int {
 	ios := iostreams.System()
 

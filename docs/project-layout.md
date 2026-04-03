@@ -13,7 +13,7 @@ total_tokens: 104574
 ```mermaid
 graph TB
     subgraph Entrypoint
-        main[cmd/copia/main.go]
+        main[cmd/copia-cli/main.go]
     end
     subgraph Internal
         copiacmd[copiacmd.Main]
@@ -58,7 +58,7 @@ graph TB
 
 ```
 copia-cli/
-├── cmd/copia/main.go              # Entrypoint → copiacmd.Main()
+├── cmd/copia-cli/main.go              # Entrypoint → copiacmd.Main()
 ├── internal/
 │   ├── build/build.go             # Version/Date injection (ldflags)
 │   ├── config/config.go           # YAML config (~/.config/copia/config.yml)
@@ -86,7 +86,7 @@ copia-cli/
 
 ## Module Guide
 
-### `cmd/copia/`
+### `cmd/copia-cli/`
 **Purpose:** Binary entrypoint — delegates to `copiacmd.Main()`
 **Entry point:** `main.go`
 
