@@ -39,7 +39,8 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "List repositories",
-		Long:    "List repositories owned by the authenticated user or a specified organization.",
+		Long: `List repositories owned by the authenticated user. Use --org to list
+repositories for a specific organization instead.`,
 		Aliases: []string{"ls"},
 		Example: `  $ copia-cli repo list
   $ copia-cli repo list --org my-org

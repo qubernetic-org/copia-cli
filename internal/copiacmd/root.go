@@ -1,3 +1,4 @@
+// Package copiacmd provides the root command wiring and Main() entrypoint for the CLI.
 package copiacmd
 
 import (
@@ -33,7 +34,7 @@ func NewRootCmd(f *cmdutil.Factory) *cobra.Command {
 		SilenceUsage:  true,
 	}
 
-	cmd.SetVersionTemplate("copia-cli version {{.Version}}\n")
+	cmd.SetVersionTemplate(build.VersionInfo() + "\n")
 
 	// Global flags — bound to factory fields, resolved in ResolveAuth()
 	cmd.PersistentFlags().StringVar(&f.Host, "host", "", "Target Copia host")
@@ -55,7 +56,7 @@ func NewRootCmd(f *cmdutil.Factory) *cobra.Command {
 	return cmd
 }
 
-// Main is the entrypoint called from cmd/copia/main.go.
+// Main is the entrypoint called from cmd/copia-cli/main.go.
 func Main() int {
 	ios := iostreams.System()
 

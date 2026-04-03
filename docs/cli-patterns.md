@@ -725,7 +725,7 @@ Apply these patterns:
 
 - ✓ Create `pkg/cmdutil/factory.go` with Gitea-specific clients
 - ✓ Create `pkg/iostreams/iostreams.go` for terminal abstraction
-- ✓ Create `cmd/copia/main.go` → `internal/giteacmd/main.go`
+- ✓ Create `cmd/copia-cli/main.go` → `internal/copiacmd/main.go`
 - ✓ Each command: `*Options` struct + `NewCmd*()` + `*Run()` function
 - ✓ Use `github.com/spf13/cobra` for CLI skeleton
 - ✓ Create `pkg/httpmock/` adapter for Gitea API mocking

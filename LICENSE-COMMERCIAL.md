@@ -20,9 +20,9 @@ A commercial license is required if you want to:
 
 For commercial licensing inquiries, please contact:
 
-**Csaba Attila Biró**
-Email: csaba.biro@qubernetic.io
-GitHub: [@q-soriarty](https://github.com/q-soriarty)
+**Qubernetic**
+Email: info@qubernetic.com
+Web: [github.com/qubernetic](https://github.com/qubernetic)
 
 ## FAQ
 

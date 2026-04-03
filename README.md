@@ -6,6 +6,7 @@
 [![Go](https://img.shields.io/badge/Go-1.26+-00ADD8.svg?logo=go&logoColor=white)](https://go.dev/)
 [![Release](https://img.shields.io/github/v/release/qubernetic/copia-cli?include_prereleases)](https://github.com/qubernetic/copia-cli/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
+[![codecov](https://codecov.io/gh/qubernetic/copia-cli/graph/badge.svg?token=53E14B9UE1)](https://codecov.io/gh/qubernetic/copia-cli)
 
 </div>
 
@@ -63,12 +64,16 @@ $ copia-cli pr create --title "feat: add safety interlock" --base develop
 $ copia-cli pr merge 7 --merge --delete-branch
 ```
 
+## Shell Completion
+
+Shell completion is available for Bash, Zsh, Fish, and PowerShell. See `copia-cli completion --help` or the [manual](https://qubernetic.github.io/copia-cli/manual/copia-cli_completion) for setup instructions.
+
 ## Roadmap
 
 - **Phase 1 (MVP):** auth, repo list/view/clone, issue CRUD, pr CRUD, label list/create — **Done**
 - **Phase 2 (Workflow):** release CRUD, repo create/delete/fork, pr review/diff/checkout, issue edit, Homebrew tap — **Done**
-- **Phase 3 (Power Features):** generic `api` escape hatch, search, orgs, notifications, `-R` flag, tab completion, Jekyll manual — **In progress**
-- **Phase 4 (Nice to Have):** winget, OS keyring, aliases, browse, status dashboard, ssh-key, pr checks
+- **Phase 3 (Power Features):** `api` escape hatch, search, orgs, notifications, `-R`/`--repo` flag, completion, Jekyll manual, AGPL license — **Done**
+- **Phase 4 (Nice to Have):** winget, OS keyring, aliases, browse, status dashboard, ssh-key, pr checks, scheduled integration tests
 
 ## License
 

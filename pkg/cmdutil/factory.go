@@ -1,3 +1,6 @@
+// Package cmdutil provides shared CLI helpers including the Factory for
+// dependency injection, authentication resolution, repository detection,
+// JSON output flags, and command grouping utilities.
 package cmdutil
 
 import (

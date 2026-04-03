@@ -34,7 +34,7 @@ clean:
 snapshot:
 	goreleaser release --snapshot --clean
 
-install:
+install: ## Install rpm (Fedora/RHEL only)
 	sudo dnf install -y dist/$(BIN)_*_linux_amd64.rpm
 
 uninstall:

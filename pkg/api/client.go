@@ -1,3 +1,4 @@
+// Package api provides a Gitea SDK client wrapper for the Copia REST API.
 package api
 
 import (

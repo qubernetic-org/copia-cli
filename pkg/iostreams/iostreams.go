@@ -1,3 +1,5 @@
+// Package iostreams provides TTY-aware I/O abstraction for CLI commands,
+// with System() for production and Test() for unit testing.
 package iostreams
 
 import (

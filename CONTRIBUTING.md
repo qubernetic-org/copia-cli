@@ -30,7 +30,7 @@ npx @devcontainers/cli up --workspace-folder .
 # Run commands inside the container
 npx @devcontainers/cli exec --workspace-folder . make build
 npx @devcontainers/cli exec --workspace-folder . make test
-npx @devcontainers/cli exec --workspace-folder . ./bin/copia --version
+npx @devcontainers/cli exec --workspace-folder . ./bin/copia-cli --version
 ```
 
 > **Note:** `npx` runs the devcontainer CLI without global installation. Install globally with `npm install -g @devcontainers/cli` to use `devcontainer` directly.
@@ -103,7 +103,7 @@ make integration
 ## Project Structure
 
 ```
-cmd/copia/          Entrypoint
+cmd/copia-cli/      Entrypoint
 internal/           Private packages (config, build, root command)
 pkg/cmd/            Command packages (one per command group)
   auth/             login, logout, status
@@ -144,4 +144,4 @@ Please open an issue with:
 - The command you ran
 - What happened (include error output)
 - What you expected to happen
-- Your OS and `copia --version` output
+- Your OS and `copia-cli --version` output

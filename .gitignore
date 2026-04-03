@@ -20,8 +20,11 @@ docs/site/manual/copia-cli_*.md
 desktop.ini
 thumbs.db
 
+# Secrets
+.env*
+
 # Test
 *.test
 coverage.out
 AUDIT.md
-docs/ghcli_manual_ref/
+docs/superpowers/

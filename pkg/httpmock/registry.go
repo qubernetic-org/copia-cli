@@ -1,3 +1,5 @@
+// Package httpmock provides an HTTP round-tripper mock for unit testing
+// CLI commands without making real API calls.
 package httpmock
 
 import (

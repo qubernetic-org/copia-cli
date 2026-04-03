@@ -19,13 +19,13 @@ If you discover any of the above, or any other security-relevant behavior, pleas
 Instead, use one of the following:
 
 - **GitHub Security Advisories**: Report privately via [GitHub's Security Advisory feature](https://github.com/qubernetic/copia-cli/security/advisories/new) on this repository.
-- **Email**: Send a detailed report to **[INSERT SECURITY EMAIL]**.
+- **Email**: Send a detailed report to **info@qubernetic.com**.
 
 Please include:
 
 - A description of the issue and its potential impact
 - Steps to reproduce or a scenario demonstrating the problem
-- Your OS and `copia --version` output
+- Your OS and `copia-cli --version` output
 
 ## Response Timeline
 

@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-04-03
+
+### Highlights
+
+First stable release of Copia CLI — a command-line interface for Copia, the source control platform for industrial automation. Modeled after GitHub CLI (`gh`), with 35+ subcommands across 11 command groups.
+
+### Added
+
+- Version command enrichment: Go version, OS/arch (#150)
+- Test coverage reporting with Codecov (#151)
+- GoDoc package comments on all exported packages (#152)
+- Shell completion detailed setup instructions (#156)
+- Branch protection rulesets on main/develop
+- Enriched command Long descriptions with filtering details (#138)
+- Integration tests for org, search, notification, api, release (#144)
+
+### Since v0.5.0-rc.2
+
+All v0.5.0-rc.2 changes are included. See below for the full pre-release changelog.
+
+---
+
 ## [0.5.0-rc.2] - 2026-04-02
 
 ### Added
