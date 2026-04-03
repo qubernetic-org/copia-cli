@@ -48,7 +48,11 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "List issues in a repository",
-		Long:    "List issues in a Copia repository. By default, only open issues are listed.",
+		Long: `List issues in a Copia repository. By default, only open issues are listed.
+
+Use --state to filter by open, closed, or all states.
+Use --label to filter by one or more label names.
+Use --limit to control how many issues are returned (default 30).`,
 		Aliases: []string{"ls"},
 		Example: `  $ copia-cli issue list
   $ copia-cli issue list --state closed

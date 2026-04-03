@@ -52,7 +52,10 @@ func NewCmdList(f *cmdutil.Factory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "List pull requests",
-		Long:    "List pull requests in a Copia repository. By default, only open pull requests are listed.",
+		Long: `List pull requests in a Copia repository. By default, only open pull requests are listed.
+
+Use --state to filter by open, closed, merged, or all states.
+Use --limit to control how many pull requests are returned (default 30).`,
 		Aliases: []string{"ls"},
 		Example: `  $ copia-cli pr list
   $ copia-cli pr list --state closed
