@@ -1,3 +1,4 @@
+// Package build provides version and build information injected at compile time via ldflags.
 package build
 
 import (

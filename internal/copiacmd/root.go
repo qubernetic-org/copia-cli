@@ -1,3 +1,4 @@
+// Package copiacmd provides the root command wiring and Main() entrypoint for the CLI.
 package copiacmd
 
 import (

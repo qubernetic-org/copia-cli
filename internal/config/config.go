@@ -1,3 +1,5 @@
+// Package config manages the CLI configuration file (~/.config/copia/config.yml),
+// including host credentials, default host resolution, and file permissions.
 package config
 
 import (
