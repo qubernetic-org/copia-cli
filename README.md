@@ -64,6 +64,10 @@ $ copia-cli pr create --title "feat: add safety interlock" --base develop
 $ copia-cli pr merge 7 --merge --delete-branch
 ```
 
+## Shell Completion
+
+Shell completion is available for Bash, Zsh, Fish, and PowerShell. See `copia-cli completion --help` or the [manual](https://qubernetic.github.io/copia-cli/manual/copia-cli_completion) for setup instructions.
+
 ## Roadmap
 
 - **Phase 1 (MVP):** auth, repo list/view/clone, issue CRUD, pr CRUD, label list/create — **Done**
